@@ -5,34 +5,59 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import butterknife.BindView;
 import littlehans.cn.githubclient.R;
+import littlehans.cn.githubclient.api.GithubService;
+import littlehans.cn.githubclient.model.entity.Search;
+import littlehans.cn.githubclient.ui.activity.BaseActivity;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+  private static final String TAG = "MainActivity";
+  @BindView(R.id.toolbar) Toolbar mToolbar;
+  @BindView(R.id.drawer_layout) DrawerLayout mDrawer;
+  @BindView(R.id.nav_view) NavigationView mNavigationView;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
+    setSupportActionBar(mToolbar);
 
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     ActionBarDrawerToggle toggle =
-        new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    drawer.setDrawerListener(toggle);
+        new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+    mDrawer.setDrawerListener(toggle);
     toggle.syncState();
 
-    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-    navigationView.setNavigationItemSelectedListener(this);
+    mNavigationView.setNavigationItemSelectedListener(this);
+    final Call<Search> repos = GithubService.createSearchService().repositories("bootsrap",null,null);
+    repos.enqueue(new Callback<Search>() {
+      @Override public void onResponse(Call<Search> call, Response<Search> response) {
+        for(Search.Items items : response.body().items) {
+          Log.v(TAG, "onResponse: " + items.toString());
+        }
+        Log.v(TAG, "onResponse: " + response.message());
+      }
+
+      @Override public void onFailure(Call<Search> call, Throwable t) {
+        for(StackTraceElement errorMessage: t.getStackTrace()) {
+          Log.v(TAG, "onFailure: " + errorMessage.toString());
+        }
+
+        mToolbar.setTitle(t.getMessage());
+      }
+    });
   }
 
   @Override public void onBackPressed() {
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    if (drawer.isDrawerOpen(GravityCompat.START)) {
-      drawer.closeDrawer(GravityCompat.START);
+    if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+      mDrawer.closeDrawer(GravityCompat.START);
     } else {
       super.onBackPressed();
     }
@@ -51,9 +76,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     int id = item.getItemId();
 
     //noinspection SimplifiableIfStatement
-    if (id == R.id.action_settings) {
-      return true;
-    }
 
     return super.onOptionsItemSelected(item);
   }
@@ -76,8 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    drawer.closeDrawer(GravityCompat.START);
+    mDrawer.closeDrawer(GravityCompat.START);
     return true;
   }
 }
