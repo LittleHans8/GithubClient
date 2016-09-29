@@ -1,7 +1,12 @@
 package littlehans.cn.githubclient.ui.adapter;
 
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import java.util.List;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.model.entity.Search;
 
@@ -34,12 +40,38 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
     holder.mTxtFullName.setText(mSearch.items.get(position).full_name);
-    // // TODO: 2016/9/29
-    //Spannable spannableString = new SpannableString(mSearch.items.get(position).full_name);
-    //int start = mSearch.items.get(position).text_matches.get(position).matches.get(0).indices.get(0);
-    //int end = mSearch.items.get(position).text_matches.get(position).matches.get(0).indices.get(1);
-    //spannableString.setSpan(new ForegroundColorSpan(Color.BLUE),start,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-    //holder.mTxtFullName.setText(spannableString);
+
+    List<Search.Items.TextMatches> originTextMatches = mSearch.items.get(position).text_matches;
+
+    for (Search.Items.TextMatches textMatches : originTextMatches) {
+      Spannable spanTxtName = new SpannableString(mSearch.items.get(position).full_name);
+      Spannable spanTxtDescription = new SpannableString(mSearch.items.get(position).description);
+
+      switch (textMatches.property) {
+        case "name":
+          for (Search.Items.TextMatches.Matches matches : textMatches.matches) {
+            //int start = matches.indices.get(0);
+            int start = holder.mTxtFullName.getText().toString().indexOf('/') + 1;
+            int end = matches.indices.get(1) + start;
+            spanTxtName.setSpan(new StyleSpan(Typeface.BOLD), start, end,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.mTxtFullName.setText(spanTxtName);
+          }
+          break;
+
+        case "description":
+          for (Search.Items.TextMatches.Matches matches : textMatches.matches) {
+
+            int start = matches.indices.get(0);
+            int end = matches.indices.get(1);
+
+            spanTxtDescription.setSpan(new StyleSpan(Typeface.BOLD), start, end,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.mTxtDescription.setText(spanTxtDescription);
+          }
+          break;
+      }
+    }
 
     if (TextUtils.isEmpty(mSearch.items.get(position).language)) {
       holder.mTxtLanguage.setVisibility(GONE);
