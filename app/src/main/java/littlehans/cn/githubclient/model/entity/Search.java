@@ -7,8 +7,7 @@ import java.util.List;
 /**
  * Created by LittleHans on 2016/9/27.
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Search {
+@JsonIgnoreProperties(ignoreUnknown = true) public class Search {
 
   public int total_count;
   public boolean incomplete_results;
@@ -84,6 +83,7 @@ public class Search {
     public int watchers;
     public String default_branch;
     public double score;
+    public List<TextMatches> text_matches;
 
     public static class Owner {
       public String login;
@@ -123,6 +123,36 @@ public class Search {
             ", received_events_url='" + received_events_url + '\'' +
             ", type='" + type + '\'' +
             ", site_admin=" + site_admin +
+            '}';
+      }
+    }
+
+    public static class TextMatches {
+      public String object_url;
+      public String object_type;
+      public String property;
+      public String fragment;
+      public List<Matches> matches;
+
+      public static class Matches {
+        public String text;
+        public List<Integer> indices;
+
+        @Override public String toString() {
+          return "Matches{" +
+              "text='" + text + '\'' +
+              ", indices=" + indices +
+              '}';
+        }
+      }
+
+      @Override public String toString() {
+        return "TextMatches{" +
+            "object_url='" + object_url + '\'' +
+            ", object_type='" + object_type + '\'' +
+            ", property='" + property + '\'' +
+            ", fragment='" + fragment + '\'' +
+            ", matches=" + matches +
             '}';
       }
     }
@@ -198,8 +228,16 @@ public class Search {
           ", watchers=" + watchers +
           ", default_branch='" + default_branch + '\'' +
           ", score=" + score +
+          ", text_matches=" + text_matches +
           '}';
     }
   }
 
+  @Override public String toString() {
+    return "Search{" +
+        "total_count=" + total_count +
+        ", incomplete_results=" + incomplete_results +
+        ", items=" + items +
+        '}';
+  }
 }
