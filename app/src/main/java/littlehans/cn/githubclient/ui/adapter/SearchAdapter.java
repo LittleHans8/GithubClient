@@ -40,6 +40,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
     holder.mTxtFullName.setText(mSearch.items.get(position).full_name);
+    holder.mTxtDescription.setText(mSearch.items.get(position).description);
 
     List<Search.Items.TextMatches> originTextMatches = mSearch.items.get(position).text_matches;
 
@@ -75,11 +76,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     if (TextUtils.isEmpty(mSearch.items.get(position).language)) {
       holder.mTxtLanguage.setVisibility(GONE);
+    } else {
+      holder.mTxtLanguage.setText(mSearch.items.get(position).language);
     }
     holder.mTxtStargazersCount.setText(
         String.valueOf(mSearch.items.get(position).stargazers_count));
     holder.mTxtForksCount.setText(String.valueOf(mSearch.items.get(position).forks_count));
-    if (TextUtils.isEmpty(mSearch.items.get(position).description)) {
+    if (TextUtils.isEmpty(holder.mTxtDescription.getText())) {
       holder.mTxtDescription.setVisibility(GONE);
     }
 

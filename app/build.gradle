@@ -56,4 +56,6 @@ dependencies {
   compile 'com.facebook.fresco:fresco:0.14.0'
 
   compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha9'
+
+
 }
