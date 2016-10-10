@@ -1,10 +1,8 @@
 package littlehans.cn.githubclient.api.service;
 
-import littlehans.cn.githubclient.Profile;
 import littlehans.cn.githubclient.model.entity.Search;
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.Query;
 
 /**
@@ -21,8 +19,11 @@ public interface SearchService {
    * @param order
    * @return
    */
-  @Headers(Profile.API_SEARCH_REPOS_TEXT_MATCH)
+  //@Headers(Profile.API_SEARCH_REPOS_TEXT_MATCH)
   @GET("/search/repositories")
-  Call<Search> repositories(@Query("q") String q, @Query("sort") String sort,
-      @Query("order") String order);
+  Call<Search> repositories(
+      @Query("q") String q,
+      @Query("sort") String sort,
+      @Query("order") String order,
+      @Query("page") int page);
 }
