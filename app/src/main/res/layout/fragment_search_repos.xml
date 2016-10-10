@@ -1,17 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
+    android:id="@+id/linear"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@android:color/white"
+      android:orientation="horizontal"
+      android:padding="@dimen/margin_8"
+      >
+
+    <LinearLayout
+        style="@style/SearchRepos.Linear"
+        >
+      <CheckBox
+          android:id="@+id/checkbox_sort"
+          android:text="@string/best_match"
+          style="@style/SearchRepos.Filter"
+          />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/SearchRepos.Linear"
+        >
+      <CheckBox
+          android:id="@+id/checkbox_language"
+          android:text="@string/all_language"
+          style="@style/SearchRepos.Filter"
+          />
+    </LinearLayout>
+  </LinearLayout>
+
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/recycler_tag_sort"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="8dp"
+      android:visibility="gone"
+      />
+
   <android.support.v4.widget.SwipeRefreshLayout
       android:id="@+id/layout_swipe_refresh"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       >
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_search"
         android:layout_width="match_parent"

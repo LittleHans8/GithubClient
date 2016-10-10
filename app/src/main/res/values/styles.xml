@@ -17,4 +17,68 @@
   <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
   <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+  <style name="LayoutWeightWidth">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_weight">1</item>
+  </style>
+
+
+  <style name="LayoutWrap">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+  </style>
+
+
+  <style name="CardRepos" parent="LayoutWrap">
+
+  </style>
+
+  <style name="CardRepos.Stats">
+    <item name="android:textColor">@color/reposStats</item>
+    <item name="android:textSize">@dimen/text_size_12</item>
+    <item name="android:textStyle">bold</item>
+  </style>
+
+  <style name="CardRepos.Description">
+    <item name="android:textSize">@dimen/text_size_14</item>
+    <item name="android:textColor">@color/reposDescription</item>
+  </style>
+
+  <style name="CardRepos.Meta">
+    <item name="android:textSize">@dimen/text_size_13</item>
+    <item name="android:textColor">@color/reposMeta</item>
+    <item name="android:layout_marginLeft">@dimen/margin_8</item>
+    <item name="android:layout_marginStart">@dimen/margin_8</item>
+    <item name="android:layout_marginTop">@dimen/margin_8</item>
+  </style>
+
+  <style name="CardRepos.Name">
+    <item name="android:textSize">@dimen/text_size_16</item>
+    <item name="android:textColor">@color/colorAccent</item>
+    <item name="android:layout_marginLeft">@dimen/margin_8</item>
+    <item name="android:layout_marginStart">@dimen/margin_8</item>
+    <item name="android:layout_marginTop">@dimen/margin_8</item>
+    <item name="android:layout_marginEnd">@dimen/margin_32</item>
+    <item name="android:layout_marginRight">@dimen/margin_32</item>
+  </style>
+
+
+
+  <style name="SearchRepos" parent="LayoutWrap">
+
+  </style>
+
+  <style name="SearchRepos.Linear" parent="LayoutWeightWidth">
+    <item name="android:gravity">center</item>
+  </style>
+
+  <style name="SearchRepos.Filter">
+    <item name="android:button">@null</item>
+    <item name="android:drawableEnd">@drawable/selector_arrow_indicate</item>
+    <item name="android:drawableRight">@drawable/selector_arrow_indicate</item>
+    <item name="android:textColor">@color/reposStats</item>
+  </style>
+
 </resources>

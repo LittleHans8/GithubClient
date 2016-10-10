@@ -11,4 +11,6 @@
     <string name="Code">Code</string>
     <string name="Issues">Issues</string>
     <string name="Users">Users</string>
+    <string name="best_match">Best Match</string>
+    <string name="all_language">All Language</string>
 </resources>
