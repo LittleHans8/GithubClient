@@ -26,6 +26,8 @@ import static android.view.View.GONE;
  */
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
+
+
   private Search mSearch;
 
   public SearchAdapter(Search search) {
@@ -33,8 +35,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View v =
-        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_repos, parent, false);
+    View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_repos, parent, false);
     return new ViewHolder(v);
   }
 
@@ -71,6 +72,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             holder.mTxtDescription.setText(spanTxtDescription);
           }
           break;
+
       }
     }
 

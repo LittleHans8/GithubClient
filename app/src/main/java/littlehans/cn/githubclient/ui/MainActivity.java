@@ -39,7 +39,7 @@ public class MainActivity extends BaseActivity
 
     mNavigationView.setNavigationItemSelectedListener(this);
     final Call<Search> repos =
-        GithubService.createSearchService().repositories("bootsrap", null, null);
+        GithubService.createSearchService().repositories("bootsrap", null, null,1);
     repos.enqueue(new Callback<Search>() {
       @Override public void onResponse(Call<Search> call, Response<Search> response) {
         for (Search.Items items : response.body().items) {
