@@ -6,6 +6,7 @@ package littlehans.cn.githubclient.network2.callback;
 
 import java.net.UnknownHostException;
 import littlehans.cn.githubclient.model.ErrorModel;
+import okhttp3.Headers;
 
 import static com.facebook.common.internal.Preconditions.checkNotNull;
 
@@ -64,5 +65,10 @@ public class DecorCallback<T> implements GenericCallback<T> {
 
   @Override public void endRequest() {
     delegate.endRequest();
+  }
+
+  @Override
+  public void respondHeader(Headers headers) {
+
   }
 }

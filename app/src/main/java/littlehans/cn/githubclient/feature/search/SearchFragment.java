@@ -28,7 +28,7 @@ public class SearchFragment extends BaseFragment {
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mAdapter = new Adapter(getChildFragmentManager());
-    mAdapter.addFragment(SearchRepsFragment.create(), getString(R.string.Repositories));
+    mAdapter.addFragment(SearchReposFragment.create(), getString(R.string.Repositories));
     mAdapter.addFragment(SearchCodeFragment.create(), getString(R.string.Code));
     mAdapter.addFragment(SearchIssuesFragment.create(), getString(R.string.Issues));
     mAdapter.addFragment(SearchUsersFragment.create(), getString(R.string.Users));

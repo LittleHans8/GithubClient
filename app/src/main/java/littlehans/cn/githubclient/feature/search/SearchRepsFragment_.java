@@ -35,7 +35,7 @@ public class SearchRepsFragment_ extends BaseFragment
 
   List<Items> loadItem;
 
-  private static final String TAG = "SearchRepsFragment";
+  private static final String TAG = "SearchReposFragment";
 
   String sort[] = { "Best Match", "Most Start", "Most Forks" };
   String language[] = { "Java", "JavaScript", "Object-C", "C++/C", "Php" };

@@ -6,6 +6,7 @@ package littlehans.cn.githubclient.network2.callback;
 
 import java.net.UnknownHostException;
 import littlehans.cn.githubclient.model.ErrorModel;
+import okhttp3.Headers;
 
 public class SimpleCallback<T> implements GenericCallback<T> {
 
@@ -43,5 +44,10 @@ public class SimpleCallback<T> implements GenericCallback<T> {
   }
 
   @Override public void error(ErrorModel errorModel) {
+  }
+
+  @Override
+  public void respondHeader(Headers headers) {
+
   }
 }

@@ -11,6 +11,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 import littlehans.cn.githubclient.R;
+import littlehans.cn.githubclient.data.SearchReposServer;
 import littlehans.cn.githubclient.model.entity.Search;
 import littlehans.cn.githubclient.model.entity.Search.Items.TextMatches;
 import littlehans.cn.githubclient.model.entity.Search.Items.TextMatches.Matches;
@@ -19,11 +20,18 @@ import littlehans.cn.githubclient.model.entity.Search.Items.TextMatches.Matches;
  * Created by LittleHans on 2016/10/7.
  */
 
+
 public class QuickSearchAdapter extends BaseQuickAdapter<Search.Items> {
 
-  public QuickSearchAdapter(int layoutResId, List<Search.Items> data) {
-    super(layoutResId, data);
+
+  public QuickSearchAdapter() {
+    super(R.layout.card_repos, SearchReposServer.getDataByPage(1));
   }
+
+  public QuickSearchAdapter(int page) {
+    super(R.layout.card_repos,SearchReposServer.getDataByPage(page));
+  }
+
 
   @Override protected void convert(BaseViewHolder baseViewHolder, Search.Items items) {
     baseViewHolder.setText(R.id.text_full_name, getMatchString(items)[0]);

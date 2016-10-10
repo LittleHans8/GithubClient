@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.TextView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -25,6 +27,7 @@ import java.util.List;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
 import littlehans.cn.githubclient.api.service.SearchService;
+import littlehans.cn.githubclient.data.SearchReposServer;
 import littlehans.cn.githubclient.model.entity.Search;
 import littlehans.cn.githubclient.model.entity.Search.Items;
 import littlehans.cn.githubclient.network2.PagePaginator;
@@ -39,27 +42,21 @@ import retrofit2.Call;
 /**
  * Created by LittleHans on 2016/10/1.
  */
-public class SearchRepsFragment extends NetworkFragment<Search>
-    implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
-    PaginatorCallback<Search>,PageEmitter<Search> {
+public class SearchReposFragment extends NetworkFragment<Search>
+    implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener{
 
-  List<Items> loadItem;
-
-  PagePaginator<Search> mPagePaginator;
-
-  private static final String TAG = "SearchRepsFragment";
+  private static final String TAG = "SearchReposFragment";
 
   String sort[] = { "Best Match", "Most Start", "Most Forks" };
   String language[] = { "Java", "JavaScript", "Object-C", "C++/C", "Php" };
 
   private SearchService mSearchService;
+  private View mLoadCompleteView;
 
   private LinearLayoutManager mLinearLayoutManager;
   private GridLayoutManager mGridLayoutManger;
   private QuickSearchAdapter mQuickSearchAdapter;
   private Call<Search> mCall;
-  int currentPage;
-  PageLink mPageLink;
 
   @BindView(R.id.recycler_search) RecyclerView mRecycler;
   @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
@@ -68,6 +65,7 @@ public class SearchRepsFragment extends NetworkFragment<Search>
   @BindView(R.id.recycler_tag_sort) RecyclerView mRecyclerTagSort;
   private int mCurrentPage = 1;
   private int mLastPage = 100;
+  private boolean isErr;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -92,10 +90,6 @@ public class SearchRepsFragment extends NetworkFragment<Search>
     mSwipeRefreshLayout.setRefreshing(true);
     mSwipeRefreshLayout.setOnRefreshListener(this);
     onRefresh();
-    mPagePaginator = new PagePaginator.Builder<Search>()
-        .callback(this)
-        .emitter(this)
-        .build();
   }
 
   @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -111,10 +105,29 @@ public class SearchRepsFragment extends NetworkFragment<Search>
   }
 
   public static Fragment create() {
-    return new SearchRepsFragment();
+    return new SearchReposFragment();
   }
 
   @Override public void onLoadMoreRequested() {
+    mRecycler.post(new Runnable() {
+      @Override
+      public void run() {
+        if (mCurrentPage >= mLastPage) {
+          mQuickSearchAdapter.loadComplete();
+          if (mLoadCompleteView == null) {
+            mLoadCompleteView = new TextView(getActivity());
+          }
+          mQuickSearchAdapter.addFooterView(mLoadCompleteView);
+        } else {
+          if (isErr) {
+            mQuickSearchAdapter.addData(SearchReposServer.getDataByPage(mCurrentPage++));
+          } else {
+            isErr = true;
+            mQuickSearchAdapter.showLoadMoreFailedView();
+          }
+        }
+      }
+    });
 
   }
 
@@ -126,7 +139,6 @@ public class SearchRepsFragment extends NetworkFragment<Search>
     Log.d(TAG, "respondSuccess: " + data.items.toString());
     mLinearLayoutManager = new LinearLayoutManager(getActivity());
     mRecycler.setLayoutManager(mLinearLayoutManager);
-    mQuickSearchAdapter = new QuickSearchAdapter(R.layout.card_repos, data.items);
     mRecycler.setAdapter(mQuickSearchAdapter);
     mQuickSearchAdapter.notifyDataSetChanged();
     mSwipeRefreshLayout.setRefreshing(false);
@@ -155,15 +167,12 @@ public class SearchRepsFragment extends NetworkFragment<Search>
     networkQueue().enqueue(mCall);
   }
 
-  @Override public Call<Search> paginate(int page, int perPage) {
-    return mSearchService.repositories("bootstrap",null,null,1);
-  }
-
-  @Override public void beforeRefresh() {
-
-  }
-
-  @Override public void beforeLoadMore() {
-
+  private void initAdapter() {
+    mQuickSearchAdapter = new QuickSearchAdapter(); // page
+    mQuickSearchAdapter.openLoadAnimation();
+    mQuickSearchAdapter.openLoadMore(30);
+    mRecycler.setAdapter(mQuickSearchAdapter);
+    mLastPage =  SearchReposServer.getLastPage();
+    mQuickSearchAdapter.setOnLoadMoreListener(this);
   }
 }
