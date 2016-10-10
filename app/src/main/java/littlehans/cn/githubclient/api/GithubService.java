@@ -1,7 +1,7 @@
 package littlehans.cn.githubclient.api;
 
 import littlehans.cn.githubclient.api.service.SearchService;
-import littlehans.cn.githubclient.network.retrofit.RetrofitBuilder;
+import littlehans.cn.githubclient.network2.retrofit2.RetrofitBuilder;
 import retrofit2.Retrofit;
 
 /**
