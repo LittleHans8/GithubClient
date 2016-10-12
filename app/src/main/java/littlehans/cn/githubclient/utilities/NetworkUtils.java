@@ -1,7 +1,7 @@
 package littlehans.cn.githubclient.utilities;
 
-import littlehans.cn.githubclient.network2.callback.MessageCallback;
-import littlehans.cn.githubclient.network2.retrofit2.NetworkQueue;
+import littlehans.cn.githubclient.network.callback.MessageCallback;
+import littlehans.cn.githubclient.network.retrofit2.NetworkQueue;
 import retrofit2.Call;
 
 /**
