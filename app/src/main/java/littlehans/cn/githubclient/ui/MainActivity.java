@@ -1,22 +1,21 @@
 package littlehans.cn.githubclient.ui;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import butterknife.BindView;
 import littlehans.cn.githubclient.R;
-import littlehans.cn.githubclient.api.GithubService;
-import littlehans.cn.githubclient.model.entity.Search;
 import littlehans.cn.githubclient.ui.activity.BaseActivity;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import qiu.niorgai.StatusBarCompat;
 
 public class MainActivity extends BaseActivity
     implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,24 +37,9 @@ public class MainActivity extends BaseActivity
     toggle.syncState();
 
     mNavigationView.setNavigationItemSelectedListener(this);
-    final Call<Search> repos =
-        GithubService.createSearchService().repositories("bootsrap", null, null,1);
-    repos.enqueue(new Callback<Search>() {
-      @Override public void onResponse(Call<Search> call, Response<Search> response) {
-        for (Search.Items items : response.body().items) {
-          Log.v(TAG, "onResponse: " + items.toString());
-        }
-        Log.v(TAG, "onResponse: " + response.message());
-      }
 
-      @Override public void onFailure(Call<Search> call, Throwable t) {
-        for (StackTraceElement errorMessage : t.getStackTrace()) {
-          Log.v(TAG, "onFailure: " + errorMessage.toString());
-        }
+    StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this,R.color.colorAccent));
 
-        mToolbar.setTitle(t.getMessage());
-      }
-    });
   }
 
   @Override public void onBackPressed() {
@@ -67,16 +51,27 @@ public class MainActivity extends BaseActivity
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.search, menu);
+
+    getMenuInflater().inflate(R.menu.main, menu);
+
+     //Associate searchable configuration with the SearchView
+    SearchManager searchManager =
+        (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+    SearchView searchView =
+        (SearchView) menu.findItem(R.id.m_search).getActionView();
+    searchView.setSearchableInfo(
+        searchManager.getSearchableInfo(getComponentName()));
+
     return true;
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
-    int id = item.getItemId();
+
+    switch (item.getItemId()) {
+      case R.id.m_search:
+        onSearchRequested();
+        return true;
+    }
 
     //noinspection SimplifiableIfStatement
 

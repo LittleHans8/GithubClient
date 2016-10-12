@@ -1,7 +1,7 @@
 package littlehans.cn.githubclient;
 
 import android.app.Application;
-import littlehans.cn.githubclient.network2.retrofit2.RetrofitBuilder;
+import littlehans.cn.githubclient.network.retrofit2.RetrofitBuilder;
 
 /**
  * Created by LittleHans on 2016/9/27.

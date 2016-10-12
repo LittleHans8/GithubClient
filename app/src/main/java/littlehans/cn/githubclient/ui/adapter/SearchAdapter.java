@@ -16,7 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import java.util.List;
 import littlehans.cn.githubclient.R;
-import littlehans.cn.githubclient.model.entity.Search;
+import littlehans.cn.githubclient.model.entity.SearchRepos;
 
 import static android.content.ContentValues.TAG;
 import static android.view.View.GONE;
@@ -28,10 +28,10 @@ import static android.view.View.GONE;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
 
 
-  private Search mSearch;
+  private SearchRepos mSearchRepos;
 
-  public SearchAdapter(Search search) {
-    this.mSearch = search;
+  public SearchAdapter(SearchRepos searchRepos) {
+    this.mSearchRepos = searchRepos;
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,18 +40,18 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
   }
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
-    holder.mTxtFullName.setText(mSearch.items.get(position).full_name);
-    holder.mTxtDescription.setText(mSearch.items.get(position).description);
+    holder.mTxtFullName.setText(mSearchRepos.items.get(position).full_name);
+    holder.mTxtDescription.setText(mSearchRepos.items.get(position).description);
 
-    List<Search.Items.TextMatches> originTextMatches = mSearch.items.get(position).text_matches;
+    List<SearchRepos.Items.TextMatches> originTextMatches = mSearchRepos.items.get(position).text_matches;
 
-    for (Search.Items.TextMatches textMatches : originTextMatches) {
-      Spannable spanTxtName = new SpannableString(mSearch.items.get(position).full_name);
-      Spannable spanTxtDescription = new SpannableString(mSearch.items.get(position).description);
+    for (SearchRepos.Items.TextMatches textMatches : originTextMatches) {
+      Spannable spanTxtName = new SpannableString(mSearchRepos.items.get(position).full_name);
+      Spannable spanTxtDescription = new SpannableString(mSearchRepos.items.get(position).description);
 
       switch (textMatches.property) {
         case "name":
-          for (Search.Items.TextMatches.Matches matches : textMatches.matches) {
+          for (SearchRepos.Items.TextMatches.Matches matches : textMatches.matches) {
             //int start = matches.indices.get(0);
             int start = holder.mTxtFullName.getText().toString().indexOf('/') + 1;
             int end = matches.indices.get(1) + start;
@@ -62,7 +62,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
           break;
 
         case "description":
-          for (Search.Items.TextMatches.Matches matches : textMatches.matches) {
+          for (SearchRepos.Items.TextMatches.Matches matches : textMatches.matches) {
 
             int start = matches.indices.get(0);
             int end = matches.indices.get(1);
@@ -76,24 +76,24 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
       }
     }
 
-    if (TextUtils.isEmpty(mSearch.items.get(position).language)) {
+    if (TextUtils.isEmpty(mSearchRepos.items.get(position).language)) {
       holder.mTxtLanguage.setVisibility(GONE);
     } else {
-      holder.mTxtLanguage.setText(mSearch.items.get(position).language);
+      holder.mTxtLanguage.setText(mSearchRepos.items.get(position).language);
     }
     holder.mTxtStargazersCount.setText(
-        String.valueOf(mSearch.items.get(position).stargazers_count));
-    holder.mTxtForksCount.setText(String.valueOf(mSearch.items.get(position).forks_count));
+        String.valueOf(mSearchRepos.items.get(position).stargazers_count));
+    holder.mTxtForksCount.setText(String.valueOf(mSearchRepos.items.get(position).forks_count));
     if (TextUtils.isEmpty(holder.mTxtDescription.getText())) {
       holder.mTxtDescription.setVisibility(GONE);
     }
 
-    holder.mTxtUpdatedAt.setText(mSearch.items.get(position).updated_at);
+    holder.mTxtUpdatedAt.setText(mSearchRepos.items.get(position).updated_at);
   }
 
   @Override public int getItemCount() {
-    Log.v(TAG, String.valueOf(mSearch.items.size()));
-    return mSearch.items.size();
+    Log.v(TAG, String.valueOf(mSearchRepos.items.size()));
+    return mSearchRepos.items.size();
   }
 
   static class ViewHolder extends RecyclerView.ViewHolder {

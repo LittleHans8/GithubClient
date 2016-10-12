@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import java.net.UnknownHostException;
 import littlehans.cn.githubclient.model.ErrorModel;
-import littlehans.cn.githubclient.network2.callback.GenericCallback;
-import littlehans.cn.githubclient.network2.retrofit2.NetworkQueue;
+import littlehans.cn.githubclient.network.callback.GenericCallback;
+import littlehans.cn.githubclient.network.retrofit2.NetworkQueue;
 
 /**
  * Created by LittleHans on 2016/10/9.
@@ -30,6 +30,13 @@ public abstract class NetworkFragment<T> extends BaseFragment implements Generic
     return this.mNetworkQueue;
   }
 
+  @Override public void startRequest() {
+
+  }
+
+  @Override public void endRequest() {
+
+  }
 
   @Override public void errorNotFound(ErrorModel errorModel) {
     showErrorModel(errorModel);

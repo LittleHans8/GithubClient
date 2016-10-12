@@ -13,6 +13,7 @@
       android:layout_height="wrap_content"
       app:tabMode="fixed"
       app:tabSelectedTextColor="@color/colorAccent"
+      app:tabIndicatorColor="@color/blue_500"
       app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
       />
 

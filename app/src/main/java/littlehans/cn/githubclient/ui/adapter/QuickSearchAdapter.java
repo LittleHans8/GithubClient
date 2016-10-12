@@ -11,29 +11,22 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 import littlehans.cn.githubclient.R;
-import littlehans.cn.githubclient.data.SearchReposServer;
-import littlehans.cn.githubclient.model.entity.Search;
-import littlehans.cn.githubclient.model.entity.Search.Items.TextMatches;
-import littlehans.cn.githubclient.model.entity.Search.Items.TextMatches.Matches;
+import littlehans.cn.githubclient.model.entity.SearchRepos;
+import littlehans.cn.githubclient.model.entity.SearchRepos.Items.TextMatches;
+import littlehans.cn.githubclient.model.entity.SearchRepos.Items.TextMatches.Matches;
 
 /**
  * Created by LittleHans on 2016/10/7.
  */
 
 
-public class QuickSearchAdapter extends BaseQuickAdapter<Search.Items> {
+public class QuickSearchAdapter extends BaseQuickAdapter<SearchRepos.Items> {
 
-
-  public QuickSearchAdapter() {
-    super(R.layout.card_repos, SearchReposServer.getDataByPage(1));
+  public QuickSearchAdapter(List<SearchRepos.Items> items) {
+    super(R.layout.card_repos, items);
   }
 
-  public QuickSearchAdapter(int page) {
-    super(R.layout.card_repos,SearchReposServer.getDataByPage(page));
-  }
-
-
-  @Override protected void convert(BaseViewHolder baseViewHolder, Search.Items items) {
+  @Override protected void convert(BaseViewHolder baseViewHolder, SearchRepos.Items items) {
     baseViewHolder.setText(R.id.text_full_name, getMatchString(items)[0]);
     baseViewHolder.setText(R.id.text_stargazers_count, String.valueOf(items.stargazers_count));
     baseViewHolder.setText(R.id.text_forks_count, String.valueOf(items.forks_count));
@@ -46,12 +39,13 @@ public class QuickSearchAdapter extends BaseQuickAdapter<Search.Items> {
     }
     if (TextUtils.isEmpty(items.language)) {
       baseViewHolder.setVisible(R.id.text_language, false);
+      View v;
     } else {
       baseViewHolder.setText(R.id.text_language, items.language);
     }
   }
 
-  private Spannable[] getMatchString(Search.Items items) {
+  private Spannable[] getMatchString(SearchRepos.Items items) {
     Spannable spanTxtName = new SpannableString(items.full_name);
     Spannable spanTxtDescription;
     if (TextUtils.isEmpty(items.description)) {

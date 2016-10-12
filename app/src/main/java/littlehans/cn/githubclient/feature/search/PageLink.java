@@ -21,6 +21,9 @@ public class PageLink {
    * https://api.github.com/search/repositories?q=bootstrap&page=2
    * https://github.com/eclipse/egit-github/blob/master/org.eclipse.egit.github.core/src/org/eclipse/egit/github/core/client/PageLinks.java#L43-75
    */
+  public PageLink(){}
+
+
   public PageLink(String linkHeads) {
     String linkHeader = linkHeads;
     if (linkHeader != null) {
