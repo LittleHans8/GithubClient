@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import butterknife.BindView;
+import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.ui.activity.BaseActivity;
 import qiu.niorgai.StatusBarCompat;
@@ -55,12 +56,7 @@ public class MainActivity extends BaseActivity
     getMenuInflater().inflate(R.menu.main, menu);
 
      //Associate searchable configuration with the SearchView
-    SearchManager searchManager =
-        (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-    SearchView searchView =
-        (SearchView) menu.findItem(R.id.m_search).getActionView();
-    searchView.setSearchableInfo(
-        searchManager.getSearchableInfo(getComponentName()));
+
 
     return true;
   }
@@ -69,7 +65,7 @@ public class MainActivity extends BaseActivity
 
     switch (item.getItemId()) {
       case R.id.m_search:
-        onSearchRequested();
+        Nav.startSearchActivity(this);
         return true;
     }
 

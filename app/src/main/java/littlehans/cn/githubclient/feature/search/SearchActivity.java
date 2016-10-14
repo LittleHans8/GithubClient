@@ -16,11 +16,13 @@ import qiu.niorgai.StatusBarCompat;
  * Created by LittleHans on 2016/9/27.
  */
 
-public class SearchActivity extends BaseActivity  {
+public class SearchActivity extends BaseActivity implements SearchView.OnQueryTextListener {
 
 
   @BindView(R.id.fragment_container) FrameLayout mFragmentContainer;
   @BindView(R.id.search_view) SearchView mSearchView;
+
+  private onSearchListener mSearchListener;
 
   private static final String TAG = "SearchActivity";
 
@@ -32,23 +34,28 @@ public class SearchActivity extends BaseActivity  {
         .add(R.id.fragment_container, SearchFragment.create())
         .commit();
 
-    handleIntent(getIntent());
     StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this,R.color.colorAccent));
+    mSearchView.setOnQueryTextListener(this);
+    mSearchView.onActionViewExpanded();
   }
 
-  @Override protected void onNewIntent(Intent intent) {
-    setIntent(intent);
-    handleIntent(intent);
+  public void setOnSearchListener(onSearchListener onSearchListener) {
+    this.mSearchListener = onSearchListener;
   }
 
-  private void handleIntent(Intent intent) {
-    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-      String query;
-      query = intent.getStringExtra(SearchManager.QUERY);
-      mSearchView.onActionViewExpanded();
-      mSearchView.setQuery(query,false);
-      mSearchView.setFocusable(false);
-    }
+  @Override
+  public boolean onQueryTextSubmit(String query) {
+    mSearchListener.onSearch(query);
+    return true;
+  }
+
+  @Override
+  public boolean onQueryTextChange(String newText) {
+    return false;
+  }
+
+  public interface onSearchListener{
+    void onSearch(String query);
   }
 
 

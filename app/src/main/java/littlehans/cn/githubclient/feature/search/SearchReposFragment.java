@@ -17,7 +17,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
 import littlehans.cn.githubclient.model.ErrorModel;
@@ -31,22 +34,14 @@ import okhttp3.Headers;
  * Created by LittleHans on 2016/10/1.
  */
 public class SearchReposFragment extends NetworkFragment<SearchRepos>
-    implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
+    implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener,SearchActivity.onSearchListener {
 
   private static final String TAG = "SearchReposFragment";
-
-  String sort[] = { "Best Match", "Most Start", "Most Forks" };
-  String language[] = { "Java", "JavaScript", "Object-C", "C++/C", "Php" };
-
   private LinearLayoutManager mLinearLayoutManager;
-  private GridLayoutManager mGridLayoutManger;
   private QuickSearchAdapter mQuickSearchAdapter;
-  String query;
+  private String mQuery;
   @BindView(R.id.recycler_search) RecyclerView mRecycler;
   @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
-  @BindView(R.id.checkbox_sort) CheckBox mCheckboxSort;
-  @BindView(R.id.checkbox_language) CheckBox mCheckboxLanguage;
-  @BindView(R.id.recycler_tag_sort) RecyclerView mRecyclerTagSort;
 
   private int mCurrentPage = 1;
   private int mLastPage;
@@ -61,9 +56,6 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     initUI();
-    query = getArguments().getString("query");
-    loadData(query);
-
   }
 
   @Override protected int getFragmentLayout() {
@@ -98,12 +90,12 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
   }
 
   @Override public void onLoadMoreRequested() {
-    loadData(query);
+    loadData(mQuery);
   }
 
   @Override public void onRefresh() {
     mCurrentPage = 1;
-    loadData(query);
+    loadData(mQuery);
   }
 
   @Override public void respondWithError(Throwable t) {
@@ -112,11 +104,17 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
   }
 
   @Override public void respondHeader(Headers headers) {
-    PageLink pageLink = new PageLink(headers.values("Link").get(0));
-    if (pageLink.getLastPage() != 0) {
-      mLastPage = pageLink.getLastPage();
+    List<String> links = headers.values("Link");
+
+
+    if (!links.isEmpty()) {
+      String link = links.get(0);
+      PageLink pageLink = new PageLink();
+      if (pageLink.getLastPage() != 0) {
+        mLastPage = pageLink.getLastPage();
+      }
+      Log.d(TAG, "respondHeader: " + mLastPage);
     }
-    Log.d(TAG, "respondHeader: " + mLastPage);
   }
 
   @Override public void errorSocketTimeout(Throwable t, ErrorModel errorModel) {
@@ -136,30 +134,29 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
   private void initUI() {
     mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,
         R.color.refresh_progress_2, R.color.refresh_progress_3);
-
-    mGridLayoutManger = new GridLayoutManager(getActivity(), 3);
-    mRecyclerTagSort.setLayoutManager(mGridLayoutManger);
-    mRecyclerTagSort.setAdapter(
-        new SearchReposSortAdapter(R.layout.item_check, Arrays.asList(sort)));
-    mSwipeRefreshLayout.setRefreshing(true);
     mSwipeRefreshLayout.setOnRefreshListener(this);
   }
 
   private void loadData(String query) {
+    mSwipeRefreshLayout.setRefreshing(true);
     networkQueue().enqueue(
         GithubService.createSearchService().repositories(query, null, null, mCurrentPage));
   }
 
   @Override public void onAttach(Context context) {
     super.onAttach(context);
-
+    SearchActivity searchActivity = (SearchActivity)context;
+    searchActivity.setOnSearchListener(this);
   }
 
-  //@Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-  //  inflater.inflate(R.menu.search, menu);
-  //  MenuItem searchItem = menu.findItem(R.id.action_search);
-  //  SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-  //  searchView.setQueryHint(getString(R.string.query_hint));
-  //  super.onCreateOptionsMenu(menu, inflater);
-  //}
+  @Override
+  public void errorNotFound(ErrorModel errorModel) {
+    super.errorNotFound(errorModel);
+  }
+
+  @Override
+  public void onSearch(String query) {
+    mQuery = query;
+    onRefresh();
+  }
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<!--sort gridview-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_tag_sort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_8"
+        >
+
+        <LinearLayout
+            style="@style/SearchRepos.Linear"
+            >
+            <CheckBox
+                android:id="@+id/checkbox_sort"
+                android:text="@string/best_match"
+                style="@style/SearchRepos.Filter"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/SearchRepos.Linear"
+            >
+            <CheckBox
+                android:id="@+id/checkbox_language"
+                android:text="@string/all_language"
+                style="@style/SearchRepos.Filter"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
