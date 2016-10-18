@@ -9,12 +9,12 @@
     >
 
   <android.support.v4.widget.SwipeRefreshLayout
-      android:id="@+id/layout_swipe_refresh"
+      android:id="@+id/user_layout_swipe_refresh"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       >
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_search"
+        android:id="@+id/user_recycler_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

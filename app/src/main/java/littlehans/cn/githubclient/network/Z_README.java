@@ -1,7 +1,7 @@
 package littlehans.cn.githubclient.network;
 
 /**
- * Created by LittleHans on 2016/9/12.
+ * Created by littlehans on 2016/9/12.
  *
  * 先来解析下 这个 Paginator 抽象类，它是这个包下另外两个接口的父类
  *

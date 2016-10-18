@@ -33,9 +33,9 @@
   </style>
 
 
-  <style name="CardRepos" parent="LayoutWrap">
+  <style name="CardRepos" parent="LayoutWrap"/>
 
-  </style>
+  <style name="CardUser" parent="LayoutWrap"/>
 
   <style name="CardRepos.Stats">
     <item name="android:textColor">@color/reposStats</item>
@@ -67,7 +67,6 @@
   </style>
 
 
-
   <style name="SearchRepos" parent="LayoutWrap">
 
   </style>
@@ -81,6 +80,52 @@
     <item name="android:drawableEnd">@drawable/selector_arrow_indicate</item>
     <item name="android:drawableRight">@drawable/selector_arrow_indicate</item>
     <item name="android:textColor">@color/reposStats</item>
+  </style>
+
+  <style name="CardUser.Meta">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textColor">@color/gray</item>
+    <item name="android:textSize">12sp</item>
+    <item name="android:drawablePadding">2dp</item>
+    <item name="android:layout_marginStart">8dp</item>
+    <item name="android:layout_marginLeft">8dp</item>
+  </style>
+
+  <style name="CardUser.Avatar">
+    <item name="android:layout_width">48dp</item>
+    <item name="android:layout_height">48dp</item>
+    <item name="android:layout_marginBottom">8dp</item>
+    <item name="android:layout_marginLeft">8dp</item>
+    <item name="android:layout_marginStart">8dp</item>
+    <item name="android:layout_marginTop">8dp</item>
+  </style>
+
+  <style name="CardUser.Follow">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginEnd">8dp</item>
+    <item name="android:layout_marginRight">8dp</item>
+    <item name="android:layout_marginTop">24dp</item>
+    <item name="android:background">@drawable/shape_follow</item>
+    <item name="android:button">@null</item>
+    <item name="android:paddingBottom">4dp</item>
+    <item name="android:paddingEnd">8dp</item>
+    <item name="android:paddingLeft">8dp</item>
+    <item name="android:paddingRight">8dp</item>
+    <item name="android:paddingStart">8dp</item>
+    <item name="android:paddingTop">4dp</item>
+    <item name="android:textColor">@android:color/white</item>
+  </style>
+
+  <style name="CardUser.Name">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginLeft">8dp</item>
+    <item name="android:layout_marginStart">8dp</item>
+    <item name="android:layout_marginTop">8dp</item>
+    <item name="android:textColor">@color/colorAccent</item>
+    <item name="android:textSize">18sp</item>
   </style>
 
 </resources>

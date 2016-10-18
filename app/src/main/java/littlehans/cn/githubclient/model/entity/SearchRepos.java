@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Created by LittleHans on 2016/9/27.
+ * Created by littlehans on 2016/9/27.
  */
 @JsonIgnoreProperties(ignoreUnknown = true) public class SearchRepos {
 

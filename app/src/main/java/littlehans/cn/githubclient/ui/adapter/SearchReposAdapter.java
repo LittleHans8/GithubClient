@@ -16,13 +16,12 @@ import littlehans.cn.githubclient.model.entity.SearchRepos.Items.TextMatches;
 import littlehans.cn.githubclient.model.entity.SearchRepos.Items.TextMatches.Matches;
 
 /**
- * Created by LittleHans on 2016/10/7.
+ * Created by littlehans on 2016/10/7.
  */
 
+public class SearchReposAdapter extends BaseQuickAdapter<SearchRepos.Items> {
 
-public class QuickSearchAdapter extends BaseQuickAdapter<SearchRepos.Items> {
-
-  public QuickSearchAdapter(List<SearchRepos.Items> items) {
+  public SearchReposAdapter(List<SearchRepos.Items> items) {
     super(R.layout.card_repos, items);
   }
 

@@ -9,7 +9,7 @@ import littlehans.cn.githubclient.network.callback.GenericCallback;
 import littlehans.cn.githubclient.network.retrofit2.NetworkQueue;
 
 /**
- * Created by LittleHans on 2016/10/9.
+ * Created by littlehans on 2016/10/9.
  */
 
 public abstract class NetworkFragment<T> extends BaseFragment implements GenericCallback<T>{

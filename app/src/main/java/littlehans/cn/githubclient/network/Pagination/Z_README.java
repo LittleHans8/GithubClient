@@ -1,7 +1,7 @@
 package littlehans.cn.githubclient.network.Pagination;
 
 /**
- * Created by LittleHans on 2016/9/12.
+ * Created by littlehans on 2016/9/12.
  * 这个包内定义了一系列分页的接口，思想主要来自于 laravel?
  *
  * 像 Emitter 作为一个父接口按分类又有两个接口继承自它： KeyEmitter,PageEmitter

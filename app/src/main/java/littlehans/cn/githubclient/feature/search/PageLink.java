@@ -3,7 +3,7 @@ package littlehans.cn.githubclient.feature.search;
 import android.text.TextUtils;
 
 /**
- * Created by LittleHans on 2016/10/7.
+ * Created by littlehans on 2016/10/7.
  */
 
 public class PageLink {

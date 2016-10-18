@@ -5,43 +5,37 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
 import littlehans.cn.githubclient.model.ErrorModel;
 import littlehans.cn.githubclient.model.entity.SearchRepos;
-import littlehans.cn.githubclient.ui.adapter.QuickSearchAdapter;
-import littlehans.cn.githubclient.ui.adapter.SearchReposSortAdapter;
+import littlehans.cn.githubclient.ui.adapter.SearchReposAdapter;
 import littlehans.cn.githubclient.ui.fragment.NetworkFragment;
 import okhttp3.Headers;
 
 /**
- * Created by LittleHans on 2016/10/1.
+ * Created by littlehans on 2016/10/1.
  */
 public class SearchReposFragment extends NetworkFragment<SearchRepos>
     implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener,SearchActivity.onSearchListener {
 
   private static final String TAG = "SearchReposFragment";
   private LinearLayoutManager mLinearLayoutManager;
-  private QuickSearchAdapter mQuickSearchAdapter;
+  private SearchReposAdapter mQuickSearchAdapter;
   private String mQuery;
-  @BindView(R.id.recycler_search) RecyclerView mRecycler;
-  @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
+  @BindView(R.id.user_recycler_search) RecyclerView mRecycler;
+  @BindView(R.id.user_layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
 
   private int mCurrentPage = 1;
   private int mLastPage;
@@ -70,7 +64,7 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
           Log.d(TAG, "respondSuccess: " + "mCurrentPage:" + mCurrentPage);
           mLinearLayoutManager = new LinearLayoutManager(getActivity());
           mRecycler.setLayoutManager(mLinearLayoutManager);
-          mQuickSearchAdapter = new QuickSearchAdapter(data.items);
+          mQuickSearchAdapter = new SearchReposAdapter(data.items);
           mQuickSearchAdapter.openLoadMore(30);
           mRecycler.setAdapter(mQuickSearchAdapter);
           mQuickSearchAdapter.setOnLoadMoreListener(SearchReposFragment.this);
@@ -138,7 +132,9 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
   }
 
   private void loadData(String query) {
-    mSwipeRefreshLayout.setRefreshing(true);
+    if (!mSwipeRefreshLayout.isRefreshing()) {
+      mSwipeRefreshLayout.setRefreshing(true);
+    }
     networkQueue().enqueue(
         GithubService.createSearchService().repositories(query, null, null, mCurrentPage));
   }

@@ -1,7 +1,7 @@
 package littlehans.cn.githubclient.network.callback;
 
 /**
- * Created by LittleHans on 2016/9/12.
+ * Created by littlehans on 2016/9/12.
  *
  * 总结：对外开放的类主要是 MessageCallback ，调用它可以实现弹出网络操作部分的提醒信息。
  *

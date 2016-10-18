@@ -5,7 +5,7 @@ import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.ui.fragment.BaseFragment;
 
 /**
- * Created by LittleHans on 2016/10/1.
+ * Created by littlehans on 2016/10/1.
  */
 public class SearchCodeFragment extends BaseFragment {
   @Override protected int getFragmentLayout() {

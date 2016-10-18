@@ -16,7 +16,7 @@ import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.ui.fragment.BaseFragment;
 
 /**
- * Created by LittleHans on 2016/10/1.
+ * Created by littlehans on 2016/10/1.
  */
 
 public class SearchFragment extends BaseFragment {
@@ -31,14 +31,15 @@ public class SearchFragment extends BaseFragment {
     super.onCreate(savedInstanceState);
 
     mAdapter = new Adapter(getChildFragmentManager());
+    mAdapter.addFragment(SearchUsersFragment.create(), getString(R.string.Users));
     mAdapter.addFragment(SearchReposFragment.create(), getString(R.string.Repositories));
     mAdapter.addFragment(SearchCodeFragment.create(), getString(R.string.Code));
     mAdapter.addFragment(SearchIssuesFragment.create(), getString(R.string.Issues));
-    mAdapter.addFragment(SearchUsersFragment.create(), getString(R.string.Users));
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    mViewPager.setOffscreenPageLimit(4);
     mViewPager.setAdapter(mAdapter);
     mTabLayout.setupWithViewPager(mViewPager);
   }

@@ -1,7 +1,5 @@
 package littlehans.cn.githubclient.feature.search;
 
-import android.app.SearchManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -13,7 +11,7 @@ import littlehans.cn.githubclient.ui.activity.BaseActivity;
 import qiu.niorgai.StatusBarCompat;
 
 /**
- * Created by LittleHans on 2016/9/27.
+ * Created by littlehans on 2016/9/27.
  */
 
 public class SearchActivity extends BaseActivity implements SearchView.OnQueryTextListener {
@@ -29,7 +27,6 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.acticity_search);
-
     getSupportFragmentManager().beginTransaction()
         .add(R.id.fragment_container, SearchFragment.create())
         .commit();
@@ -46,6 +43,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
   @Override
   public boolean onQueryTextSubmit(String query) {
     mSearchListener.onSearch(query);
+    mSearchView.clearFocus();
     return true;
   }
 

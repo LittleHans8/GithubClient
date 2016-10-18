@@ -12,7 +12,7 @@ import retrofit2.Call;
 import static littlehans.cn.githubclient.utilities.Preconditions.checkNotNull;
 
 /**
- * Created by LittleHans on 2016/10/9.
+ * Created by littlehans on 2016/10/9.
  */
 
 public abstract class Paginator_<T> implements PaginatorContract<T>, GenericCallback<T> {
@@ -43,7 +43,6 @@ public abstract class Paginator_<T> implements PaginatorContract<T>, GenericCall
     mPerPage = perPage; // 每页要请求多少个数据
 
     mNetworkQueue = new NetworkQueue<>(this);
-
   }
 
   protected abstract Call<T> paginate(); // Call 应该从外面传入的
