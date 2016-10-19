@@ -4,6 +4,7 @@
  */
 package littlehans.cn.githubclient.network.retrofit2;
 
+import android.util.Log;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.ConnectException;
@@ -16,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.ContentValues.TAG;
 import static com.facebook.common.internal.Preconditions.checkNotNull;
 
 /**
@@ -59,6 +61,7 @@ public class NetworkQueue<T> implements Callback<T> {
         try {
           ObjectMapper mapper = new ObjectMapper();
           String json = errorBody.string();
+          Log.d(TAG, "onResponse NetworkQueue: " + json);
           errorModel = mapper.readValue(json, ErrorModel.class);// json data is mapping a class
         } catch (IOException e) {
           errorModel = new ErrorModel(statusCode, e.getMessage());

@@ -1,6 +1,5 @@
 package littlehans.cn.githubclient.feature.search;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -25,21 +24,17 @@ public class SearchFragment extends BaseFragment {
   @BindView(R.id.view_pager) ViewPager mViewPager;
 
   private Adapter mAdapter;
-  private String query;
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     mAdapter = new Adapter(getChildFragmentManager());
-    mAdapter.addFragment(SearchUsersFragment.create(), getString(R.string.Users));
-    mAdapter.addFragment(SearchReposFragment.create(), getString(R.string.Repositories));
-    mAdapter.addFragment(SearchCodeFragment.create(), getString(R.string.Code));
-    mAdapter.addFragment(SearchIssuesFragment.create(), getString(R.string.Issues));
+    mAdapter.addFragment(SearchReposFragment.create(), getString(R.string.repositories));
+    mAdapter.addFragment(SearchUsersFragment.create(), getString(R.string.users));
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    mViewPager.setOffscreenPageLimit(4);
     mViewPager.setAdapter(mAdapter);
     mTabLayout.setupWithViewPager(mViewPager);
   }
@@ -48,11 +43,6 @@ public class SearchFragment extends BaseFragment {
     return R.layout.fragment_search;
   }
 
-  @Override public void onAttach(Context context) {
-    super.onAttach(context);
-    SearchActivity searchActivity = (SearchActivity) context;
-    query = searchActivity.mSearchView.getQuery().toString();
-  }
 
   static class Adapter extends FragmentPagerAdapter {
 

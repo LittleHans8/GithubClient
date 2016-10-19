@@ -20,7 +20,8 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
   @BindView(R.id.fragment_container) FrameLayout mFragmentContainer;
   @BindView(R.id.search_view) SearchView mSearchView;
 
-  private onSearchListener mSearchListener;
+  private onSearchListenerA mSearchListenerA;
+  private onSearchListenerB mSearchListenerB;
 
   private static final String TAG = "SearchActivity";
 
@@ -36,13 +37,18 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
     mSearchView.onActionViewExpanded();
   }
 
-  public void setOnSearchListener(onSearchListener onSearchListener) {
-    this.mSearchListener = onSearchListener;
+  public void setOnSearchListenerA(onSearchListenerA onSearchListenerA) {
+    this.mSearchListenerA = onSearchListenerA;
+  }
+
+  public void setOnSearchListenerB(onSearchListenerB onSearchListenerB) {
+    this.mSearchListenerB = onSearchListenerB;
   }
 
   @Override
   public boolean onQueryTextSubmit(String query) {
-    mSearchListener.onSearch(query);
+    mSearchListenerA.onSearch(query);
+    mSearchListenerB.onSearch(query);
     mSearchView.clearFocus();
     return true;
   }
@@ -52,9 +58,14 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
     return false;
   }
 
-  public interface onSearchListener{
+  public interface onSearchListenerA {
     void onSearch(String query);
   }
+
+  public interface onSearchListenerB {
+    void onSearch(String query);
+  }
+
 
 
 }

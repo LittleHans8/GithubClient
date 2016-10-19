@@ -29,7 +29,7 @@ import okhttp3.Headers;
  * Created by littlehans on 2016/10/1.
  */
 public class SearchUsersFragment extends NetworkFragment<SearchUser>
-    implements SwipeRefreshLayout.OnRefreshListener, SearchActivity.onSearchListener,
+    implements SwipeRefreshLayout.OnRefreshListener, SearchActivity.onSearchListenerB,
     BaseQuickAdapter.RequestLoadMoreListener {
 
   @BindView(R.id.user_recycler_search) RecyclerView mRecycler;
@@ -101,7 +101,6 @@ public class SearchUsersFragment extends NetworkFragment<SearchUser>
               }
             }
           });
-          //Your code goes here
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -117,10 +116,9 @@ public class SearchUsersFragment extends NetworkFragment<SearchUser>
 
   @Override public void respondHeader(Headers headers) {
     List<String> links = headers.values("Link");
-
     if (!links.isEmpty()) {
       String link = links.get(0);
-      PageLink pageLink = new PageLink();
+      PageLink pageLink = new PageLink(link);
       if (pageLink.getLastPage() != 0) {
         mLastPage = pageLink.getLastPage();
       }
@@ -139,7 +137,7 @@ public class SearchUsersFragment extends NetworkFragment<SearchUser>
   @Override public void onAttach(Context context) {
     super.onAttach(context);
     SearchActivity searchActivity = (SearchActivity) context;
-    searchActivity.setOnSearchListener(this);
+    searchActivity.setOnSearchListenerB(this);
   }
 
   @Override public void onRefresh() {
@@ -148,9 +146,6 @@ public class SearchUsersFragment extends NetworkFragment<SearchUser>
   }
 
   private void loadData(String query) {
-    if (!mSwipeRefreshLayout.isRefreshing()) {
-      mSwipeRefreshLayout.setRefreshing(true);
-    }
     networkQueue().enqueue(
         GithubService.createSearchService().users(query, null, null, mCurrentPage));
   }

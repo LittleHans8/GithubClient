@@ -28,7 +28,8 @@ import okhttp3.Headers;
  * Created by littlehans on 2016/10/1.
  */
 public class SearchReposFragment extends NetworkFragment<SearchRepos>
-    implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener,SearchActivity.onSearchListener {
+    implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
+    SearchActivity.onSearchListenerA {
 
   private static final String TAG = "SearchReposFragment";
   private LinearLayoutManager mLinearLayoutManager;
@@ -100,14 +101,18 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
   @Override public void respondHeader(Headers headers) {
     List<String> links = headers.values("Link");
 
-
     if (!links.isEmpty()) {
       String link = links.get(0);
-      PageLink pageLink = new PageLink();
-      if (pageLink.getLastPage() != 0) {
-        mLastPage = pageLink.getLastPage();
-      }
-      Log.d(TAG, "respondHeader: " + mLastPage);
+      PageLink pageLink = new PageLink(link);
+      mLastPage = pageLink.getLastPage();
+      Log.d(TAG, "mLastPage: " + mLastPage);
+    }
+
+    List<String> remains = headers.values("X-RateLimit-Remaining");
+
+    if (!remains.isEmpty()) {
+      String remain = remains.get(0);
+      Log.d(TAG, "X-RateLimit-Remaining: " + remain);
     }
   }
 
@@ -132,27 +137,23 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
   }
 
   private void loadData(String query) {
-    if (!mSwipeRefreshLayout.isRefreshing()) {
-      mSwipeRefreshLayout.setRefreshing(true);
-    }
     networkQueue().enqueue(
         GithubService.createSearchService().repositories(query, null, null, mCurrentPage));
   }
 
   @Override public void onAttach(Context context) {
     super.onAttach(context);
-    SearchActivity searchActivity = (SearchActivity)context;
-    searchActivity.setOnSearchListener(this);
+    SearchActivity searchActivity = (SearchActivity) context;
+    searchActivity.setOnSearchListenerA(this);
   }
 
-  @Override
-  public void errorNotFound(ErrorModel errorModel) {
+  @Override public void errorNotFound(ErrorModel errorModel) {
     super.errorNotFound(errorModel);
   }
 
-  @Override
-  public void onSearch(String query) {
-    mQuery = query;
-    onRefresh();
+  @Override public void onSearch(String query) {
+      mQuery = query;
+      onRefresh();
+
   }
 }

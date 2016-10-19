@@ -7,10 +7,10 @@
 
   <string name="action_settings">Settings</string>
   <string name="query_hint">Search Repositories,Codes,Issues,Users</string>
-  <string name="Repositories">Repositories</string>
-  <string name="Code">Code</string>
+  <string name="repositories">Repositories</string>
+  <string name="code">Code</string>
   <string name="Issues">Issues</string>
-  <string name="Users">Users</string>
+  <string name="users">Users</string>
   <string name="best_match">Best Match</string>
   <string name="all_language">All Language</string>
   <string name="follow">+ Follow</string>

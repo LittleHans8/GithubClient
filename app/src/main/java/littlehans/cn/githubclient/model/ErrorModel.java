@@ -6,11 +6,13 @@ package littlehans.cn.githubclient.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true) public class ErrorModel {
   @JsonProperty("status_code") public int mStatusCode;
   @JsonProperty("message") public String mMessage;
   public String mTitle;
+  public List<Errors> errors;
 
   public ErrorModel() {
 
@@ -33,5 +35,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
   public int getStatusCode() {
     return mStatusCode;
+  }
+
+  public static class Errors {
+    public String resource;
+    public String field;
+    public String code;
   }
 }

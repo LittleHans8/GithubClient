@@ -3,10 +3,13 @@ package littlehans.cn.githubclient.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import java.net.UnknownHostException;
+import java.util.List;
 import littlehans.cn.githubclient.model.ErrorModel;
 import littlehans.cn.githubclient.network.callback.GenericCallback;
 import littlehans.cn.githubclient.network.retrofit2.NetworkQueue;
+import okhttp3.Headers;
 
 /**
  * Created by littlehans on 2016/10/9.
@@ -86,5 +89,14 @@ public abstract class NetworkFragment<T> extends BaseFragment implements Generic
 
   public boolean showMessage() {
     return true;
+  }
+
+  @Override public void respondHeader(Headers headers) {
+    List<String> remains = headers.values("X-RateLimit-Remaining");
+
+    if (!remains.isEmpty()) {
+      String remain = remains.get(0);
+      Log.d("SearchUsersFragment", "X-RateLimit-Remaining: " + remain);
+    }
   }
 }

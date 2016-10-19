@@ -40,9 +40,10 @@ public class RetrofitBuilder {
     if (mRetrofit == null) {
       Retrofit.Builder builder = newRetrofitBuilder();
 
-      mRetrofit = builder.baseUrl(baseUrl)
-          .addConverterFactory(JacksonConverterFactory.create())
+      mRetrofit = builder
           .client(client)
+          .baseUrl(baseUrl)
+          .addConverterFactory(JacksonConverterFactory.create())
           .build();
     }
 
