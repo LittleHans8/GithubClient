@@ -28,4 +28,6 @@
   <string name="permission_rationale">"Contacts permissions are needed for providing email
     completions."
   </string>
+  <string name="issue">Issues</string>
+  <string name="pull_request">Pull requests</string>
 </resources>
