@@ -25,6 +25,10 @@ public class SearchFragment extends BaseFragment {
 
   private Adapter mAdapter;
 
+  public static Fragment create() {
+    return new SearchFragment();
+  }
+
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
@@ -33,16 +37,15 @@ public class SearchFragment extends BaseFragment {
     mAdapter.addFragment(SearchUsersFragment.create(), getString(R.string.users));
   }
 
+  @Override protected int getFragmentLayout() {
+    return R.layout.fragment_search;
+  }
+
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     mViewPager.setAdapter(mAdapter);
     mTabLayout.setupWithViewPager(mViewPager);
   }
-
-  @Override protected int getFragmentLayout() {
-    return R.layout.fragment_search;
-  }
-
 
   static class Adapter extends FragmentPagerAdapter {
 
@@ -69,9 +72,5 @@ public class SearchFragment extends BaseFragment {
     @Override public CharSequence getPageTitle(int position) {
       return mFragmentTitles.get(position);
     }
-  }
-
-  public static Fragment create() {
-    return new SearchFragment();
   }
 }

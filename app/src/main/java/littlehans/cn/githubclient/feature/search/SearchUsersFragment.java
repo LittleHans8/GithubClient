@@ -8,11 +8,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,23 +37,23 @@ public class SearchUsersFragment extends NetworkFragment<SearchUser>
   private int mLastPage;
   private SearchUserAdapter mSearchUserAdapter;
 
-  @Nullable @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
-    View rootView = super.onCreateView(inflater, container, savedInstanceState);
-    ButterKnife.bind(this, rootView);
-    return rootView;
+  public static Fragment create() {
+    return new SearchUsersFragment();
+  }
+
+  @Override public void onAttach(Context context) {
+    super.onAttach(context);
+    SearchActivity searchActivity = (SearchActivity) context;
+    searchActivity.setOnSearchListenerB(this);
+  }
+
+  @Override protected int getFragmentLayout() {
+    return R.layout.fragment_search_users;
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     initUI();
-  }
-
-  private void initUI() {
-    mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,
-        R.color.refresh_progress_2, R.color.refresh_progress_3);
-    mSwipeRefreshLayout.setOnRefreshListener(this);
   }
 
   @Override public void respondSuccess(final SearchUser data) {
@@ -126,28 +123,9 @@ public class SearchUsersFragment extends NetworkFragment<SearchUser>
     }
   }
 
-  @Override protected int getFragmentLayout() {
-    return R.layout.fragment_search_users;
-  }
-
-  public static Fragment create() {
-    return new SearchUsersFragment();
-  }
-
-  @Override public void onAttach(Context context) {
-    super.onAttach(context);
-    SearchActivity searchActivity = (SearchActivity) context;
-    searchActivity.setOnSearchListenerB(this);
-  }
-
   @Override public void onRefresh() {
     mCurrentPage = 1;
     loadData(mQuery);
-  }
-
-  private void loadData(String query) {
-    networkQueue().enqueue(
-        GithubService.createSearchService().users(query, null, null, mCurrentPage));
   }
 
   @Override public void onSearch(String query) {
@@ -157,5 +135,16 @@ public class SearchUsersFragment extends NetworkFragment<SearchUser>
 
   @Override public void onLoadMoreRequested() {
     loadData(mQuery);
+  }
+
+  private void initUI() {
+    mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,
+        R.color.refresh_progress_2, R.color.refresh_progress_3);
+    mSwipeRefreshLayout.setOnRefreshListener(this);
+  }
+
+  private void loadData(String query) {
+    networkQueue().enqueue(
+        GithubService.createSearchService().users(query, null, null, mCurrentPage));
   }
 }

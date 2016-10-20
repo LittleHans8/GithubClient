@@ -30,4 +30,5 @@
   </string>
   <string name="issue">Issues</string>
   <string name="pull_request">Pull requests</string>
+  <string name="branch">Branch</string>
 </resources>
