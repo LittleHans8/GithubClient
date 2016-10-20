@@ -1,5 +1,6 @@
 package littlehans.cn.githubclient.api;
 
+import littlehans.cn.githubclient.api.service.GitDateService;
 import littlehans.cn.githubclient.api.service.InfoService;
 import littlehans.cn.githubclient.api.service.SearchService;
 import littlehans.cn.githubclient.network.retrofit2.RetrofitBuilder;
@@ -17,6 +18,10 @@ public class GithubService {
 
   public static InfoService createInfoService() {
     return retrofit().create(InfoService.class);
+  }
+
+  public static GitDateService createGitDateService() {
+    return retrofit().create(GitDateService.class);
   }
 
   private static Retrofit retrofit() {
