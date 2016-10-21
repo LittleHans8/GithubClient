@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="wrap_content"
+    android:id="@+id/text_path"
+    android:layout_height="wrap_content"
+    android:drawablePadding="2dp"
+    android:drawableRight="@drawable/ic_arrow_up_blue_18dp"
+    android:drawableEnd="@drawable/ic_arrow_up_blue_18dp"
+    android:padding="4dp"
+    android:textColor="@android:color/white">
+
+</TextView>

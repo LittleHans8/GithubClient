@@ -5,6 +5,12 @@
     android:orientation="vertical"
     >
 
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/recycler_view_path"
+      android:background="@android:color/black"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
+
   <android.support.v4.widget.SwipeRefreshLayout
       android:id="@+id/layout_swipe_refresh"
       android:layout_width="match_parent"
