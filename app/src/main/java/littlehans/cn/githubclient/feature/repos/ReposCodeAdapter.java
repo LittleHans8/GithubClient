@@ -25,11 +25,11 @@ public class ReposCodeAdapter extends BaseQuickAdapter<Trees.Tree> {
     switch (tree.type) {
       case BLOB:
         textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_file_text, 0, 0, 0);
-        textView.setText(getName(tree.path));
+        textView.setText(tree.path);
         break;
       case TREE:
         textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_file_directory, 0, 0, 0);
-        textView.setText(getName(tree.path));
+        textView.setText(tree.path);
     }
   }
 
