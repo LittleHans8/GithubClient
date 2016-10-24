@@ -55,7 +55,6 @@ dependencies {
 
   compile 'com.facebook.fresco:fresco:0.14.0'
 
-  compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha9'
 
   compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.1.7'
 
@@ -68,4 +67,5 @@ dependencies {
   compile 'com.jaeger.statusbaruitl:library:1.2.5'
 
 
+  compile 'com.android.support.constraint:constraint-layout:1.0.0-beta1'
 }

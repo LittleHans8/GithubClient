@@ -14,15 +14,18 @@ import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.model.entity.SearchRepos;
 import littlehans.cn.githubclient.model.entity.SearchRepos.Items.TextMatches;
 import littlehans.cn.githubclient.model.entity.SearchRepos.Items.TextMatches.Matches;
+import littlehans.cn.githubclient.utilities.DateFormatUtil;
 
 /**
  * Created by littlehans on 2016/10/7.
  */
 
 public class SearchReposAdapter extends BaseQuickAdapter<SearchRepos.Items> {
+  DateFormatUtil mDateFormat;
 
   public SearchReposAdapter(List<SearchRepos.Items> items) {
     super(R.layout.card_repos, items);
+    mDateFormat = new DateFormatUtil("Updated");
   }
 
   @Override protected void convert(BaseViewHolder baseViewHolder, SearchRepos.Items items) {
@@ -30,6 +33,7 @@ public class SearchReposAdapter extends BaseQuickAdapter<SearchRepos.Items> {
     baseViewHolder.setText(R.id.text_stargazers_count, String.valueOf(items.stargazers_count));
     baseViewHolder.setText(R.id.text_forks_count, String.valueOf(items.forks_count));
     baseViewHolder.setText(R.id.text_updated_at, items.updated_at);
+    checkSet(baseViewHolder, R.id.text_updated_at, mDateFormat.formatTime(items.updated_at));
 
     if (TextUtils.isEmpty(items.description)) {
       baseViewHolder.getView(R.id.text_description).setVisibility(View.GONE);
@@ -38,9 +42,16 @@ public class SearchReposAdapter extends BaseQuickAdapter<SearchRepos.Items> {
     }
     if (TextUtils.isEmpty(items.language)) {
       baseViewHolder.setVisible(R.id.text_language, false);
-      View v;
     } else {
       baseViewHolder.setText(R.id.text_language, items.language);
+    }
+  }
+
+  public void checkSet(BaseViewHolder baseViewHolder, int resId, String data) {
+    if (TextUtils.isEmpty(data)) {
+      baseViewHolder.setVisible(resId, false);
+    } else {
+      baseViewHolder.setText(resId, data);
     }
   }
 

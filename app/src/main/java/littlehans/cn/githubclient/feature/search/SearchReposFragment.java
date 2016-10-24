@@ -8,12 +8,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import java.net.UnknownHostException;
 import java.util.List;
 import littlehans.cn.githubclient.R;
@@ -32,20 +30,26 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
     SearchActivity.onSearchListenerA {
 
   private static final String TAG = "SearchReposFragment";
+  @BindView(R.id.user_recycler_search) RecyclerView mRecycler;
+  @BindView(R.id.user_layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
   private LinearLayoutManager mLinearLayoutManager;
   private SearchReposAdapter mQuickSearchAdapter;
   private String mQuery;
-  @BindView(R.id.user_recycler_search) RecyclerView mRecycler;
-  @BindView(R.id.user_layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
-
   private int mCurrentPage = 1;
   private int mLastPage;
 
-  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
-    View rootView = super.onCreateView(inflater, container, savedInstanceState);
-    ButterKnife.bind(this, rootView);
-    return rootView;
+  public static Fragment create() {
+    return new SearchReposFragment();
+  }
+
+  @Override public void onAttach(Context context) {
+    super.onAttach(context);
+    SearchActivity searchActivity = (SearchActivity) context;
+    searchActivity.setOnSearchListenerA(this);
+  }
+
+  @Override protected int getFragmentLayout() {
+    return R.layout.fragment_search_repos;
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -53,16 +57,16 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
     initUI();
   }
 
-  @Override protected int getFragmentLayout() {
-    return R.layout.fragment_search_repos;
-  }
-
   @Override public void respondSuccess(final SearchRepos data) {
 
+    updateRecyclerView(data);
+    mSwipeRefreshLayout.setRefreshing(false);
+  }
+
+  private void updateRecyclerView(final SearchRepos data) {
     mRecycler.post(new Runnable() {
       @Override public void run() {
         if (mCurrentPage == 1) {
-          Log.d(TAG, "respondSuccess: " + "mCurrentPage:" + mCurrentPage);
           mLinearLayoutManager = new LinearLayoutManager(getActivity());
           mRecycler.setLayoutManager(mLinearLayoutManager);
           mQuickSearchAdapter = new SearchReposAdapter(data.items);
@@ -81,7 +85,6 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
         }
       }
     });
-    mSwipeRefreshLayout.setRefreshing(false);
   }
 
   @Override public void onLoadMoreRequested() {
@@ -94,7 +97,6 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
   }
 
   @Override public void respondWithError(Throwable t) {
-    Log.d(TAG, "respondWithError: " + t.getMessage());
     mSwipeRefreshLayout.setRefreshing(false);
   }
 
@@ -126,14 +128,19 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
     mSwipeRefreshLayout.setRefreshing(false);
   }
 
-  public static Fragment create() {
-    return new SearchReposFragment();
-  }
-
   private void initUI() {
     mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,
         R.color.refresh_progress_2, R.color.refresh_progress_3);
     mSwipeRefreshLayout.setOnRefreshListener(this);
+    mRecycler.addOnItemTouchListener(new OnItemClickListener() {
+      @Override public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+
+        SearchRepos.Items repos = (SearchRepos.Items) baseQuickAdapter.getItem(i);
+        String owner = repos.owner.login;
+        String repo = repos.name;
+        String defaultBranch = repos.default_branch;
+      }
+    });
   }
 
   private void loadData(String query) {
@@ -141,19 +148,12 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
         GithubService.createSearchService().repositories(query, null, null, mCurrentPage));
   }
 
-  @Override public void onAttach(Context context) {
-    super.onAttach(context);
-    SearchActivity searchActivity = (SearchActivity) context;
-    searchActivity.setOnSearchListenerA(this);
-  }
-
   @Override public void errorNotFound(ErrorModel errorModel) {
     super.errorNotFound(errorModel);
   }
 
   @Override public void onSearch(String query) {
-      mQuery = query;
-      onRefresh();
-
+    mQuery = query;
+    onRefresh();
   }
 }

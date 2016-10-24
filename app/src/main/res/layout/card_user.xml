@@ -7,6 +7,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     >
 
   <android.support.constraint.ConstraintLayout
@@ -63,13 +65,13 @@
         tools:text="Joined on 11 Nov 2015"
         style="@style/CardUser.Meta"
         />
-    <CheckBox
-        android:id="@+id/check_follow"
-        android:text="@string/follow"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        style="@style/CardUser.Follow"
-        />
+    <!--<CheckBox-->
+        <!--android:id="@+id/check_follow"-->
+        <!--android:text="@string/follow"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--style="@style/CardUser.Follow"-->
+        <!--/>-->
   </android.support.constraint.ConstraintLayout>
 
 
