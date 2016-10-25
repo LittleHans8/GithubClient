@@ -14,5 +14,5 @@ public interface RepositoryService {
   //List Branches
   ///repos/:owner/:repo/branches
   @GET("/repos/{owner}/{repo}/branches") Call<List<Branch>> getBranchList(
-      @Path("owner") String owner, @Path("repo") String repo, @Path("branch") String branch);
+      @Path("owner") String owner, @Path("repo") String repo);
 }
