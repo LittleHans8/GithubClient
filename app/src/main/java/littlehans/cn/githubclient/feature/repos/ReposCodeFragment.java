@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -22,8 +24,10 @@ import java.util.Comparator;
 import java.util.List;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
+import littlehans.cn.githubclient.model.entity.Blob;
 import littlehans.cn.githubclient.model.entity.Branch;
 import littlehans.cn.githubclient.model.entity.Trees;
+import littlehans.cn.githubclient.ui.activity.FileDetailActivity;
 import littlehans.cn.githubclient.ui.fragment.NetworkFragment;
 import littlehans.cn.githubclient.utilities.DividerItemDecoration;
 
@@ -108,12 +112,35 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
     mItemClickListener = new OnItemClickListener() {
       @Override public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
         baseQuickAdapter.notifyDataSetChanged();
-        Trees.Tree tree = (Trees.Tree) baseQuickAdapter.getData().get(i);
+        final Trees.Tree tree = (Trees.Tree) baseQuickAdapter.getData().get(i);
         if (tree.type.equals("tree")) {
           mPathAdapter.add(mPathAdapter.getItemCount(), new ReposCodePath(tree.path, tree.sha));
           mPathAdapter.notifyDataSetChanged();
           networkQueue().enqueue(
               GithubService.createGitDateService().getTree(mOwner, mRepo, tree.sha));
+        }
+
+        if (tree.type.equals("blob")) {
+
+          if (tree.path.endsWith("md")) {
+            new Thread(new Runnable() {
+              @Override public void run() {
+                try {
+                  Blob blob = GithubService.createGitDateService()
+                      .getBlob(mOwner, mRepo, tree.sha)
+                      .execute()
+                      .body();
+                  String content = new String(Base64.decode(blob.content, Base64.DEFAULT));
+                  Log.d(TAG, "run: " + content);
+                  Intent intent = new Intent(getActivity(), FileDetailActivity.class);
+                  intent.putExtra("content", content);
+                  startActivity(intent);
+                } catch (IOException e) {
+                  e.printStackTrace();
+                }
+              }
+            }).start();
+          }
         }
       }
     };
@@ -146,9 +173,6 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
   }
 
   @Override public void onCardTouchListener(Intent intent) {
-    //mOwner = bundle.getString("owner");
-    //mRepo = bundle.getString("repo");
-    //mDefaultBranch = bundle.getString("defaultBranch");
     mOwner = intent.getStringExtra("owner");
     mRepo = intent.getStringExtra("repo");
     mDefaultBranch = intent.getStringExtra("defaultBranch");
@@ -164,10 +188,9 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
                   GithubService.createGitDateService().getTree(mOwner, mRepo, mSha));
               mRecyclerView.post(new Runnable() {
                 @Override public void run() {
-                  mPathAdapter.add(0,new ReposCodePath("root",mSha));
+                  mPathAdapter.add(0, new ReposCodePath("root", mSha));
                 }
               });
-
             }
           }
         } catch (IOException e) {
@@ -176,6 +199,5 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
       }
     });
     thread.start();
-
   }
 }

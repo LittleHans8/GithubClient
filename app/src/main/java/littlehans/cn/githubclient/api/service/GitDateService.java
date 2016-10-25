@@ -1,5 +1,6 @@
 package littlehans.cn.githubclient.api.service;
 
+import littlehans.cn.githubclient.model.entity.Blob;
 import littlehans.cn.githubclient.model.entity.Trees;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -20,4 +21,13 @@ public interface GitDateService {
       @Path("owner") String owner,
       @Path("repo") String repo,
       @Path("sha") String sha);
+
+  /**
+   * /repos/:owner/:repo/git/blobs/:sha
+   */
+  @GET("/repos/{owner}/{repo}/git/blobs/{sha}") Call<Blob> getBlob(
+      @Path("owner") String owner,
+      @Path("repo") String repo,
+      @Path("sha") String sha
+  );
 }

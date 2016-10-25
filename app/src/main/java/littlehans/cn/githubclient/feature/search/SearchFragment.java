@@ -34,7 +34,7 @@ public class SearchFragment extends BaseFragment {
 
     mAdapter = new Adapter(getChildFragmentManager());
     mAdapter.addFragment(SearchReposFragment.create(), getString(R.string.repositories));
-    mAdapter.addFragment(SearchUsersFragment.create(), getString(R.string.users));
+    //mAdapter.addFragment(SearchUsersFragment.create(), getString(R.string.users));
   }
 
   @Override protected int getFragmentLayout() {

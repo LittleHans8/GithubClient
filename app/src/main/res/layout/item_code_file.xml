@@ -12,5 +12,4 @@
     android:padding="8dp"
     tools:text="file_directory"
     >
-
 </TextView>

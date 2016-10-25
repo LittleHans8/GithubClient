@@ -17,7 +17,6 @@ import qiu.niorgai.StatusBarCompat;
 public class ReposActivity extends BaseActivity {
   @BindView(R.id.toolbar) Toolbar mToolbar;
   private OnCardTouchListener mOnCardTouchListener;
-  private Bundle mBundle;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

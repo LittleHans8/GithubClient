@@ -17,13 +17,11 @@ import qiu.niorgai.StatusBarCompat;
 public class SearchActivity extends BaseActivity implements SearchView.OnQueryTextListener {
 
 
+  private static final String TAG = "SearchActivity";
   @BindView(R.id.fragment_container) FrameLayout mFragmentContainer;
   @BindView(R.id.search_view) SearchView mSearchView;
-
   private onSearchListenerA mSearchListenerA;
   private onSearchListenerB mSearchListenerB;
-
-  private static final String TAG = "SearchActivity";
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -48,7 +46,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
   @Override
   public boolean onQueryTextSubmit(String query) {
     mSearchListenerA.onSearch(query);
-    mSearchListenerB.onSearch(query);
+    //mSearchListenerB.onSearch(query);// SearchUserFragment
     mSearchView.clearFocus();
     return true;
   }
