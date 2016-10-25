@@ -1,6 +1,7 @@
 package littlehans.cn.githubclient.feature.repos;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,12 +15,14 @@ import android.widget.TextView;
 import butterknife.BindView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
+import littlehans.cn.githubclient.model.entity.Branch;
 import littlehans.cn.githubclient.model.entity.Trees;
 import littlehans.cn.githubclient.ui.fragment.NetworkFragment;
 import littlehans.cn.githubclient.utilities.DividerItemDecoration;
@@ -28,17 +31,21 @@ import littlehans.cn.githubclient.utilities.DividerItemDecoration;
  * Created by LittleHans on 2016/10/20.
  */
 
-public class ReposCodeFragment extends NetworkFragment<Trees> {
+public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardTouchListener {
 
   @BindView(R.id.recycler_view_path) RecyclerView mRecyclerViewPath;
   @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
   @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
   Comparator<Trees.Tree> mTreeComparator;
-  ReposCodePathAdapter pathAdapter;
+  ReposCodePathAdapter mPathAdapter;
   private LinearLayoutManager mLinearLayoutManager;
   private List<ReposCodePath> mPath;
   private OnItemClickListener mItemClickListener;
   private OnItemClickListener mPathItemClickListener;
+  private String mOwner;
+  private String mRepo;
+  private String mDefaultBranch;
+  private String mSha;
 
   public static Fragment create() {
     return new ReposCodeFragment();
@@ -47,9 +54,9 @@ public class ReposCodeFragment extends NetworkFragment<Trees> {
   @Override public void onAttach(Context context) {
     super.onAttach(context);
     setHasOptionsMenu(true);
-
+    ReposActivity reposActivity = (ReposActivity) context;
+    reposActivity.setOnCardTouchListener(this);
     mPath = new ArrayList<>();
-    mPath.add(new ReposCodePath("root", "fdb5af3bd919c90720c47953f191c652a9c8fd93"));
   }
 
   @Override protected int getFragmentLayout() {
@@ -58,9 +65,9 @@ public class ReposCodeFragment extends NetworkFragment<Trees> {
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    networkQueue().enqueue(GithubService.createGitDateService()
-        .getTree("twbs", "bootstrap", "fdb5af3bd919c90720c47953f191c652a9c8fd93"));
-
+    //networkQueue().enqueue(GithubService.createGitDateService()
+    //    .getTree("twbs", "bootstrap", "fdb5af3bd919c90720c47953f191c652a9c8fd93"));
+    networkQueue().enqueue(GithubService.createGitDateService().getTree(mOwner, mRepo, mSha));
     initUI();
   }
 
@@ -71,8 +78,8 @@ public class ReposCodeFragment extends NetworkFragment<Trees> {
     mRecyclerViewPath.setLayoutManager(linearLayoutManagerPath);
     mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
-    pathAdapter = new ReposCodePathAdapter(mPath);
-    mRecyclerViewPath.setAdapter(pathAdapter);
+    mPathAdapter = new ReposCodePathAdapter(mPath);
+    mRecyclerViewPath.setAdapter(mPathAdapter);
     mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
 
     mTreeComparator = new Comparator<Trees.Tree>() {
@@ -103,10 +110,10 @@ public class ReposCodeFragment extends NetworkFragment<Trees> {
         baseQuickAdapter.notifyDataSetChanged();
         Trees.Tree tree = (Trees.Tree) baseQuickAdapter.getData().get(i);
         if (tree.type.equals("tree")) {
-          pathAdapter.add(pathAdapter.getItemCount(), new ReposCodePath(tree.path, tree.sha));
-          pathAdapter.notifyDataSetChanged();
+          mPathAdapter.add(mPathAdapter.getItemCount(), new ReposCodePath(tree.path, tree.sha));
+          mPathAdapter.notifyDataSetChanged();
           networkQueue().enqueue(
-              GithubService.createGitDateService().getTree("twbs", "bootstrap", tree.sha));
+              GithubService.createGitDateService().getTree(mOwner, mRepo, tree.sha));
         }
       }
     };
@@ -121,8 +128,7 @@ public class ReposCodeFragment extends NetworkFragment<Trees> {
 
         TextView textView = (TextView) view;
         String sha = textView.getContentDescription().toString();
-        networkQueue().enqueue(
-            GithubService.createGitDateService().getTree("twbs", "bootstrap", sha));
+        networkQueue().enqueue(GithubService.createGitDateService().getTree(mOwner, mRepo, sha));
       }
     };
 
@@ -136,6 +142,40 @@ public class ReposCodeFragment extends NetworkFragment<Trees> {
   }
 
   @Override public void respondWithError(Throwable t) {
+
+  }
+
+  @Override public void onCardTouchListener(Intent intent) {
+    //mOwner = bundle.getString("owner");
+    //mRepo = bundle.getString("repo");
+    //mDefaultBranch = bundle.getString("defaultBranch");
+    mOwner = intent.getStringExtra("owner");
+    mRepo = intent.getStringExtra("repo");
+    mDefaultBranch = intent.getStringExtra("defaultBranch");
+    Thread thread = new Thread(new Runnable() {
+      @Override public void run() {
+        try {
+          List<Branch> branches =
+              GithubService.createRepositoryService().getBranchList(mOwner, mRepo).execute().body();
+          for (Branch branch : branches) {
+            if (branch.name.equals(mDefaultBranch)) {
+              mSha = branch.commit.sha;
+              networkQueue().enqueue(
+                  GithubService.createGitDateService().getTree(mOwner, mRepo, mSha));
+              mRecyclerView.post(new Runnable() {
+                @Override public void run() {
+                  mPathAdapter.add(0,new ReposCodePath("root",mSha));
+                }
+              });
+
+            }
+          }
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    });
+    thread.start();
 
   }
 }

@@ -1,6 +1,7 @@
 package littlehans.cn.githubclient.feature.search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import java.net.UnknownHostException;
 import java.util.List;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
+import littlehans.cn.githubclient.feature.repos.ReposActivity;
 import littlehans.cn.githubclient.model.ErrorModel;
 import littlehans.cn.githubclient.model.entity.SearchRepos;
 import littlehans.cn.githubclient.ui.adapter.SearchReposAdapter;
@@ -134,11 +136,19 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
     mSwipeRefreshLayout.setOnRefreshListener(this);
     mRecycler.addOnItemTouchListener(new OnItemClickListener() {
       @Override public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-
         SearchRepos.Items repos = (SearchRepos.Items) baseQuickAdapter.getItem(i);
         String owner = repos.owner.login;
         String repo = repos.name;
         String defaultBranch = repos.default_branch;
+        Intent intent = new Intent(getActivity(), ReposActivity.class);
+        intent.putExtra("owner", owner);
+        intent.putExtra("repo", repo);
+        intent.putExtra("defaultBranch", defaultBranch);
+        //Bundle bundle = intent.getExtras();
+        //bundle.putString("owner", owner);
+        //bundle.putString("repo", repo);
+        //bundle.putString("defaultBranch", defaultBranch);
+        startActivity(intent);
       }
     });
   }

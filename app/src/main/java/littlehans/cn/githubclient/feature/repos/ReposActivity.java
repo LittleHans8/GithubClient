@@ -1,5 +1,6 @@
 package littlehans.cn.githubclient.feature.repos;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +16,8 @@ import qiu.niorgai.StatusBarCompat;
 
 public class ReposActivity extends BaseActivity {
   @BindView(R.id.toolbar) Toolbar mToolbar;
+  private OnCardTouchListener mOnCardTouchListener;
+  private Bundle mBundle;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -24,5 +27,14 @@ public class ReposActivity extends BaseActivity {
         .commit();
     StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this,R.color.colorAccent));
     setSupportActionBar(mToolbar);
+
   }
+
+  public void setOnCardTouchListener(OnCardTouchListener onCardTouchListener) {
+    Intent intent = getIntent();
+    mOnCardTouchListener = onCardTouchListener;
+    mOnCardTouchListener.onCardTouchListener(intent
+    );
+  }
+
 }
