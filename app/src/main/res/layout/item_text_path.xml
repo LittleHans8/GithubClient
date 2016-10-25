@@ -5,6 +5,7 @@
     android:id="@+id/text_path"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
     android:drawableEnd="@drawable/ic_arrow_right_grey_18dp"
     android:drawablePadding="2dp"
     android:drawableRight="@drawable/ic_arrow_right_grey_18dp"
