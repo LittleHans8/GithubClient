@@ -31,4 +31,60 @@
   <string name="issue">Issues</string>
   <string name="pull_request">Pull requests</string>
   <string name="branch">Branch</string>
+
+      <string name="listing_js">
+        &lt;SCRIPT language=\"JavaScript\" type=\"text/javascript\"&gt; \r\n
+            function fulltime () { \r\n
+            var time=new Date();    // create a variable of the current time in our code\r\n
+            var Event=new Date(\"dec,31,2015,10:10:10\");      // date and time of our event\r\n
+            var totalRemains=(Event.getTime()-time.getTime());    // compute the difference\r\n
+            \r\n
+            if (totalRemains&gt;1){    // if have time alittle bit...\r\n
+            var RemainsSec = (parseInt(totalRemains/1000));   // then compute rest time\r\n
+            var RemainsFullDays=(parseInt(RemainsSec));    // extract full days\r\n
+            var secInLastDay=RemainsSec-RemainsFullDays*24*3600; \r\n
+            var RemainsFullHours=(parseInt(secInLastDay/3600));   // full hours\r\n
+            if (RemainsFullHours&lt;10){RemainsFullHours=\"0\"+Remains FullHours}; \r\n
+            var secInLastHour=secInLastDay-RemainsFullHours*3600; \r\n
+            var RemainsMinutes=(parseInt(secInLastHour/60));   // minutes\r\n
+            if (RemainsMinutes&lt;10){RemainsMinutes=\"0\"+RemainsMinu tes}; \r\n
+            var lastSec=secInLastHour-RemainsMinutes*60;     // seconds\r\n
+            if (lastSec&lt;10){lastSec=\"0\"+lastSec}; \r\n
+            \r\n
+            document.getElementById(\"RemainsFullDays\").innerHTML=RemainsFullDays+\" seconds\"; \r\n
+            setTimeout(\'fulltime()\',10) \r\n
+            }\r\n
+            \r\n
+            else{ \r\n
+            document.getElementById(\"clock\").innerHTML=\"Go to main page to full inforamtion\";      // if have no time, change time to our string\r\n
+            }\r\n
+            }\r\n
+            &lt;/SCRIPT&gt; \r\n
+            \r\n
+        &lt;body&gt;// script is can be runned on page\r\n
+        &lt;div align=\"center\"&gt;&lt;span id=\"clock\"&gt;
+        &lt;/div&gt; \r\n
+        &lt;div align=\"center\"&gt;&lt;b&gt;&lt;span id=\"RemainsFullDays\"&gt;
+        &lt;/span&gt;&lt;/b&gt;&lt;/div&gt;&lt;br&gt;\r\n
+        &lt;/span&gt; \r\n
+            \r\n
+        &lt;SCRIPT language=\"JavaScript\"&gt;fulltime();&lt;/SCRIPT&gt;
+    </string>
+
+    <string name="listing_md">
+        3. CodeView and related adapter.\n
+        \n
+        ## Download\n
+        Add it in your root ```build.gradle``` at the end of repositories:\n
+        ```groovy\n
+        allprojects {\n
+            repositories {\n
+                ...\n
+                maven { url \"https://jitpack.io\" }\n
+            }\n
+        }\n
+        ```\n
+        \n
+        Add the dependency:
+    </string>
 </resources>

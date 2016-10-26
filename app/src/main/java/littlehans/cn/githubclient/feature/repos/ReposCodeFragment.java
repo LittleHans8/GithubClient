@@ -9,7 +9,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -121,26 +120,26 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
         }
 
         if (tree.type.equals("blob")) {
-
-          if (tree.path.endsWith("md")) {
-            new Thread(new Runnable() {
-              @Override public void run() {
-                try {
-                  Blob blob = GithubService.createGitDateService()
-                      .getBlob(mOwner, mRepo, tree.sha)
-                      .execute()
-                      .body();
-                  String content = new String(Base64.decode(blob.content, Base64.DEFAULT));
-                  Log.d(TAG, "run: " + content);
-                  Intent intent = new Intent(getActivity(), FileDetailActivity.class);
-                  intent.putExtra("content", content);
-                  startActivity(intent);
-                } catch (IOException e) {
-                  e.printStackTrace();
+          new Thread(new Runnable() {
+            @Override public void run() {
+              try {
+                Blob blob = GithubService.createGitDateService()
+                    .getBlob(mOwner, mRepo, tree.sha)
+                    .execute()
+                    .body();
+                String content = new String(Base64.decode(blob.content, Base64.DEFAULT));
+                Intent intent = new Intent(getActivity(), FileDetailActivity.class);
+                intent.putExtra("content", content);
+                if (tree.path.endsWith("md") || tree.path.endsWith("markdown")) {
+                  intent.putExtra("isMarkDownFile", true);
                 }
+
+                startActivity(intent);
+              } catch (IOException e) {
+                e.printStackTrace();
               }
-            }).start();
-          }
+            }
+          }).start();
         }
       }
     };
