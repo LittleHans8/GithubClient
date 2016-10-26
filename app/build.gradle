@@ -69,4 +69,6 @@ dependencies {
   compile 'com.android.support.constraint:constraint-layout:1.0.0-beta1'
 
   compile 'com.github.mukeshsolanki:MarkdownView-Android:1.0.1'
+
+  compile 'thereisnospon.codeview:codeview:0.3.1'
 }
