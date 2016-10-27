@@ -16,7 +16,9 @@ import qiu.niorgai.StatusBarCompat;
 
 public class ReposActivity extends BaseActivity {
   @BindView(R.id.toolbar) Toolbar mToolbar;
-  private OnCardTouchListener mOnCardTouchListener;
+  private OnCardTouchListener mOnCardTouchListenerA; // ReposCodeFragment
+  private OnCardTouchListener mOnCardTouchListenerB; // ReposIssueFragment
+  private Intent mIntent;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -24,16 +26,20 @@ public class ReposActivity extends BaseActivity {
     getSupportFragmentManager().beginTransaction()
         .add(R.id.fragment_container, ReposFragment.create())
         .commit();
-    StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this,R.color.colorAccent));
+    StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorAccent));
     setSupportActionBar(mToolbar);
-
+    mIntent = getIntent();
   }
 
-  public void setOnCardTouchListener(OnCardTouchListener onCardTouchListener) {
-    Intent intent = getIntent();
-    mOnCardTouchListener = onCardTouchListener;
-    mOnCardTouchListener.onCardTouchListener(intent
-    );
+  public void setOnCardTouchListenerA(OnCardTouchListener onCardTouchListenerA) {
+
+    mOnCardTouchListenerA = onCardTouchListenerA;
+    mOnCardTouchListenerA.onCardTouchListener(mIntent);
   }
 
+  public void setOnCardTouchListenerB(OnCardTouchListener onCardTouchListenerB) {
+
+    mOnCardTouchListenerB = onCardTouchListenerB;
+    mOnCardTouchListenerB.onCardTouchListener(mIntent);
+  }
 }
