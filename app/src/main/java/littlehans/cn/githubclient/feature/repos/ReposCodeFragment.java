@@ -48,13 +48,12 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
   public static final String REPO = "repo";
 
   public static final String DEFAULT_BRANCH = "defaultBranch";
-  private GitDateService mGitDateService;
   @BindView(R.id.recycler_view_path) RecyclerView mRecyclerViewPath;
   @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
   @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
   Comparator<Trees.Tree> mTreeComparator;
-  private GitDateService mGitDateService;
   ReposCodePathAdapter mPathAdapter;
+  private GitDateService mGitDateService;
   private LinearLayoutManager mLinearLayoutManager;
   private List<ReposCodePath> mPath;
   private OnItemClickListener mItemClickListener;
@@ -63,6 +62,7 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
   private String mRepo;
   private String mDefaultBranch;
   private String mSha;
+  private int mLastPage;
 
   public static Fragment create() {
     return new ReposCodeFragment();

@@ -32,7 +32,7 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
     SearchActivity.onSearchListenerA {
 
   private static final String TAG = "SearchReposFragment";
-  @BindView(R.id.user_recycler_search) RecyclerView mRecycler;
+  @BindView(R.id.user_recycler_search) RecyclerView mRecyclerView;
   @BindView(R.id.user_layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
   private LinearLayoutManager mLinearLayoutManager;
   private SearchReposAdapter mQuickSearchAdapter;
@@ -66,14 +66,14 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
   }
 
   private void updateRecyclerView(final SearchRepos data) {
-    mRecycler.post(new Runnable() {
+    mRecyclerView.post(new Runnable() {
       @Override public void run() {
         if (mCurrentPage == 1) {
           mLinearLayoutManager = new LinearLayoutManager(getActivity());
-          mRecycler.setLayoutManager(mLinearLayoutManager);
+          mRecyclerView.setLayoutManager(mLinearLayoutManager);
           mQuickSearchAdapter = new SearchReposAdapter(data.items);
           mQuickSearchAdapter.openLoadMore(30);
-          mRecycler.setAdapter(mQuickSearchAdapter);
+          mRecyclerView.setAdapter(mQuickSearchAdapter);
           mQuickSearchAdapter.setOnLoadMoreListener(SearchReposFragment.this);
           mCurrentPage++;
           return;
@@ -134,7 +134,7 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
     mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,
         R.color.refresh_progress_2, R.color.refresh_progress_3);
     mSwipeRefreshLayout.setOnRefreshListener(this);
-    mRecycler.addOnItemTouchListener(new OnItemClickListener() {
+    mRecyclerView.addOnItemTouchListener(new OnItemClickListener() {
       @Override public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
         SearchRepos.Items repos = (SearchRepos.Items) baseQuickAdapter.getItem(i);
         String owner = repos.owner.login;
@@ -144,10 +144,6 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
         intent.putExtra("owner", owner);
         intent.putExtra("repo", repo);
         intent.putExtra("defaultBranch", defaultBranch);
-        //Bundle bundle = intent.getExtras();
-        //bundle.putString("owner", owner);
-        //bundle.putString("repo", repo);
-        //bundle.putString("defaultBranch", defaultBranch);
         startActivity(intent);
       }
     });

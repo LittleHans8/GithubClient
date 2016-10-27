@@ -14,7 +14,7 @@ import retrofit2.http.Query;
 
 public interface IssuesService {
   String OPEN = "open";
-  String CLOSE = "closed";
+  String CLOSED = "closed";
 
   /**
    * GET /repos/:owner/:repo/issues
@@ -24,5 +24,5 @@ public interface IssuesService {
 
   @GET("/repos/{owner}/{repo}/issues") Call<List<Issue>> getIssuesForReposList(
       @Path("owner") String owner, @Path("repo") String repo,
-      @Nullable @Query("state") String state);
+      @Nullable @Query("state") String state, @Query("page") int page);
 }
