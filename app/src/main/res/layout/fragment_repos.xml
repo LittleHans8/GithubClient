@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-
+  <!--TODO SORT-->
   <!--<android.support.v7.widget.CardView-->
   <!--android:layout_width="match_parent"-->
   <!--android:layout_height="wrap_content"-->
@@ -78,6 +78,7 @@
       android:id="@+id/tab_layout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:background="@android:color/white"
       app:tabIndicatorColor="@color/blue_500"
       app:tabMode="fixed"
       app:tabSelectedTextColor="@color/colorAccent"

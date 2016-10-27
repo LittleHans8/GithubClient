@@ -23,6 +23,7 @@ import java.util.Comparator;
 import java.util.List;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
+import littlehans.cn.githubclient.api.service.GitDateService;
 import littlehans.cn.githubclient.model.entity.Blob;
 import littlehans.cn.githubclient.model.entity.Branch;
 import littlehans.cn.githubclient.model.entity.Trees;
@@ -36,10 +37,23 @@ import littlehans.cn.githubclient.utilities.DividerItemDecoration;
 
 public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardTouchListener {
 
+  public static final String TREE = "tree";
+  public static final String BLOB = "blob";
+  public static final String CONTENT = "content";
+  public static final String MD = "md";
+  public static final String MARKDOWN = "markdown";
+  public static final String IS_MARK_DOWN_FILE = "isMarkDownFile";
+
+  public static final String OWNER = "owner";
+  public static final String REPO = "repo";
+
+  public static final String DEFAULT_BRANCH = "defaultBranch";
+  private GitDateService mGitDateService;
   @BindView(R.id.recycler_view_path) RecyclerView mRecyclerViewPath;
   @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
   @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
   Comparator<Trees.Tree> mTreeComparator;
+  private GitDateService mGitDateService;
   ReposCodePathAdapter mPathAdapter;
   private LinearLayoutManager mLinearLayoutManager;
   private List<ReposCodePath> mPath;
@@ -58,7 +72,7 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
     super.onAttach(context);
     setHasOptionsMenu(true);
     ReposActivity reposActivity = (ReposActivity) context;
-    reposActivity.setOnCardTouchListener(this);
+    reposActivity.setOnCardTouchListenerA(this);
     mPath = new ArrayList<>();
   }
 
@@ -68,9 +82,8 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    //networkQueue().enqueue(GithubService.createGitDateService()
-    //    .getTree("twbs", "bootstrap", "fdb5af3bd919c90720c47953f191c652a9c8fd93"));
-    networkQueue().enqueue(GithubService.createGitDateService().getTree(mOwner, mRepo, mSha));
+    mGitDateService = GithubService.createGitDateService();
+    networkQueue().enqueue(mGitDateService.getTree(mOwner, mRepo, mSha));
     initUI();
   }
 
@@ -112,26 +125,22 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
       @Override public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
         baseQuickAdapter.notifyDataSetChanged();
         final Trees.Tree tree = (Trees.Tree) baseQuickAdapter.getData().get(i);
-        if (tree.type.equals("tree")) {
+        if (tree.type.equals(TREE)) {
           mPathAdapter.add(mPathAdapter.getItemCount(), new ReposCodePath(tree.path, tree.sha));
           mPathAdapter.notifyDataSetChanged();
-          networkQueue().enqueue(
-              GithubService.createGitDateService().getTree(mOwner, mRepo, tree.sha));
+          networkQueue().enqueue(mGitDateService.getTree(mOwner, mRepo, tree.sha));
         }
 
-        if (tree.type.equals("blob")) {
+        if (tree.type.equals(BLOB)) {
           new Thread(new Runnable() {
             @Override public void run() {
               try {
-                Blob blob = GithubService.createGitDateService()
-                    .getBlob(mOwner, mRepo, tree.sha)
-                    .execute()
-                    .body();
+                Blob blob = mGitDateService.getBlob(mOwner, mRepo, tree.sha).execute().body();
                 String content = new String(Base64.decode(blob.content, Base64.DEFAULT));
                 Intent intent = new Intent(getActivity(), FileDetailActivity.class);
-                intent.putExtra("content", content);
-                if (tree.path.endsWith("md") || tree.path.endsWith("markdown")) {
-                  intent.putExtra("isMarkDownFile", true);
+                intent.putExtra(CONTENT, content);
+                if (tree.path.endsWith(MD) || tree.path.endsWith(MARKDOWN)) {
+                  intent.putExtra(IS_MARK_DOWN_FILE, true);
                 }
 
                 startActivity(intent);
@@ -146,15 +155,15 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
 
     mPathItemClickListener = new OnItemClickListener() {
       @Override public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-
-        for (int position = i + 1; position < baseQuickAdapter.getItemCount(); position++) {
+        int itemCount = baseQuickAdapter.getItemCount();
+        for (int position = i + 1; position < itemCount; position++) {
           baseQuickAdapter.remove(position);
         }
-        baseQuickAdapter.notifyItemRangeRemoved(i + 1, baseQuickAdapter.getItemCount());
 
+        baseQuickAdapter.notifyItemRangeRemoved(i + 1, itemCount);
         TextView textView = (TextView) view;
         String sha = textView.getContentDescription().toString();
-        networkQueue().enqueue(GithubService.createGitDateService().getTree(mOwner, mRepo, sha));
+        networkQueue().enqueue(mGitDateService.getTree(mOwner, mRepo, sha));
       }
     };
 
@@ -172,9 +181,9 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
   }
 
   @Override public void onCardTouchListener(Intent intent) {
-    mOwner = intent.getStringExtra("owner");
-    mRepo = intent.getStringExtra("repo");
-    mDefaultBranch = intent.getStringExtra("defaultBranch");
+    mOwner = intent.getStringExtra(OWNER);
+    mRepo = intent.getStringExtra(REPO);
+    mDefaultBranch = intent.getStringExtra(DEFAULT_BRANCH);
     Thread thread = new Thread(new Runnable() {
       @Override public void run() {
         try {
@@ -183,8 +192,7 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
           for (Branch branch : branches) {
             if (branch.name.equals(mDefaultBranch)) {
               mSha = branch.commit.sha;
-              networkQueue().enqueue(
-                  GithubService.createGitDateService().getTree(mOwner, mRepo, mSha));
+              networkQueue().enqueue(mGitDateService.getTree(mOwner, mRepo, mSha));
               mRecyclerView.post(new Runnable() {
                 @Override public void run() {
                   mPathAdapter.add(0, new ReposCodePath("root", mSha));
@@ -198,5 +206,10 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
       }
     });
     thread.start();
+  }
+
+  @Override public void onDetach() {
+    super.onDetach();
+    removeItemTouchListener();
   }
 }
