@@ -13,7 +13,7 @@
       android:layout_height="wrap_content"
       >
     <TextView
-        android:id="@+id/text_title"
+        android:id="@+id/text_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -41,7 +41,7 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_title"
+        app:layout_constraintTop_toBottomOf="@+id/text_login"
         tools:text="#21010 opened 11 hours ago by 121052 "
         />
     <TextView
