@@ -22,7 +22,7 @@ public class ReposIssueAdapter extends BaseQuickAdapter<Issue> {
   }
 
   @Override protected void convert(BaseViewHolder baseViewHolder, Issue issue) {
-    TextView txtTitle = baseViewHolder.getView(R.id.text_title);
+    TextView txtTitle = baseViewHolder.getView(R.id.text_login);
     if (issue.state.equals("open")) {
       txtTitle.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_issue_open, 0, 0, 0);
     } else {

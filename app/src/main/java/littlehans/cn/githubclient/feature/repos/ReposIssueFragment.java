@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import butterknife.BindView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 import littlehans.cn.githubclient.R;
@@ -38,7 +39,8 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
   @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
   @BindView(R.id.spinner) Spinner mSpinner;
   private ReposIssueAdapter mIssueAdapter;
-  private SimpleOnItemSelectedListener mOnItemSelectedListener;
+  private SimpleOnItemSelectedListener mSpinnerOnItemSelectedListener;
+  private OnItemClickListener mOnItemClickListener;
   private String mOwner;
   private String mRepo;
   private int mLastPage;
@@ -76,8 +78,15 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
     mSpinner.setAdapter(spinnerAdapter);
   }
 
+  private void loadOpenIssues() {
+    mCurrentState = IssuesService.OPEN;
+    mCurrentPage = 1;
+    networkQueue().enqueue(
+        mIssuesService.getIssuesForReposList(mOwner, mRepo, IssuesService.OPEN, mCurrentPage));
+  }
+
   private void addListener() {
-    mOnItemSelectedListener = new SimpleOnItemSelectedListener() {
+    mSpinnerOnItemSelectedListener = new SimpleOnItemSelectedListener() {
       @Override public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if (i == 0) {
           loadOpenIssues();
@@ -87,14 +96,7 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
       }
     };
 
-    mSpinner.setOnItemSelectedListener(mOnItemSelectedListener);
-  }
-
-  private void loadOpenIssues() {
-    mCurrentState = IssuesService.OPEN;
-    mCurrentPage = 1;
-    networkQueue().enqueue(
-        mIssuesService.getIssuesForReposList(mOwner, mRepo, IssuesService.OPEN, mCurrentPage));
+    mSpinner.setOnItemSelectedListener(mSpinnerOnItemSelectedListener);
   }
 
   private void loadClosedIssues() {
@@ -109,8 +111,27 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
         mIssuesService.getIssuesForReposList(mOwner, mRepo, mCurrentState, mCurrentPage));
   }
 
+  private void addOnItemClickListener() {
+    mOnItemClickListener = new OnItemClickListener() {
+      @Override public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+        Issue issue = (Issue) baseQuickAdapter.getItem(i);
+        Intent intent = new Intent(getActivity(), ReposIssueCommentActivity.class);
+        intent.putExtra(ReposIssueCommentActivity.ISSUE_TITLE, issue.title);
+        intent.putExtra(ReposIssueCommentActivity.NUMBER, String.valueOf(issue.number));
+        intent.putExtra(ReposIssueCommentActivity.LOGIN, issue.user.login);
+        intent.putExtra(ReposIssueCommentActivity.CREATE_AT, issue.created_at);
+        intent.putExtra(ReposIssueCommentActivity.STATE, issue.state);
+        intent.putExtra(ReposIssueCommentActivity.OWNER, mOwner);
+        intent.putExtra(ReposIssueCommentActivity.Repo, mRepo);
+        startActivity(intent);
+      }
+    };
+    mRecyclerView.addOnItemTouchListener(mOnItemClickListener);
+  }
+
   @Override public void respondSuccess(List<Issue> data) {
     updateRecyclerView(data);
+
     mSwipeRefreshLayout.setRefreshing(false);
   }
 
@@ -126,6 +147,8 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
   }
 
   private void updateRecyclerView(final List<Issue> issues) {
+    removeOnItemClickListener();
+    addOnItemClickListener();
     mRecyclerView.post(new Runnable() {
       @Override public void run() {
         if (mCurrentPage == 1) {
@@ -147,6 +170,10 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
         }
       }
     });
+  }
+
+  private void removeOnItemClickListener() {
+    mRecyclerView.removeOnItemTouchListener(mOnItemClickListener);
   }
 
   @Override public void respondWithError(Throwable t) {
