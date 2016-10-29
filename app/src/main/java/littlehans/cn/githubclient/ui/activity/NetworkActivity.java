@@ -82,9 +82,6 @@ public abstract class NetworkActivity<T> extends BaseActivity implements Generic
   @Override public void startRequest() {
   }
 
-  @Override public void respondSuccess(T data) {
-  }
-
   @Override public void respondWithError(Throwable t) {
     showException(t);
   }
