@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:cardCornerRadius="0dp"
+    android:layout_height="wrap_content"
+    app:cardElevation="0dp"
     >
 
   <android.support.constraint.ConstraintLayout
@@ -12,7 +12,7 @@
       android:layout_height="wrap_content"
       >
     <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/simple_drawee_view"
+        android:id="@+id/avatar"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginLeft="8dp"
@@ -28,33 +28,29 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/simple_drawee_view"
-        app:layout_constraintTop_toTopOf="@+id/simple_drawee_view"
+        app:layout_constraintLeft_toRightOf="@+id/avatar"
+        app:layout_constraintTop_toTopOf="@+id/avatar"
         tools:text="CameloeAnthony"
         />
-
     <TextView
         android:id="@+id/text_create_at"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/text_login"
-        app:layout_constraintTop_toTopOf="@+id/simple_drawee_view"
+        app:layout_constraintBottom_toBottomOf="@+id/avatar"
+        app:layout_constraintLeft_toRightOf="@+id/avatar"
         tools:text="commented on 16 Jun"
         />
-
     <com.mukesh.MarkdownView
         android:id="@+id/markdown_view"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/text_login"
-        app:layout_constraintLeft_toRightOf="@+id/simple_drawee_view"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/avatar"
+        app:layout_constraintTop_toBottomOf="@+id/avatar"
         />
   </android.support.constraint.ConstraintLayout>
 
