@@ -29,6 +29,8 @@ public class ReposActivity extends BaseActivity {
     StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorAccent));
     setSupportActionBar(mToolbar);
     mIntent = getIntent();
+    String repo = mIntent.getStringExtra("repo");
+    setTitle(repo);
   }
 
   public void setOnCardTouchListenerA(OnCardTouchListener onCardTouchListenerA) {

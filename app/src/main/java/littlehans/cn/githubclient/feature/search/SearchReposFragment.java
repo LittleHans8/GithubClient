@@ -39,6 +39,7 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
   private String mQuery;
   private int mCurrentPage = 1;
   private int mLastPage;
+  private OnItemClickListener mOnItemClickListener;
 
   public static Fragment create() {
     return new SearchReposFragment();
@@ -66,6 +67,7 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
   }
 
   private void updateRecyclerView(final SearchRepos data) {
+
     mRecyclerView.post(new Runnable() {
       @Override public void run() {
         if (mCurrentPage == 1) {
@@ -76,6 +78,7 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
           mRecyclerView.setAdapter(mQuickSearchAdapter);
           mQuickSearchAdapter.setOnLoadMoreListener(SearchReposFragment.this);
           mCurrentPage++;
+          addOnItemClickListener();
           return;
         }
 
@@ -84,6 +87,7 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
         } else {
           mQuickSearchAdapter.addData(data.items);
           mCurrentPage++;
+          addOnItemClickListener();
         }
       }
     });
@@ -134,7 +138,10 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
     mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,
         R.color.refresh_progress_2, R.color.refresh_progress_3);
     mSwipeRefreshLayout.setOnRefreshListener(this);
-    mRecyclerView.addOnItemTouchListener(new OnItemClickListener() {
+  }
+
+  private void addOnItemClickListener() {
+    mOnItemClickListener = new OnItemClickListener() {
       @Override public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
         SearchRepos.Items repos = (SearchRepos.Items) baseQuickAdapter.getItem(i);
         String owner = repos.owner.login;
@@ -146,7 +153,8 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
         intent.putExtra("defaultBranch", defaultBranch);
         startActivity(intent);
       }
-    });
+    };
+    mRecyclerView.addOnItemTouchListener(mOnItemClickListener);
   }
 
   private void loadData(String query) {
@@ -161,5 +169,32 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
   @Override public void onSearch(String query) {
     mQuery = query;
     onRefresh();
+    removeOnItemClickListener();
+  }
+
+  private void removeOnItemClickListener() {
+    if (mOnItemClickListener != null) {
+      mOnItemClickListener = null;
+      mRecyclerView.removeOnItemTouchListener(mOnItemClickListener);
+    }
+  }
+
+  @Override public void startRequest() {
+    super.startRequest();
+
+    getActivity().runOnUiThread(new Runnable() {
+      @Override public void run() {
+        mSwipeRefreshLayout.setRefreshing(true);
+      }
+    });
+  }
+
+  @Override public void endRequest() {
+    super.endRequest();
+    getActivity().runOnUiThread(new Runnable() {
+      @Override public void run() {
+        mSwipeRefreshLayout.setRefreshing(false);
+      }
+    });
   }
 }

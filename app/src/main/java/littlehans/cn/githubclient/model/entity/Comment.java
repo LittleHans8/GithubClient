@@ -1,9 +1,11 @@
 package littlehans.cn.githubclient.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by LittleHans on 2016/10/28.
  */
-public class Comment {
+@JsonIgnoreProperties(ignoreUnknown = true) public class Comment {
 
   public String url;
   public String html_url;

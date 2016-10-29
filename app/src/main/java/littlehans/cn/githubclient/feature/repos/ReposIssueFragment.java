@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,6 +26,7 @@ import littlehans.cn.githubclient.model.entity.Issue;
 import littlehans.cn.githubclient.ui.fragment.NetworkFragment;
 import okhttp3.Headers;
 
+import static android.content.ContentValues.TAG;
 import static littlehans.cn.githubclient.feature.repos.ReposCodeFragment.OWNER;
 import static littlehans.cn.githubclient.feature.repos.ReposCodeFragment.REPO;
 
@@ -33,17 +35,18 @@ import static littlehans.cn.githubclient.feature.repos.ReposCodeFragment.REPO;
  */
 
 public class ReposIssueFragment extends NetworkFragment<List<Issue>>
-    implements OnCardTouchListener, BaseQuickAdapter.RequestLoadMoreListener {
-  private final IssuesService mIssuesService = GithubService.createIssuesService();
+    implements OnCardTouchListener, BaseQuickAdapter.RequestLoadMoreListener,
+    SwipeRefreshLayout.OnRefreshListener {
   @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
   @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
   @BindView(R.id.spinner) Spinner mSpinner;
+  private IssuesService mIssuesService;
   private ReposIssueAdapter mIssueAdapter;
   private SimpleOnItemSelectedListener mSpinnerOnItemSelectedListener;
   private OnItemClickListener mOnItemClickListener;
   private String mOwner;
   private String mRepo;
-  private int mLastPage;
+  private int mLastPage = 0;
   private int mCurrentPage = 1;
   private LinearLayoutManager mLinearLayoutManager;
   private String mCurrentState = "open";
@@ -64,25 +67,39 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    mIssuesService = GithubService.createIssuesService();
     loadOpenIssues();
-    initAdapter();
+    initUI();
     addListener();
+    mSwipeRefreshLayout.setOnRefreshListener(this);
   }
 
-  private void initAdapter() {
+  private void initUI() {
+    mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,
+        R.color.refresh_progress_2, R.color.refresh_progress_3);
+
     List<String> state = new ArrayList<>();
     state.add(IssuesService.OPEN);
     state.add(IssuesService.CLOSED);
     ArrayAdapter<String> spinnerAdapter =
         new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, state);
     mSpinner.setAdapter(spinnerAdapter);
+    mLinearLayoutManager = new LinearLayoutManager(getActivity());
+    mRecyclerView.setLayoutManager(mLinearLayoutManager);
   }
 
   private void loadOpenIssues() {
     mCurrentState = IssuesService.OPEN;
     mCurrentPage = 1;
     networkQueue().enqueue(
-        mIssuesService.getIssuesForReposList(mOwner, mRepo, IssuesService.OPEN, mCurrentPage));
+        mIssuesService.getIssuesForReposList(mOwner, mRepo, mCurrentState, mCurrentPage));
+  }
+
+  private void loadClosedIssues() {
+    mCurrentState = IssuesService.CLOSED;
+    mCurrentPage = 1;
+    networkQueue().enqueue(
+        mIssuesService.getIssuesForReposList(mOwner, mRepo, mCurrentState, mCurrentPage));
   }
 
   private void addListener() {
@@ -97,13 +114,6 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
     };
 
     mSpinner.setOnItemSelectedListener(mSpinnerOnItemSelectedListener);
-  }
-
-  private void loadClosedIssues() {
-    mCurrentState = IssuesService.CLOSED;
-    mCurrentPage = 1;
-    networkQueue().enqueue(
-        mIssuesService.getIssuesForReposList(mOwner, mRepo, IssuesService.CLOSED, mCurrentPage));
   }
 
   private void loadMoreDate() {
@@ -123,6 +133,7 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
         intent.putExtra(ReposIssueCommentActivity.STATE, issue.state);
         intent.putExtra(ReposIssueCommentActivity.OWNER, mOwner);
         intent.putExtra(ReposIssueCommentActivity.Repo, mRepo);
+        intent.putExtra(ReposIssueCommentActivity.COMMENT_COUNT, String.valueOf(issue.comments));
         startActivity(intent);
       }
     };
@@ -131,7 +142,6 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
 
   @Override public void respondSuccess(List<Issue> data) {
     updateRecyclerView(data);
-
     mSwipeRefreshLayout.setRefreshing(false);
   }
 
@@ -143,6 +153,7 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
       String link = links.get(0);
       PageLink pageLink = new PageLink(link);
       mLastPage = pageLink.getLastPage();
+      Log.d(TAG, "respondHeader: mLastPage:" + mLastPage);
     }
   }
 
@@ -152,8 +163,7 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
     mRecyclerView.post(new Runnable() {
       @Override public void run() {
         if (mCurrentPage == 1) {
-          mLinearLayoutManager = new LinearLayoutManager(getActivity());
-          mRecyclerView.setLayoutManager(mLinearLayoutManager);
+
           mIssueAdapter = new ReposIssueAdapter(issues);
           mIssueAdapter.openLoadMore(30);
           mRecyclerView.setAdapter(mIssueAdapter);
@@ -161,7 +171,6 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
           mCurrentPage++;
           return;
         }
-
         if (mCurrentPage > mLastPage) {
           mIssueAdapter.loadComplete();
         } else {
@@ -173,16 +182,20 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
   }
 
   private void removeOnItemClickListener() {
-    mRecyclerView.removeOnItemTouchListener(mOnItemClickListener);
+    if (mOnItemClickListener != null) {
+      mRecyclerView.removeOnItemTouchListener(mOnItemClickListener);
+      mOnItemClickListener = null;
+    }
   }
 
   @Override public void respondWithError(Throwable t) {
-
+    Log.d(TAG, "respondWithError: " + t.getMessage());
   }
 
   @Override public void onCardTouchListener(Intent intent) {
     mOwner = intent.getStringExtra(OWNER);
     mRepo = intent.getStringExtra(REPO);
+    removeOnItemClickListener();
   }
 
   @Override public void onDetach() {
@@ -191,5 +204,30 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
 
   @Override public void onLoadMoreRequested() {
     loadMoreDate();
+  }
+
+  @Override public void onRefresh() {
+    mCurrentPage = 1;
+    networkQueue().enqueue(
+        mIssuesService.getIssuesForReposList(mOwner, mRepo, mCurrentState, mCurrentPage));
+  }
+
+  @Override public void startRequest() {
+    super.startRequest();
+
+    getActivity().runOnUiThread(new Runnable() {
+      @Override public void run() {
+        mSwipeRefreshLayout.setRefreshing(true);
+      }
+    });
+  }
+
+  @Override public void endRequest() {
+    super.endRequest();
+    getActivity().runOnUiThread(new Runnable() {
+      @Override public void run() {
+        mSwipeRefreshLayout.setRefreshing(false);
+      }
+    });
   }
 }

@@ -24,6 +24,7 @@ import java.util.List;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
 import littlehans.cn.githubclient.api.service.GitDateService;
+import littlehans.cn.githubclient.api.service.RepositoryService;
 import littlehans.cn.githubclient.model.entity.Blob;
 import littlehans.cn.githubclient.model.entity.Branch;
 import littlehans.cn.githubclient.model.entity.Trees;
@@ -35,7 +36,8 @@ import littlehans.cn.githubclient.utilities.DividerItemDecoration;
  * Created by LittleHans on 2016/10/20.
  */
 
-public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardTouchListener {
+public class ReposCodeFragment extends NetworkFragment<Trees>
+    implements OnCardTouchListener, SwipeRefreshLayout.OnRefreshListener {
 
   public static final String TREE = "tree";
   public static final String BLOB = "blob";
@@ -43,16 +45,15 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
   public static final String MD = "md";
   public static final String MARKDOWN = "markdown";
   public static final String IS_MARK_DOWN_FILE = "isMarkDownFile";
-
   public static final String OWNER = "owner";
   public static final String REPO = "repo";
-
   public static final String DEFAULT_BRANCH = "defaultBranch";
+
+  Comparator<Trees.Tree> mTreeComparator;
+  ReposCodePathAdapter mPathAdapter;
   @BindView(R.id.recycler_view_path) RecyclerView mRecyclerViewPath;
   @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
   @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
-  Comparator<Trees.Tree> mTreeComparator;
-  ReposCodePathAdapter mPathAdapter;
   private GitDateService mGitDateService;
   private LinearLayoutManager mLinearLayoutManager;
   private List<ReposCodePath> mPath;
@@ -62,7 +63,7 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
   private String mRepo;
   private String mDefaultBranch;
   private String mSha;
-  private int mLastPage;
+  private RepositoryService mRepositoryService;
 
   public static Fragment create() {
     return new ReposCodeFragment();
@@ -88,6 +89,10 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
   }
 
   private void initUI() {
+
+    mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,
+        R.color.refresh_progress_2, R.color.refresh_progress_3);
+    mSwipeRefreshLayout.setOnRefreshListener(this);
     mLinearLayoutManager = new LinearLayoutManager(getActivity());
     LinearLayoutManager linearLayoutManagerPath =
         new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -187,8 +192,8 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
     Thread thread = new Thread(new Runnable() {
       @Override public void run() {
         try {
-          List<Branch> branches =
-              GithubService.createRepositoryService().getBranchList(mOwner, mRepo).execute().body();
+          mRepositoryService = GithubService.createRepositoryService();
+          List<Branch> branches = mRepositoryService.getBranchList(mOwner, mRepo).execute().body();
           for (Branch branch : branches) {
             if (branch.name.equals(mDefaultBranch)) {
               mSha = branch.commit.sha;
@@ -211,5 +216,28 @@ public class ReposCodeFragment extends NetworkFragment<Trees> implements OnCardT
   @Override public void onDetach() {
     super.onDetach();
     removeItemTouchListener();
+  }
+
+  @Override public void onRefresh() {
+    networkQueue().enqueue(mGitDateService.getTree(mOwner, mRepo, mSha));
+  }
+
+  @Override public void startRequest() {
+    super.startRequest();
+
+    getActivity().runOnUiThread(new Runnable() {
+      @Override public void run() {
+        mSwipeRefreshLayout.setRefreshing(true);
+      }
+    });
+  }
+
+  @Override public void endRequest() {
+    super.endRequest();
+    getActivity().runOnUiThread(new Runnable() {
+      @Override public void run() {
+        mSwipeRefreshLayout.setRefreshing(false);
+      }
+    });
   }
 }

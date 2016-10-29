@@ -3,28 +3,35 @@ package littlehans.cn.githubclient.feature.repos;
 import android.text.TextUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.mukesh.MarkdownView;
 import java.util.List;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.model.entity.Comment;
+import littlehans.cn.githubclient.utilities.DateFormatUtil;
 
 /**
  * Created by LittleHans on 2016/10/28.
  */
 
 public class IssueCommentAdapter extends BaseQuickAdapter<Comment> {
+  private DateFormatUtil mDateFormat;
   public IssueCommentAdapter(List<Comment> data) {
     super(R.layout.card_issue_detail, data);
+    mDateFormat = new DateFormatUtil("commented");
   }
 
   @Override protected void convert(BaseViewHolder baseViewHolder, Comment comment) {
     baseViewHolder.setText(R.id.text_login, comment.user.login);
-    baseViewHolder.setText(R.id.text_create_at, comment.created_at);
+    baseViewHolder.setText(R.id.text_create_at, mDateFormat.formatTime(comment.created_at));
     MarkdownView markdownView = baseViewHolder.getView(R.id.markdown_view);
     if (!TextUtils.isEmpty(comment.body)) {
       markdownView.setMarkDownText(comment.body);
     } else {
       markdownView.setMarkDownText("No Description!");
     }
+
+    SimpleDraweeView avatar = baseViewHolder.getView(R.id.avatar);
+    avatar.setImageURI(comment.user.avatar_url);
   }
 }

@@ -51,6 +51,7 @@ import java.util.List;
     public boolean site_admin;
   }
 
+  @JsonIgnoreProperties(ignoreUnknown = true)
   public static class Labels {
     public String url;
     public String name;
