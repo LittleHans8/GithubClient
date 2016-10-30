@@ -224,7 +224,6 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
 
   @Override public void startRequest() {
     super.startRequest();
-
     getActivity().runOnUiThread(new Runnable() {
       @Override public void run() {
         mSwipeRefreshLayout.setRefreshing(true);

@@ -68,6 +68,7 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
 
   private void updateRecyclerView(final SearchRepos data) {
 
+
     mRecyclerView.post(new Runnable() {
       @Override public void run() {
         if (mCurrentPage == 1) {
@@ -89,7 +90,9 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
           mCurrentPage++;
           addOnItemClickListener();
         }
+
       }
+
     });
   }
 
@@ -181,20 +184,11 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
 
   @Override public void startRequest() {
     super.startRequest();
-
-    getActivity().runOnUiThread(new Runnable() {
-      @Override public void run() {
-        mSwipeRefreshLayout.setRefreshing(true);
-      }
-    });
+    mSwipeRefreshLayout.setRefreshing(true);
   }
 
   @Override public void endRequest() {
     super.endRequest();
-    getActivity().runOnUiThread(new Runnable() {
-      @Override public void run() {
-        mSwipeRefreshLayout.setRefreshing(false);
-      }
-    });
+    mSwipeRefreshLayout.setRefreshing(false);
   }
 }
