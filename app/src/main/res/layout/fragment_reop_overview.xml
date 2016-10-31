@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+  <android.support.v7.widget.CardView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      app:cardCornerRadius="8dp"
+      >
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+      <com.facebook.drawee.view.SimpleDraweeView
+          android:id="@+id/avatar"
+          android:layout_width="48dp"
+          android:layout_height="48dp"
+          android:layout_margin="16dp"
+          app:layout_constraintLeft_toRightOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:placeholderImage="@drawable/littlehans"
+          />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="16dp"
+          android:layout_marginStart="16dp"
+          android:layout_marginTop="32dp"
+          android:text="LittleHans8"
+          app:layout_constraintLeft_toRightOf="@+id/avatar"
+          app:layout_constraintTop_toTopOf="parent"
+          />
+
+      <TextView
+          android:id="@+id/text_name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_margin="8dp"
+          android:text="assert-rx"
+          android:textColor="#4078c0"
+          android:textSize="24sp"
+          android:textStyle="bold"
+          app:layout_constraintLeft_toLeftOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/avatar"
+          />
+
+      <LinearLayout
+          android:id="@+id/watch"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_margin="8dp"
+          android:background="@drawable/shape_border"
+          android:orientation="horizontal"
+          app:layout_constraintRight_toLeftOf="@+id/text_start"
+          app:layout_constraintTop_toBottomOf="@+id/avatar"
+          >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_watch"
+            android:drawableLeft="@drawable/ic_eye"
+            android:drawablePadding="2dp"
+            android:drawableStart="@drawable/ic_eye"
+            android:padding="4dp"
+            android:text="Watch"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="4"
+            android:textSize="12sp"
+            />
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/text_start"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_margin="8dp"
+          android:background="@drawable/shape_border"
+          android:orientation="horizontal"
+          app:layout_constraintRight_toLeftOf="@+id/text_fork"
+          app:layout_constraintTop_toBottomOf="@+id/avatar"
+          >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_watch"
+            android:drawableLeft="@drawable/ic_repos_star"
+            android:drawablePadding="2dp"
+            android:drawableStart="@drawable/ic_repos_star"
+            android:padding="4dp"
+            android:text="Start"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="22"
+            android:textSize="12sp"
+            />
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/text_fork"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_margin="8dp"
+          android:background="@drawable/shape_border"
+          android:orientation="horizontal"
+          app:layout_constraintRight_toRightOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/avatar"
+          >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_watch"
+            android:drawableLeft="@drawable/ic_repo_forked"
+            android:drawablePadding="2dp"
+            android:drawableStart="@drawable/ic_repo_forked"
+            android:padding="4dp"
+            android:text="Fork"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="222"
+            android:textSize="12sp"
+            />
+      </LinearLayout>
+
+      <TextView
+          android:id="@+id/text_description"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="16dp"
+          android:layout_marginStart="16dp"
+          android:layout_marginTop="16dp"
+          android:text="Fluent assertions for RxJava's TestSubscriberFluent assertions for RxJava's TestSubscriberFluent assertions for RxJava's TestSubscriberFluent assertions for RxJava's TestSubscriberFluent assertions for RxJava's TestSubscriberFluent assertions for RxJava's TestSubscriber"
+          android:textColor="#767676"
+          android:textSize="18sp"
+          app:layout_constraintLeft_toRightOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/text_name"
+          />
+
+      <TextView
+          android:id="@+id/text_create_at"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="16dp"
+          android:layout_marginLeft="16dp"
+          android:layout_marginStart="16dp"
+          android:layout_marginTop="16dp"
+          android:drawableLeft="@drawable/ic_join"
+          android:drawablePadding="2dp"
+          android:drawableStart="@drawable/ic_join"
+          android:text="crated at 17 May 2016"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintLeft_toRightOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/text_description"
+          app:layout_goneMarginLeft="16dp"
+          />
+
+    </android.support.constraint.ConstraintLayout>
+
+  </android.support.v7.widget.CardView>
+
+  <LinearLayout
+      android:id="@+id/bottom_sheet"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@android:color/white"
+      android:minHeight="128dp"
+      android:orientation="vertical"
+      app:behavior_peekHeight="128dp"
+      app:layout_behavior="@string/bottom_sheet_behavior"
+      >
+    <include layout="@layout/include_bottom_sheet_markdown"/>
+  </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

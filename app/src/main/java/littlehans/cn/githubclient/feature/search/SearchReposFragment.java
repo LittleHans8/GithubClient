@@ -13,7 +13,6 @@ import android.view.View;
 import butterknife.BindView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
-import java.net.UnknownHostException;
 import java.util.List;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
@@ -127,15 +126,7 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
     }
   }
 
-  @Override public void errorSocketTimeout(Throwable t, ErrorModel errorModel) {
-    super.errorSocketTimeout(t, errorModel);
-    mSwipeRefreshLayout.setRefreshing(false);
-  }
 
-  @Override public void errorUnknownHost(UnknownHostException e, ErrorModel errorModel) {
-    super.errorUnknownHost(e, errorModel);
-    mSwipeRefreshLayout.setRefreshing(false);
-  }
 
   private void initUI() {
     mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,
@@ -177,7 +168,6 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
 
   private void removeOnItemClickListener() {
     if (mOnItemClickListener != null) {
-      mOnItemClickListener = null;
       mRecyclerView.removeOnItemTouchListener(mOnItemClickListener);
     }
   }

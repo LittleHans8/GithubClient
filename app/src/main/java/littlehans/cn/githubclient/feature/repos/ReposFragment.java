@@ -36,9 +36,11 @@ public class ReposFragment extends BaseFragment implements TabLayout.OnTabSelect
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mAdapter = new Adapter(getChildFragmentManager());
+    mAdapter.addFragment(ReposOverviewFragment.create());
     mAdapter.addFragment(ReposCodeFragment.create());
     mAdapter.addFragment(ReposIssueFragment.create());
     mAdapter.addFragment(ReposPullRequestFragment.create());
+
   }
 
   @Override public void onAttach(Context context) {
@@ -60,13 +62,15 @@ public class ReposFragment extends BaseFragment implements TabLayout.OnTabSelect
 
   private void initRes() {
     mTitles = new String[] {
-        getString(R.string.code), getString(R.string.issue), getString(R.string.pull_request)
+        getString(R.string.overview), getString(R.string.code), getString(R.string.issue),
+        getString(R.string.pull_request)
     };
     mDrawableNormal = new int[] {
-        R.drawable.ic_code_normal, R.drawable.ic_issue_normal, R.drawable.ic_pull_request_normal
+        R.drawable.ic_home_normal, R.drawable.ic_code_normal, R.drawable.ic_issue_normal,
+        R.drawable.ic_pull_request_normal
     };
     mDrawableSelected = new int[] {
-        R.drawable.ic_code, R.drawable.ic_issue, R.drawable.ic_pull_request
+        R.drawable.ic_home, R.drawable.ic_code, R.drawable.ic_issue, R.drawable.ic_pull_request
     };
   }
 
@@ -78,7 +82,7 @@ public class ReposFragment extends BaseFragment implements TabLayout.OnTabSelect
 
       if (i == 0) {
         textView.setCompoundDrawablesWithIntrinsicBounds(mDrawableSelected[i], 0, 0, 0);
-        textView.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorAccent));
+        textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
       } else {
         textView.setCompoundDrawablesWithIntrinsicBounds(mDrawableNormal[i], 0, 0, 0);
       }
@@ -126,6 +130,5 @@ public class ReposFragment extends BaseFragment implements TabLayout.OnTabSelect
     @Override public int getCount() {
       return mFragments.size();
     }
-
   }
 }

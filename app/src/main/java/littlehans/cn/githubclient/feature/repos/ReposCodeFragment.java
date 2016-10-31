@@ -131,9 +131,9 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
         baseQuickAdapter.notifyDataSetChanged();
         final Trees.Tree tree = (Trees.Tree) baseQuickAdapter.getData().get(i);
         if (tree.type.equals(TREE)) {
+          networkQueue().enqueue(mGitDateService.getTree(mOwner, mRepo, tree.sha));
           mPathAdapter.add(mPathAdapter.getItemCount(), new ReposCodePath(tree.path, tree.sha));
           mPathAdapter.notifyDataSetChanged();
-          networkQueue().enqueue(mGitDateService.getTree(mOwner, mRepo, tree.sha));
         }
 
         if (tree.type.equals(BLOB)) {
@@ -179,10 +179,6 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
   private void removeItemTouchListener() {
     mRecyclerView.removeOnItemTouchListener(mItemClickListener);
     mRecyclerViewPath.removeOnItemTouchListener(mPathItemClickListener);
-  }
-
-  @Override public void respondWithError(Throwable t) {
-
   }
 
   @Override public void onCardTouchListener(Intent intent) {
@@ -239,4 +235,9 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
       }
     });
   }
+
+  @Override public void respondWithError(Throwable t) {
+
+  }
+
 }
