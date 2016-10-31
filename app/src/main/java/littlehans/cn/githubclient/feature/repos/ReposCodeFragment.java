@@ -3,6 +3,7 @@ package littlehans.cn.githubclient.feature.repos;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -27,6 +28,7 @@ import littlehans.cn.githubclient.api.service.GitDateService;
 import littlehans.cn.githubclient.api.service.RepositoryService;
 import littlehans.cn.githubclient.model.entity.Blob;
 import littlehans.cn.githubclient.model.entity.Branch;
+import littlehans.cn.githubclient.model.entity.SearchRepos;
 import littlehans.cn.githubclient.model.entity.Trees;
 import littlehans.cn.githubclient.ui.activity.FileDetailActivity;
 import littlehans.cn.githubclient.ui.fragment.NetworkFragment;
@@ -45,9 +47,7 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
   public static final String MD = "md";
   public static final String MARKDOWN = "markdown";
   public static final String IS_MARK_DOWN_FILE = "isMarkDownFile";
-  public static final String OWNER = "owner";
-  public static final String REPO = "repo";
-  public static final String DEFAULT_BRANCH = "defaultBranch";
+
 
   Comparator<Trees.Tree> mTreeComparator;
   ReposCodePathAdapter mPathAdapter;
@@ -181,10 +181,14 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
     mRecyclerViewPath.removeOnItemTouchListener(mPathItemClickListener);
   }
 
-  @Override public void onCardTouchListener(Intent intent) {
-    mOwner = intent.getStringExtra(OWNER);
-    mRepo = intent.getStringExtra(REPO);
-    mDefaultBranch = intent.getStringExtra(DEFAULT_BRANCH);
+  @Override public void onCardTouchListener(Parcelable parcelableDate) {
+
+    SearchRepos.Items items = (SearchRepos.Items) parcelableDate;
+
+    mOwner = items.owner.login;
+    mRepo = items.name;
+    mDefaultBranch = items.default_branch;
+
     Thread thread = new Thread(new Runnable() {
       @Override public void run() {
         try {

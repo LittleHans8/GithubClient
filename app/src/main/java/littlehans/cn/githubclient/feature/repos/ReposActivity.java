@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import butterknife.BindView;
 import littlehans.cn.githubclient.R;
+import littlehans.cn.githubclient.model.entity.SearchRepos;
 import littlehans.cn.githubclient.ui.activity.BaseActivity;
 import qiu.niorgai.StatusBarCompat;
 
@@ -19,6 +21,7 @@ public class ReposActivity extends BaseActivity {
   private OnCardTouchListener mOnCardTouchListenerA; // ReposCodeFragment
   private OnCardTouchListener mOnCardTouchListenerB; // ReposIssueFragment
   private Intent mIntent;
+  private SearchRepos.Items mItems;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -29,6 +32,10 @@ public class ReposActivity extends BaseActivity {
     StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorAccent));
     setSupportActionBar(mToolbar);
     mIntent = getIntent();
+
+    mItems = mIntent.getExtras().getParcelable("reposTests");
+    Log.d("TAG", "onCreate: " + mItems.toString());
+
     String repo = mIntent.getStringExtra("repo");
     setTitle(repo);
   }
@@ -36,12 +43,12 @@ public class ReposActivity extends BaseActivity {
   public void setOnCardTouchListenerA(OnCardTouchListener onCardTouchListenerA) {
 
     mOnCardTouchListenerA = onCardTouchListenerA;
-    mOnCardTouchListenerA.onCardTouchListener(mIntent);
+    mOnCardTouchListenerA.onCardTouchListener(mItems);
   }
 
   public void setOnCardTouchListenerB(OnCardTouchListener onCardTouchListenerB) {
 
     mOnCardTouchListenerB = onCardTouchListenerB;
-    mOnCardTouchListenerB.onCardTouchListener(mIntent);
+    mOnCardTouchListenerB.onCardTouchListener(mItems);
   }
 }

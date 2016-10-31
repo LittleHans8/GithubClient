@@ -3,6 +3,7 @@ package littlehans.cn.githubclient.feature.repos;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,12 +24,11 @@ import littlehans.cn.githubclient.api.GithubService;
 import littlehans.cn.githubclient.api.service.IssuesService;
 import littlehans.cn.githubclient.feature.search.PageLink;
 import littlehans.cn.githubclient.model.entity.Issue;
+import littlehans.cn.githubclient.model.entity.SearchRepos;
 import littlehans.cn.githubclient.ui.fragment.NetworkFragment;
 import okhttp3.Headers;
 
 import static android.content.ContentValues.TAG;
-import static littlehans.cn.githubclient.feature.repos.ReposCodeFragment.OWNER;
-import static littlehans.cn.githubclient.feature.repos.ReposCodeFragment.REPO;
 
 /**
  * Created by LittleHans on 2016/10/20.
@@ -192,9 +192,10 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
     Log.d(TAG, "respondWithError: " + t.getMessage());
   }
 
-  @Override public void onCardTouchListener(Intent intent) {
-    mOwner = intent.getStringExtra(OWNER);
-    mRepo = intent.getStringExtra(REPO);
+  @Override public void onCardTouchListener(Parcelable parcelableDate) {
+    SearchRepos.Items item = (SearchRepos.Items) parcelableDate;
+    mOwner = item.owner.login;
+    mRepo = item.name;
     removeOnItemClickListener();
   }
 

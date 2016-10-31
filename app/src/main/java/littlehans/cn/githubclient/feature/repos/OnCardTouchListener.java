@@ -1,6 +1,6 @@
 package littlehans.cn.githubclient.feature.repos;
 
-import android.content.Intent;
+import android.os.Parcelable;
 
 /**
  * Created by LittleHans on 2016/10/24.
@@ -8,5 +8,5 @@ import android.content.Intent;
  */
 
 public interface OnCardTouchListener {
-  void onCardTouchListener(Intent intent);
+  void onCardTouchListener(Parcelable date);
 }

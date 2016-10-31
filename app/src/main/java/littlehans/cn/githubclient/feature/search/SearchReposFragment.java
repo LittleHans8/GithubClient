@@ -142,6 +142,9 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
         String repo = repos.name;
         String defaultBranch = repos.default_branch;
         Intent intent = new Intent(getActivity(), ReposActivity.class);
+
+        intent.putExtra("reposTests", repos); //reposTests
+
         intent.putExtra("owner", owner);
         intent.putExtra("repo", repo);
         intent.putExtra("defaultBranch", defaultBranch);
