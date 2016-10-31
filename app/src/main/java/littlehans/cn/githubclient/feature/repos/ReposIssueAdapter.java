@@ -30,7 +30,9 @@ public class ReposIssueAdapter extends BaseQuickAdapter<Issue> {
     }
     txtTitle.setText(issue.title);
     if (issue.comments > 0) {
-      baseViewHolder.setText(R.id.text_comment_count, String.valueOf(issue.comments));
+      baseViewHolder.getView(R.id.text_comment_count).setVisibility(View.VISIBLE);
+      String commentCount = String.valueOf(issue.comments);
+      baseViewHolder.setText(R.id.text_comment_count, commentCount);
     } else {
       baseViewHolder.getView(R.id.text_comment_count).setVisibility(View.GONE);
     }
