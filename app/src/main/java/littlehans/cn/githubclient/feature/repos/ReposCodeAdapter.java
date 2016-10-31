@@ -11,7 +11,7 @@ import littlehans.cn.githubclient.model.entity.Trees;
  * Created by LittleHans on 2016/10/20.
  */
 
-public class ReposCodeAdapter extends BaseQuickAdapter<Trees.Tree> {
+public class ReposCodeAdapter extends BaseQuickAdapter<Trees.Tree, BaseViewHolder> {
 
   static final String BLOB = "blob";
   static final String TREE = "tree";

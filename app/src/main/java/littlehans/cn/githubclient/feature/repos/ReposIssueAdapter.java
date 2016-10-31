@@ -13,7 +13,7 @@ import littlehans.cn.githubclient.utilities.DateFormatUtil;
  * Created by LittleHans on 2016/10/26.
  */
 
-public class ReposIssueAdapter extends BaseQuickAdapter<Issue> {
+public class ReposIssueAdapter extends BaseQuickAdapter<Issue, BaseViewHolder> {
   private DateFormatUtil mDateFormat;
 
   public ReposIssueAdapter(List<Issue> data) {

@@ -14,7 +14,7 @@ import littlehans.cn.githubclient.utilities.DateFormatUtil;
  * Created by LittleHans on 2016/10/28.
  */
 
-public class IssueCommentAdapter extends BaseQuickAdapter<Comment> {
+public class IssueCommentAdapter extends BaseQuickAdapter<Comment, BaseViewHolder> {
   private DateFormatUtil mDateFormat;
   public IssueCommentAdapter(List<Comment> data) {
     super(R.layout.card_issue_detail, data);

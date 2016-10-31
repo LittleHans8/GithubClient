@@ -20,7 +20,7 @@ import littlehans.cn.githubclient.utilities.DateFormatUtil;
  * Created by littlehans on 2016/10/7.
  */
 
-public class SearchReposAdapter extends BaseQuickAdapter<SearchRepos.Items> {
+public class SearchReposAdapter extends BaseQuickAdapter<SearchRepos.Items, BaseViewHolder> {
   DateFormatUtil mDateFormat;
 
   public SearchReposAdapter(List<SearchRepos.Items> items) {

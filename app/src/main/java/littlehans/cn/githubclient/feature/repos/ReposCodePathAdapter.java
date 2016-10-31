@@ -10,7 +10,7 @@ import littlehans.cn.githubclient.R;
  * Created by littlehans on 16/10/21.
  */
 
-public class ReposCodePathAdapter extends BaseQuickAdapter<ReposCodePath> {
+public class ReposCodePathAdapter extends BaseQuickAdapter<ReposCodePath, BaseViewHolder> {
 
   public ReposCodePathAdapter(List<ReposCodePath> data) {
     super(R.layout.item_text_path,data);

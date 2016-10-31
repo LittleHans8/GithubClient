@@ -74,8 +74,8 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
           mLinearLayoutManager = new LinearLayoutManager(getActivity());
           mRecyclerView.setLayoutManager(mLinearLayoutManager);
           mQuickSearchAdapter = new SearchReposAdapter(data.items);
-          mQuickSearchAdapter.openLoadMore(30);
           mRecyclerView.setAdapter(mQuickSearchAdapter);
+          mQuickSearchAdapter.openLoadMore(30);
           mQuickSearchAdapter.setOnLoadMoreListener(SearchReposFragment.this);
           mCurrentPage++;
           addOnItemClickListener();

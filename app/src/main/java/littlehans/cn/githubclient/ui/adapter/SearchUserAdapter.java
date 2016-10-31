@@ -14,7 +14,7 @@ import littlehans.cn.githubclient.utilities.DateFormatUtil;
  * Created by littlehans on 2016/10/17.
  */
 
-public class SearchUserAdapter extends BaseQuickAdapter<User> {
+public class SearchUserAdapter extends BaseQuickAdapter<User, BaseViewHolder> {
   DateFormatUtil mDateFormat;
 
   public SearchUserAdapter(List<User> data) {
