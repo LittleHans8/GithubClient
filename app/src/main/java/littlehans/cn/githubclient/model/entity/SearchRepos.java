@@ -1,19 +1,68 @@
 package littlehans.cn.githubclient.model.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by littlehans on 2016/9/27.
  */
-@JsonIgnoreProperties(ignoreUnknown = true) public class SearchRepos {
+@JsonIgnoreProperties(ignoreUnknown = true) public class SearchRepos implements Parcelable {
 
+  public static final Creator<SearchRepos> CREATOR = new Creator<SearchRepos>() {
+    @Override public SearchRepos createFromParcel(Parcel source) {
+      return new SearchRepos(source);
+    }
+
+    @Override public SearchRepos[] newArray(int size) {
+      return new SearchRepos[size];
+    }
+  };
   public int total_count;
   public boolean incomplete_results;
   public List<Items> items;
 
-  public static class Items {
+  public SearchRepos() {
+  }
+
+  protected SearchRepos(Parcel in) {
+    this.total_count = in.readInt();
+    this.incomplete_results = in.readByte() != 0;
+    this.items = new ArrayList<Items>();
+    in.readList(this.items, Items.class.getClassLoader());
+  }
+
+  @Override public String toString() {
+    return "SearchRepos{" +
+        "total_count=" + total_count +
+        ", incomplete_results=" + incomplete_results +
+        ", items=" + items +
+        '}';
+  }
+
+  @Override public int describeContents() {
+    return 0;
+  }
+
+  @Override public void writeToParcel(Parcel dest, int flags) {
+    dest.writeInt(this.total_count);
+    dest.writeByte(this.incomplete_results ? (byte) 1 : (byte) 0);
+    dest.writeList(this.items);
+  }
+
+  public static class Items implements Parcelable {
+    public static final Creator<Items> CREATOR = new Creator<Items>() {
+      @Override public Items createFromParcel(Parcel source) {
+        return new Items(source);
+      }
+
+      @Override public Items[] newArray(int size) {
+        return new Items[size];
+      }
+    };
     public int id;
     public String name;
     public String full_name;
@@ -66,7 +115,7 @@ import java.util.List;
     public String ssh_url;
     public String clone_url;
     public String svn_url;
-    public Object homepage;
+    public String homepage;
     public int size;
     public int stargazers_count;
     public int watchers_count;
@@ -76,7 +125,7 @@ import java.util.List;
     public boolean has_wiki;
     public boolean has_pages;
     public int forks_count;
-    public Object mirror_url;
+    public String mirror_url;
     public int open_issues_count;
     public int forks;
     public int open_issues;
@@ -85,76 +134,80 @@ import java.util.List;
     public double score;
     public List<TextMatches> text_matches;
 
-    public static class Owner {
-      public String login;
-      public int id;
-      public String avatar_url;
-      public String gravatar_id;
-      public String url;
-      public String html_url;
-      public String followers_url;
-      public String following_url;
-      public String gists_url;
-      public String starred_url;
-      public String subscriptions_url;
-      public String organizations_url;
-      public String repos_url;
-      public String events_url;
-      public String received_events_url;
-      public String type;
-      public boolean site_admin;
-
-      @Override public String toString() {
-        return "Owner{" +
-            "login='" + login + '\'' +
-            ", id=" + id +
-            ", avatar_url='" + avatar_url + '\'' +
-            ", gravatar_id='" + gravatar_id + '\'' +
-            ", url='" + url + '\'' +
-            ", html_url='" + html_url + '\'' +
-            ", followers_url='" + followers_url + '\'' +
-            ", following_url='" + following_url + '\'' +
-            ", gists_url='" + gists_url + '\'' +
-            ", starred_url='" + starred_url + '\'' +
-            ", subscriptions_url='" + subscriptions_url + '\'' +
-            ", organizations_url='" + organizations_url + '\'' +
-            ", repos_url='" + repos_url + '\'' +
-            ", events_url='" + events_url + '\'' +
-            ", received_events_url='" + received_events_url + '\'' +
-            ", type='" + type + '\'' +
-            ", site_admin=" + site_admin +
-            '}';
-      }
+    public Items() {
     }
 
-    public static class TextMatches {
-      public String object_url;
-      public String object_type;
-      public String property;
-      public String fragment;
-      public List<Matches> matches;
-
-      public static class Matches {
-        public String text;
-        public List<Integer> indices;
-
-        @Override public String toString() {
-          return "Matches{" +
-              "text='" + text + '\'' +
-              ", indices=" + indices +
-              '}';
-        }
-      }
-
-      @Override public String toString() {
-        return "TextMatches{" +
-            "object_url='" + object_url + '\'' +
-            ", object_type='" + object_type + '\'' +
-            ", property='" + property + '\'' +
-            ", fragment='" + fragment + '\'' +
-            ", matches=" + matches +
-            '}';
-      }
+    protected Items(Parcel in) {
+      this.id = in.readInt();
+      this.name = in.readString();
+      this.full_name = in.readString();
+      this.owner = in.readParcelable(Owner.class.getClassLoader());
+      this.privateX = in.readByte() != 0;
+      this.html_url = in.readString();
+      this.description = in.readString();
+      this.fork = in.readByte() != 0;
+      this.url = in.readString();
+      this.forks_url = in.readString();
+      this.keys_url = in.readString();
+      this.collaborators_url = in.readString();
+      this.teams_url = in.readString();
+      this.hooks_url = in.readString();
+      this.issue_events_url = in.readString();
+      this.events_url = in.readString();
+      this.assignees_url = in.readString();
+      this.branches_url = in.readString();
+      this.tags_url = in.readString();
+      this.blobs_url = in.readString();
+      this.git_tags_url = in.readString();
+      this.git_refs_url = in.readString();
+      this.trees_url = in.readString();
+      this.statuses_url = in.readString();
+      this.languages_url = in.readString();
+      this.stargazers_url = in.readString();
+      this.contributors_url = in.readString();
+      this.subscribers_url = in.readString();
+      this.subscription_url = in.readString();
+      this.commits_url = in.readString();
+      this.git_commits_url = in.readString();
+      this.comments_url = in.readString();
+      this.issue_comment_url = in.readString();
+      this.contents_url = in.readString();
+      this.compare_url = in.readString();
+      this.merges_url = in.readString();
+      this.archive_url = in.readString();
+      this.downloads_url = in.readString();
+      this.issues_url = in.readString();
+      this.pulls_url = in.readString();
+      this.milestones_url = in.readString();
+      this.notifications_url = in.readString();
+      this.labels_url = in.readString();
+      this.releases_url = in.readString();
+      this.deployments_url = in.readString();
+      this.created_at = in.readString();
+      this.updated_at = in.readString();
+      this.pushed_at = in.readString();
+      this.git_url = in.readString();
+      this.ssh_url = in.readString();
+      this.clone_url = in.readString();
+      this.svn_url = in.readString();
+      this.homepage = in.readString();
+      this.size = in.readInt();
+      this.stargazers_count = in.readInt();
+      this.watchers_count = in.readInt();
+      this.language = in.readString();
+      this.has_issues = in.readByte() != 0;
+      this.has_downloads = in.readByte() != 0;
+      this.has_wiki = in.readByte() != 0;
+      this.has_pages = in.readByte() != 0;
+      this.forks_count = in.readInt();
+      this.mirror_url = in.readString();
+      this.open_issues_count = in.readInt();
+      this.forks = in.readInt();
+      this.open_issues = in.readInt();
+      this.watchers = in.readInt();
+      this.default_branch = in.readString();
+      this.score = in.readDouble();
+      this.text_matches = in.createTypedArrayList(TextMatches.CREATOR);
     }
 
     @Override public String toString() {
@@ -231,13 +284,247 @@ import java.util.List;
           ", text_matches=" + text_matches +
           '}';
     }
-  }
 
-  @Override public String toString() {
-    return "SearchRepos{" +
-        "total_count=" + total_count +
-        ", incomplete_results=" + incomplete_results +
-        ", items=" + items +
-        '}';
+    @Override public int describeContents() {
+      return 0;
+    }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+      dest.writeInt(this.id);
+      dest.writeString(this.name);
+      dest.writeString(this.full_name);
+      dest.writeParcelable(this.owner, flags);
+      dest.writeByte(this.privateX ? (byte) 1 : (byte) 0);
+      dest.writeString(this.html_url);
+      dest.writeString(this.description);
+      dest.writeByte(this.fork ? (byte) 1 : (byte) 0);
+      dest.writeString(this.url);
+      dest.writeString(this.forks_url);
+      dest.writeString(this.keys_url);
+      dest.writeString(this.collaborators_url);
+      dest.writeString(this.teams_url);
+      dest.writeString(this.hooks_url);
+      dest.writeString(this.issue_events_url);
+      dest.writeString(this.events_url);
+      dest.writeString(this.assignees_url);
+      dest.writeString(this.branches_url);
+      dest.writeString(this.tags_url);
+      dest.writeString(this.blobs_url);
+      dest.writeString(this.git_tags_url);
+      dest.writeString(this.git_refs_url);
+      dest.writeString(this.trees_url);
+      dest.writeString(this.statuses_url);
+      dest.writeString(this.languages_url);
+      dest.writeString(this.stargazers_url);
+      dest.writeString(this.contributors_url);
+      dest.writeString(this.subscribers_url);
+      dest.writeString(this.subscription_url);
+      dest.writeString(this.commits_url);
+      dest.writeString(this.git_commits_url);
+      dest.writeString(this.comments_url);
+      dest.writeString(this.issue_comment_url);
+      dest.writeString(this.contents_url);
+      dest.writeString(this.compare_url);
+      dest.writeString(this.merges_url);
+      dest.writeString(this.archive_url);
+      dest.writeString(this.downloads_url);
+      dest.writeString(this.issues_url);
+      dest.writeString(this.pulls_url);
+      dest.writeString(this.milestones_url);
+      dest.writeString(this.notifications_url);
+      dest.writeString(this.labels_url);
+      dest.writeString(this.releases_url);
+      dest.writeString(this.deployments_url);
+      dest.writeString(this.created_at);
+      dest.writeString(this.updated_at);
+      dest.writeString(this.pushed_at);
+      dest.writeString(this.git_url);
+      dest.writeString(this.ssh_url);
+      dest.writeString(this.clone_url);
+      dest.writeString(this.svn_url);
+      dest.writeString(this.homepage);
+      dest.writeInt(this.size);
+      dest.writeInt(this.stargazers_count);
+      dest.writeInt(this.watchers_count);
+      dest.writeString(this.language);
+      dest.writeByte(this.has_issues ? (byte) 1 : (byte) 0);
+      dest.writeByte(this.has_downloads ? (byte) 1 : (byte) 0);
+      dest.writeByte(this.has_wiki ? (byte) 1 : (byte) 0);
+      dest.writeByte(this.has_pages ? (byte) 1 : (byte) 0);
+      dest.writeInt(this.forks_count);
+      dest.writeString(this.mirror_url);
+      dest.writeInt(this.open_issues_count);
+      dest.writeInt(this.forks);
+      dest.writeInt(this.open_issues);
+      dest.writeInt(this.watchers);
+      dest.writeString(this.default_branch);
+      dest.writeDouble(this.score);
+      dest.writeTypedList(this.text_matches);
+    }
+
+    public static class Owner implements Parcelable {
+      public static final Creator<Owner> CREATOR = new Creator<Owner>() {
+        @Override public Owner createFromParcel(Parcel source) {
+          return new Owner(source);
+        }
+
+        @Override public Owner[] newArray(int size) {
+          return new Owner[size];
+        }
+      };
+      public String login;
+      public int id;
+      public String avatar_url;
+      public String gravatar_id;
+      public String url;
+      public String html_url;
+      public String followers_url;
+      public String following_url;
+      public String gists_url;
+      public String starred_url;
+      public String subscriptions_url;
+      public String organizations_url;
+      public String repos_url;
+      public String events_url;
+      public String received_events_url;
+      public String type;
+      public boolean site_admin;
+
+      public Owner() {
+      }
+
+      protected Owner(Parcel in) {
+        this.login = in.readString();
+        this.id = in.readInt();
+        this.avatar_url = in.readString();
+        this.gravatar_id = in.readString();
+        this.url = in.readString();
+        this.html_url = in.readString();
+        this.followers_url = in.readString();
+        this.following_url = in.readString();
+        this.gists_url = in.readString();
+        this.starred_url = in.readString();
+        this.subscriptions_url = in.readString();
+        this.organizations_url = in.readString();
+        this.repos_url = in.readString();
+        this.events_url = in.readString();
+        this.received_events_url = in.readString();
+        this.type = in.readString();
+        this.site_admin = in.readByte() != 0;
+      }
+
+      @Override public int describeContents() {
+        return 0;
+      }
+
+      @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.login);
+        dest.writeInt(this.id);
+        dest.writeString(this.avatar_url);
+        dest.writeString(this.gravatar_id);
+        dest.writeString(this.url);
+        dest.writeString(this.html_url);
+        dest.writeString(this.followers_url);
+        dest.writeString(this.following_url);
+        dest.writeString(this.gists_url);
+        dest.writeString(this.starred_url);
+        dest.writeString(this.subscriptions_url);
+        dest.writeString(this.organizations_url);
+        dest.writeString(this.repos_url);
+        dest.writeString(this.events_url);
+        dest.writeString(this.received_events_url);
+        dest.writeString(this.type);
+        dest.writeByte(this.site_admin ? (byte) 1 : (byte) 0);
+      }
+    }
+
+    public static class TextMatches implements Parcelable {
+      public static final Creator<TextMatches> CREATOR = new Creator<TextMatches>() {
+        @Override public TextMatches createFromParcel(Parcel source) {
+          return new TextMatches(source);
+        }
+
+        @Override public TextMatches[] newArray(int size) {
+          return new TextMatches[size];
+        }
+      };
+      public String object_url;
+      public String object_type;
+      public String property;
+      public String fragment;
+      public List<Matches> matches;
+
+      public TextMatches() {
+      }
+
+      protected TextMatches(Parcel in) {
+        this.object_url = in.readString();
+        this.object_type = in.readString();
+        this.property = in.readString();
+        this.fragment = in.readString();
+        this.matches = in.createTypedArrayList(Matches.CREATOR);
+      }
+
+      @Override public String toString() {
+        return "TextMatches{" +
+            "object_url='" + object_url + '\'' +
+            ", object_type='" + object_type + '\'' +
+            ", property='" + property + '\'' +
+            ", fragment='" + fragment + '\'' +
+            ", matches=" + matches +
+            '}';
+      }
+
+      @Override public int describeContents() {
+        return 0;
+      }
+
+      @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.object_url);
+        dest.writeString(this.object_type);
+        dest.writeString(this.property);
+        dest.writeString(this.fragment);
+        dest.writeTypedList(this.matches);
+      }
+
+      public static class Matches implements Parcelable {
+        public static final Creator<Matches> CREATOR = new Creator<Matches>() {
+          @Override public Matches createFromParcel(Parcel source) {
+            return new Matches(source);
+          }
+
+          @Override public Matches[] newArray(int size) {
+            return new Matches[size];
+          }
+        };
+        public String text;
+        public List<Integer> indices;
+
+        public Matches() {
+        }
+
+        protected Matches(Parcel in) {
+          this.text = in.readString();
+          this.indices = new ArrayList<Integer>();
+          in.readList(this.indices, Integer.class.getClassLoader());
+        }
+
+        @Override public String toString() {
+          return "Matches{" +
+              "text='" + text + '\'' +
+              ", indices=" + indices +
+              '}';
+        }
+
+        @Override public int describeContents() {
+          return 0;
+        }
+
+        @Override public void writeToParcel(Parcel dest, int flags) {
+          dest.writeString(this.text);
+          dest.writeList(this.indices);
+        }
+      }
+    }
   }
 }
