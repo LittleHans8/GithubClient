@@ -58,14 +58,13 @@ dependencies {
 
   compile 'com.facebook.fresco:fresco:0.14.0'
 
-  compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.1.7'
+  compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.4.4'
 
   compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
 
   compile 'com.jakewharton.timber:timber:4.3.1'
 
   compile 'com.github.niorgai:StatusBarCompat:2.0.0'
-
 
   compile 'com.github.mukeshsolanki:MarkdownView-Android:1.0.1'
 
