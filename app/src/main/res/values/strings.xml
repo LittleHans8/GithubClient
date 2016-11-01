@@ -46,5 +46,9 @@
   <string name="overview">Overview</string>
   <string name="format_comment_count">· %1d comments</string>
   <string name="opened_this_issue">opened this issue</string>
+  <string name="create_at">create at</string>
+  <string name="watch">Watch</string>
+  <string name="Start">Start</string>
+  <string name="Fork">Fork</string>
 
 </resources>

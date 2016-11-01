@@ -21,7 +21,7 @@
         style="@style/CardUser.Avatar"
         />
     <TextView
-        android:id="@+id/text_name"
+        android:id="@+id/text_repo_name"
         app:layout_constraintLeft_toRightOf="@+id/img_avatar"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="LittleHans8"
@@ -32,9 +32,9 @@
         android:id="@+id/text_email"
         android:drawableLeft="@drawable/ic_mail"
         android:drawableStart="@drawable/ic_mail"
-        app:layout_constraintBottom_toBottomOf="@+id/text_name"
-        app:layout_constraintLeft_toRightOf="@+id/text_name"
-        app:layout_constraintTop_toTopOf="@+id/text_name"
+        app:layout_constraintBottom_toBottomOf="@+id/text_repo_name"
+        app:layout_constraintLeft_toRightOf="@+id/text_repo_name"
+        app:layout_constraintTop_toTopOf="@+id/text_repo_name"
         tools:text="LittleHans8@gmail.com"
         style="@style/CardUser.Meta"
         />
