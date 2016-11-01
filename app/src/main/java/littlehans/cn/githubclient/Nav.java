@@ -10,8 +10,11 @@ import littlehans.cn.githubclient.feature.search.SearchActivity;
 
 public class Nav {
 
-  public static final String repoItem = "repoItem";
-  public static final String issue = "issue";
+  public static final String OWNER = "owner"; // ps:twbs
+  public static final String REPO = "repo"; // ps:bootstrap
+
+  public static final String REPO_ITEM = "REPO_ITEM"; //  SearchRepos.Item
+  public static final String ISSUE = "ISSUE"; //  Issue
 
   public static void startSearchActivity(Context context) {
     Intent intent = new Intent(context, SearchActivity.class);

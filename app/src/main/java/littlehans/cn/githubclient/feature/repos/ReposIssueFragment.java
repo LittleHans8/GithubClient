@@ -19,6 +19,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
+import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
 import littlehans.cn.githubclient.api.service.IssuesService;
@@ -126,11 +127,9 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
       @Override public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
         Issue issue = (Issue) baseQuickAdapter.getItem(i);
         Intent intent = new Intent(getActivity(), ReposIssueCommentActivity.class);
-
-        intent.putExtra("issue", issue);
-
-        intent.putExtra(ReposIssueCommentActivity.OWNER, mOwner);
-        intent.putExtra(ReposIssueCommentActivity.Repo, mRepo);
+        intent.putExtra(Nav.ISSUE, issue);
+        intent.putExtra(Nav.OWNER, mOwner);
+        intent.putExtra(Nav.REPO, mRepo);
         startActivity(intent);
       }
     };
@@ -194,10 +193,6 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
     mOwner = item.owner.login;
     mRepo = item.name;
     removeOnItemClickListener();
-  }
-
-  @Override public void onDetach() {
-    super.onDetach();
   }
 
   @Override public void onLoadMoreRequested() {

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.widget.TextView;
 import butterknife.BindView;
 import java.util.List;
+import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
 import littlehans.cn.githubclient.api.service.IssuesService;
@@ -32,8 +33,7 @@ import qiu.niorgai.StatusBarCompat;
 public class ReposIssueCommentActivity extends NetworkActivity<List<Comment>>
     implements SwipeRefreshLayout.OnRefreshListener {
 
-  public static final String OWNER = "owner";
-  public static final String Repo = "repo";
+
   private static final String TAG = "ReposIssueComment";
   @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
   @BindView(R.id.text_create_at) TextView mTxtCreateAt;
@@ -51,6 +51,7 @@ public class ReposIssueCommentActivity extends NetworkActivity<List<Comment>>
   private int mCurrentPage = 1;
   private GradientDrawable mGradientDrawable;
   private IssuesService mIssuesService;
+  private Issue mIssue;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -62,33 +63,32 @@ public class ReposIssueCommentActivity extends NetworkActivity<List<Comment>>
   }
 
   private void setupDate() {
-    Issue issue = mIntent.getExtras().getParcelable("issue");
-    //  construct a string like "opened this issue 9 Jun 2013 · 8 comments"
-    String createAT = formatCreateTime(issue);
 
+    String createAT = formatCreateTime(mIssue);
     mTxtCreateAt.setText(createAT);
-    mTxtLogin.setText(issue.user.login);
-
+    mTxtLogin.setText(mIssue.user.login);
     mGradientDrawable = (GradientDrawable) mTxtState.getBackground();
-
-    mNumber = String.valueOf(issue.number);
-
+    mNumber = String.valueOf(mIssue.number);
     mToolbar.setTitle("#" + mNumber);
-
-    mTxtIssueTitle.setText(issue.title);
-    mCollapsingToolbarLayout.setTitle(issue.title);
-
-    setStateBackground(issue.state);
-    mTxtState.setText(issue.state);
+    mTxtIssueTitle.setText(mIssue.title);
+    mCollapsingToolbarLayout.setTitle(mIssue.title);
+    setStateBackground(mIssue.state);
+    mTxtState.setText(mIssue.state);
   }
 
   private void initData() {
     mIntent = getIntent();
-    mOwner = mIntent.getStringExtra(OWNER);
-    mRepo = mIntent.getStringExtra(Repo);
+    mIssue = mIntent.getExtras().getParcelable(Nav.ISSUE);
+    mOwner = mIntent.getStringExtra(Nav.OWNER);
+    mRepo = mIntent.getStringExtra(Nav.REPO);
     mIssuesService = GithubService.createIssuesService();
   }
 
+  /**
+   * construct a string like "opened this ISSUE 9 Jun 2013 · 8 comments"
+   *
+   * @return FormatString
+   */
   @NonNull private String formatCreateTime(Issue issue) {
     mDateFormat = new DateFormatUtil(getString(R.string.opened_this_issue));
     String createAT = mDateFormat.formatTime(issue.created_at);

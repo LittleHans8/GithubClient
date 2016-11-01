@@ -32,7 +32,7 @@ public class ReposActivity extends BaseActivity {
     StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorAccent));
     setSupportActionBar(mToolbar);
     mIntent = getIntent();
-    mItems = mIntent.getExtras().getParcelable(Nav.repoItem);
+    mItems = mIntent.getExtras().getParcelable(Nav.REPO_ITEM);
     setTitle(mItems.name);
   }
 

@@ -140,7 +140,7 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
       @Override public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
         SearchRepos.Items repoItem = (SearchRepos.Items) baseQuickAdapter.getItem(i);
         Intent intent = new Intent(getActivity(), ReposActivity.class);
-        intent.putExtra(Nav.repoItem, repoItem); //reposTests
+        intent.putExtra(Nav.REPO_ITEM, repoItem); //reposTests
         startActivity(intent);
       }
     };
