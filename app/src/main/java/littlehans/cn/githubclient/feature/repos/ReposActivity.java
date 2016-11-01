@@ -18,10 +18,12 @@ import qiu.niorgai.StatusBarCompat;
 
 public class ReposActivity extends BaseActivity {
   @BindView(R.id.toolbar) Toolbar mToolbar;
-  private OnCardTouchListener mOnCardTouchListenerA; // ReposCodeFragment
-  private OnCardTouchListener mOnCardTouchListenerB; // ReposIssueFragment
+  private OnDatePassListener mOnDatePassListenerA; // OverviewCodeFragment
+  private OnDatePassListener mOnDatePassListenerB; // ReposCodeFragment
+  private OnDatePassListener mOnDatePassListenerC; // ReposIssueFragment
   private Intent mIntent;
   private SearchRepos.Items mItems;
+  private OnDatePassListener mOnDatePassListener;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -36,13 +38,18 @@ public class ReposActivity extends BaseActivity {
     setTitle(mItems.name);
   }
 
-  public void setOnCardTouchListenerA(OnCardTouchListener onCardTouchListenerA) {
-    mOnCardTouchListenerA = onCardTouchListenerA;
-    mOnCardTouchListenerA.onCardTouchListener(mItems);
+  public void setOnDatePassListenerA(OnDatePassListener onDatePassListenerA) {
+    mOnDatePassListenerA = onDatePassListenerA;
+    mOnDatePassListenerA.onCardTouchListener(mItems);
   }
 
-  public void setOnCardTouchListenerB(OnCardTouchListener onCardTouchListenerB) {
-    mOnCardTouchListenerB = onCardTouchListenerB;
-    mOnCardTouchListenerB.onCardTouchListener(mItems);
+  public void setOnDatePassListenerB(OnDatePassListener onDatePassListenerB) {
+    mOnDatePassListenerB = onDatePassListenerB;
+    mOnDatePassListenerB.onCardTouchListener(mItems);
+  }
+
+  public void setOnDatePassListenerC(OnDatePassListener onDatePassListenerC) {
+    mOnDatePassListenerC = onDatePassListenerC;
+    mOnDatePassListenerC.onCardTouchListener(mItems);
   }
 }

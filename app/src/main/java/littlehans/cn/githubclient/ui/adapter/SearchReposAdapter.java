@@ -15,6 +15,7 @@ import littlehans.cn.githubclient.model.entity.SearchRepos;
 import littlehans.cn.githubclient.model.entity.SearchRepos.Items.TextMatches;
 import littlehans.cn.githubclient.model.entity.SearchRepos.Items.TextMatches.Matches;
 import littlehans.cn.githubclient.utilities.DateFormatUtil;
+import littlehans.cn.githubclient.utilities.FormatUtils;
 
 /**
  * Created by littlehans on 2016/10/7.
@@ -30,8 +31,9 @@ public class SearchReposAdapter extends BaseQuickAdapter<SearchRepos.Items, Base
 
   @Override protected void convert(BaseViewHolder baseViewHolder, SearchRepos.Items items) {
     baseViewHolder.setText(R.id.text_full_name, getMatchString(items)[0]);
-    baseViewHolder.setText(R.id.text_stargazers_count, String.valueOf(items.stargazers_count));
-    baseViewHolder.setText(R.id.text_forks_count, String.valueOf(items.forks_count));
+    baseViewHolder.setText(R.id.text_stargazers_count,
+        FormatUtils.decimalFormat(items.stargazers_count));
+    baseViewHolder.setText(R.id.text_forks_count, FormatUtils.decimalFormat(items.forks_count));
     baseViewHolder.setText(R.id.text_updated_at, items.updated_at);
     checkSet(baseViewHolder, R.id.text_updated_at, mDateFormat.formatTime(items.updated_at));
 

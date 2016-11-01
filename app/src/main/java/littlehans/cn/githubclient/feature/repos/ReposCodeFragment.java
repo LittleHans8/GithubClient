@@ -39,7 +39,7 @@ import littlehans.cn.githubclient.utilities.DividerItemDecoration;
  */
 
 public class ReposCodeFragment extends NetworkFragment<Trees>
-    implements OnCardTouchListener, SwipeRefreshLayout.OnRefreshListener {
+    implements OnDatePassListener, SwipeRefreshLayout.OnRefreshListener {
 
   public static final String TREE = "tree";
   public static final String BLOB = "blob";
@@ -73,7 +73,7 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
     super.onAttach(context);
     setHasOptionsMenu(true);
     ReposActivity reposActivity = (ReposActivity) context;
-    reposActivity.setOnCardTouchListenerA(this);
+    reposActivity.setOnDatePassListenerB(this);
     mPath = new ArrayList<>();
   }
 

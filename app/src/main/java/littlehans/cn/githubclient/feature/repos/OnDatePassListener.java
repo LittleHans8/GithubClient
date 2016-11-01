@@ -7,6 +7,6 @@ import android.os.Parcelable;
  * communicate ReposActivity with ReposCodePathFragment
  */
 
-public interface OnCardTouchListener {
+public interface OnDatePassListener {
   void onCardTouchListener(Parcelable date);
 }

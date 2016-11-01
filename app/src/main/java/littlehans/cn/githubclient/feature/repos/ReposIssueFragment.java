@@ -36,7 +36,7 @@ import static android.content.ContentValues.TAG;
  */
 
 public class ReposIssueFragment extends NetworkFragment<List<Issue>>
-    implements OnCardTouchListener, BaseQuickAdapter.RequestLoadMoreListener,
+    implements OnDatePassListener, BaseQuickAdapter.RequestLoadMoreListener,
     SwipeRefreshLayout.OnRefreshListener {
   @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
   @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
@@ -59,7 +59,7 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
   @Override public void onAttach(Context context) {
     super.onAttach(context);
     ReposActivity reposActivity = (ReposActivity) context;
-    reposActivity.setOnCardTouchListenerB(this);
+    reposActivity.setOnDatePassListenerC(this);
   }
 
   @Override protected int getFragmentLayout() {

@@ -27,7 +27,7 @@ public class SearchUserAdapter extends BaseQuickAdapter<User, BaseViewHolder> {
     if (!TextUtils.isEmpty(user.avatar_url)) {
       avatar.setImageURI(user.avatar_url);
     }
-    checkSet(baseViewHolder, R.id.text_name, user.login);
+    checkSet(baseViewHolder, R.id.text_repo_name, user.login);
     checkSet(baseViewHolder, R.id.text_email, user.email);
     checkSet(baseViewHolder, R.id.text_location, user.location);
     ISO8601DateFormat dateFormat = new ISO8601DateFormat();
