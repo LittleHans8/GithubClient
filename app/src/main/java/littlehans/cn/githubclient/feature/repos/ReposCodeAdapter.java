@@ -33,8 +33,4 @@ public class ReposCodeAdapter extends BaseQuickAdapter<Trees.Tree, BaseViewHolde
     }
   }
 
-  public String getName(String path) {
-    String paths[] = path.split("/");
-    return paths[paths.length-1];
-  }
 }
