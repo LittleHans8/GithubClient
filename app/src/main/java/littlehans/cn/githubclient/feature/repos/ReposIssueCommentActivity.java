@@ -3,6 +3,7 @@ package littlehans.cn.githubclient.feature.repos;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +19,7 @@ import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
 import littlehans.cn.githubclient.api.service.IssuesService;
 import littlehans.cn.githubclient.model.entity.Comment;
+import littlehans.cn.githubclient.model.entity.Issue;
 import littlehans.cn.githubclient.ui.activity.NetworkActivity;
 import littlehans.cn.githubclient.utilities.DateFormatUtil;
 import okhttp3.Headers;
@@ -29,12 +31,7 @@ import qiu.niorgai.StatusBarCompat;
 
 public class ReposIssueCommentActivity extends NetworkActivity<List<Comment>>
     implements SwipeRefreshLayout.OnRefreshListener {
-  public static final String COMMENT_COUNT = "comment_count";
-  public static final String ISSUE_TITLE = "title";
-  public static final String NUMBER = "number";
-  public static final String STATE = "state";
-  public static final String LOGIN = "login";
-  public static final String CREATE_AT = "create_at";
+
   public static final String OWNER = "owner";
   public static final String Repo = "repo";
   private static final String TAG = "ReposIssueComment";
@@ -46,48 +43,66 @@ public class ReposIssueCommentActivity extends NetworkActivity<List<Comment>>
   @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
   @BindView(R.id.toolbar) Toolbar mToolbar;
   @BindView(R.id.collapsing_app_bar) CollapsingToolbarLayout mCollapsingToolbarLayout;
-  private DateFormatUtil mDateFormat;
   private Intent mIntent;
   private String mOwner;
   private String mRepo;
-  private int mCurrentPage = 1;
   private String mNumber;
+  private DateFormatUtil mDateFormat;
+  private int mCurrentPage = 1;
   private GradientDrawable mGradientDrawable;
   private IssuesService mIssuesService;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.fragment_issue_detail);
-    setSupportActionBar(mToolbar);
-    StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorAccent));
-    mIntent = getIntent();
-    initDate();
-    mIssuesService = GithubService.createIssuesService();
+    initUI();
+    initData();
+    setupDate();
     networkQueue().enqueue(mIssuesService.getComments(mOwner, mRepo, mNumber, mCurrentPage));
   }
 
-  private void initDate() {
+  private void setupDate() {
+    Issue issue = mIntent.getExtras().getParcelable("issue");
+    //  construct a string like "opened this issue 9 Jun 2013 · 8 comments"
+    String createAT = formatCreateTime(issue);
+
+    mTxtCreateAt.setText(createAT);
+    mTxtLogin.setText(issue.user.login);
+
+    mGradientDrawable = (GradientDrawable) mTxtState.getBackground();
+
+    mNumber = String.valueOf(issue.number);
+
+    mToolbar.setTitle("#" + mNumber);
+
+    mTxtIssueTitle.setText(issue.title);
+    mCollapsingToolbarLayout.setTitle(issue.title);
+
+    setStateBackground(issue.state);
+    mTxtState.setText(issue.state);
+  }
+
+  private void initData() {
+    mIntent = getIntent();
+    mOwner = mIntent.getStringExtra(OWNER);
+    mRepo = mIntent.getStringExtra(Repo);
+    mIssuesService = GithubService.createIssuesService();
+  }
+
+  @NonNull private String formatCreateTime(Issue issue) {
+    mDateFormat = new DateFormatUtil(getString(R.string.opened_this_issue));
+    String createAT = mDateFormat.formatTime(issue.created_at);
+    String format = getString(R.string.format_comment_count);
+    createAT += String.format(format, issue.comments);
+    return createAT;
+  }
+
+  private void initUI() {
+    setSupportActionBar(mToolbar);
+    StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorAccent));
     mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,
         R.color.refresh_progress_2, R.color.refresh_progress_3);
     mSwipeRefreshLayout.setOnRefreshListener(this);
-    String commentCount = mIntent.getStringExtra(COMMENT_COUNT);
-    mDateFormat = new DateFormatUtil("opened this issue");
-    String createAT = mDateFormat.formatTime(mIntent.getStringExtra(CREATE_AT));
-    String format = "· %s comments";
-    createAT += String.format(format, commentCount);
-    mTxtCreateAt.setText(createAT);
-    mTxtLogin.setText(mIntent.getStringExtra(LOGIN));
-    mGradientDrawable = (GradientDrawable) mTxtState.getBackground();
-    mNumber = mIntent.getStringExtra(NUMBER);
-    mToolbar.setTitle("#" + mNumber);
-    String issueTitle = mIntent.getStringExtra(ISSUE_TITLE);
-    mTxtIssueTitle.setText(issueTitle);
-    mCollapsingToolbarLayout.setTitle(issueTitle);
-    String state = mIntent.getStringExtra(STATE);
-    setStateBackground(state);
-    mTxtState.setText(state);
-    mOwner = mIntent.getStringExtra(OWNER);
-    mRepo = mIntent.getStringExtra(Repo);
   }
 
   private void setStateBackground(String state) {

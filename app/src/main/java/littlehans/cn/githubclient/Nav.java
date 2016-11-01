@@ -2,7 +2,6 @@ package littlehans.cn.githubclient;
 
 import android.content.Context;
 import android.content.Intent;
-
 import littlehans.cn.githubclient.feature.search.SearchActivity;
 
 /**
@@ -11,8 +10,11 @@ import littlehans.cn.githubclient.feature.search.SearchActivity;
 
 public class Nav {
 
-    public static void startSearchActivity(Context context) {
-        Intent intent = new Intent(context, SearchActivity.class);
-        context.startActivity(intent);
-    }
+  public static final String repoItem = "repoItem";
+  public static final String issue = "issue";
+
+  public static void startSearchActivity(Context context) {
+    Intent intent = new Intent(context, SearchActivity.class);
+    context.startActivity(intent);
+  }
 }

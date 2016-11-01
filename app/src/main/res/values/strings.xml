@@ -44,5 +44,7 @@
   <string name="item_n">Item %d</string>
   <string name="readme_md">README.MD</string>
   <string name="overview">Overview</string>
+  <string name="format_comment_count">· %1d comments</string>
+  <string name="opened_this_issue">opened this issue</string>
 
 </resources>

@@ -126,14 +126,11 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
       @Override public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
         Issue issue = (Issue) baseQuickAdapter.getItem(i);
         Intent intent = new Intent(getActivity(), ReposIssueCommentActivity.class);
-        intent.putExtra(ReposIssueCommentActivity.ISSUE_TITLE, issue.title);
-        intent.putExtra(ReposIssueCommentActivity.NUMBER, String.valueOf(issue.number));
-        intent.putExtra(ReposIssueCommentActivity.LOGIN, issue.user.login);
-        intent.putExtra(ReposIssueCommentActivity.CREATE_AT, issue.created_at);
-        intent.putExtra(ReposIssueCommentActivity.STATE, issue.state);
+
+        intent.putExtra("issue", issue);
+
         intent.putExtra(ReposIssueCommentActivity.OWNER, mOwner);
         intent.putExtra(ReposIssueCommentActivity.Repo, mRepo);
-        intent.putExtra(ReposIssueCommentActivity.COMMENT_COUNT, String.valueOf(issue.comments));
         startActivity(intent);
       }
     };

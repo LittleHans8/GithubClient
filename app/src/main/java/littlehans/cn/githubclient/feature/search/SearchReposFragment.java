@@ -14,6 +14,7 @@ import butterknife.BindView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import java.util.List;
+import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
 import littlehans.cn.githubclient.feature.repos.ReposActivity;
@@ -137,17 +138,9 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
   private void addOnItemClickListener() {
     mOnItemClickListener = new OnItemClickListener() {
       @Override public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-        SearchRepos.Items repos = (SearchRepos.Items) baseQuickAdapter.getItem(i);
-        String owner = repos.owner.login;
-        String repo = repos.name;
-        String defaultBranch = repos.default_branch;
+        SearchRepos.Items repoItem = (SearchRepos.Items) baseQuickAdapter.getItem(i);
         Intent intent = new Intent(getActivity(), ReposActivity.class);
-
-        intent.putExtra("reposTests", repos); //reposTests
-
-        intent.putExtra("owner", owner);
-        intent.putExtra("repo", repo);
-        intent.putExtra("defaultBranch", defaultBranch);
+        intent.putExtra(Nav.repoItem, repoItem); //reposTests
         startActivity(intent);
       }
     };

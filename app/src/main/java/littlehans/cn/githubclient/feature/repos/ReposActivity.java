@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import butterknife.BindView;
+import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.model.entity.SearchRepos;
 import littlehans.cn.githubclient.ui.activity.BaseActivity;
@@ -32,22 +32,16 @@ public class ReposActivity extends BaseActivity {
     StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorAccent));
     setSupportActionBar(mToolbar);
     mIntent = getIntent();
-
-    mItems = mIntent.getExtras().getParcelable("reposTests");
-    Log.d("TAG", "onCreate: " + mItems.toString());
-
-    String repo = mIntent.getStringExtra("repo");
-    setTitle(repo);
+    mItems = mIntent.getExtras().getParcelable(Nav.repoItem);
+    setTitle(mItems.name);
   }
 
   public void setOnCardTouchListenerA(OnCardTouchListener onCardTouchListenerA) {
-
     mOnCardTouchListenerA = onCardTouchListenerA;
     mOnCardTouchListenerA.onCardTouchListener(mItems);
   }
 
   public void setOnCardTouchListenerB(OnCardTouchListener onCardTouchListenerB) {
-
     mOnCardTouchListenerB = onCardTouchListenerB;
     mOnCardTouchListenerB.onCardTouchListener(mItems);
   }
