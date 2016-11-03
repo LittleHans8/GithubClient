@@ -59,7 +59,7 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
   @Override public void onAttach(Context context) {
     super.onAttach(context);
     ReposActivity reposActivity = (ReposActivity) context;
-    reposActivity.setOnDatePassListenerC(this);
+    reposActivity.addOnDatePassListener(this);
   }
 
   @Override protected int getFragmentLayout() {

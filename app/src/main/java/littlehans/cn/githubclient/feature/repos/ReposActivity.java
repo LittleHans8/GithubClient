@@ -19,12 +19,8 @@ import qiu.niorgai.StatusBarCompat;
 
 public class ReposActivity extends BaseActivity {
   @BindView(R.id.toolbar) Toolbar mToolbar;
-  private OnDatePassListener mOnDatePassListenerA; // OverviewCodeFragment
-  private OnDatePassListener mOnDatePassListenerB; // ReposCodeFragment
-  private OnDatePassListener mOnDatePassListenerC; // ReposIssueFragment
   private Intent mIntent;
   private SearchRepos.Items mItems;
-  private OnDatePassListener mOnDatePassListener;
   private ArrayList<OnDatePassListener> mOnDatePassListeners;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,20 +46,5 @@ public class ReposActivity extends BaseActivity {
 
   public void removeOnDatePassListener(OnDatePassListener onDatePassListener) {
     mOnDatePassListeners.remove(mOnDatePassListeners);
-  }
-
-  public void setOnDatePassListenerA(OnDatePassListener onDatePassListenerA) {
-    mOnDatePassListenerA = onDatePassListenerA;
-    mOnDatePassListenerA.onCardTouchListener(mItems);
-  }
-
-  public void setOnDatePassListenerB(OnDatePassListener onDatePassListenerB) {
-    mOnDatePassListenerB = onDatePassListenerB;
-    mOnDatePassListenerB.onCardTouchListener(mItems);
-  }
-
-  public void setOnDatePassListenerC(OnDatePassListener onDatePassListenerC) {
-    mOnDatePassListenerC = onDatePassListenerC;
-    mOnDatePassListenerC.onCardTouchListener(mItems);
   }
 }

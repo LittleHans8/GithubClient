@@ -73,7 +73,7 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
     super.onAttach(context);
     setHasOptionsMenu(true);
     ReposActivity reposActivity = (ReposActivity) context;
-    reposActivity.setOnDatePassListenerB(this);
+    reposActivity.addOnDatePassListener(this);
     mPath = new ArrayList<>();
   }
 
