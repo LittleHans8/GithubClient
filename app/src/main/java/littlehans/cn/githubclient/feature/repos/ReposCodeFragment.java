@@ -48,12 +48,11 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
   public static final String MARKDOWN = "markdown";
   public static final String IS_MARK_DOWN_FILE = "isMarkDownFile";
 
-
-  Comparator<Trees.Tree> mTreeComparator;
-  ReposCodePathAdapter mPathAdapter;
   @BindView(R.id.recycler_view_path) RecyclerView mRecyclerViewPath;
   @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
   @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
+  Comparator<Trees.Tree> mTreeComparator;
+  ReposCodePathAdapter mPathAdapter;
   private GitDateService mGitDateService;
   private LinearLayoutManager mLinearLayoutManager;
   private List<ReposCodePath> mPath;
@@ -98,7 +97,6 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
         new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
     mRecyclerViewPath.setLayoutManager(linearLayoutManagerPath);
     mRecyclerView.setLayoutManager(mLinearLayoutManager);
-
     mPathAdapter = new ReposCodePathAdapter(mPath);
     mRecyclerViewPath.setAdapter(mPathAdapter);
     mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
@@ -161,11 +159,14 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
     mPathItemClickListener = new OnItemClickListener() {
       @Override public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
         int itemCount = baseQuickAdapter.getItemCount();
-        for (int position = i + 1; position < itemCount; position++) {
-          baseQuickAdapter.remove(position);
-        }
 
-        baseQuickAdapter.notifyItemRangeRemoved(i + 1, itemCount);
+        if (!(i + 1 == itemCount)) {
+          for (int position = i + 1; position < itemCount; position++) {
+            baseQuickAdapter.remove(position);
+          }
+
+          baseQuickAdapter.notifyItemRangeRemoved(i + 1, itemCount);
+        }
         TextView textView = (TextView) view;
         String sha = textView.getContentDescription().toString();
         networkQueue().enqueue(mGitDateService.getTree(mOwner, mRepo, sha));
@@ -198,11 +199,12 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
             if (branch.name.equals(mDefaultBranch)) {
               mSha = branch.commit.sha;
               networkQueue().enqueue(mGitDateService.getTree(mOwner, mRepo, mSha));
-              mRecyclerView.post(new Runnable() {
+              mRecyclerViewPath.post(new Runnable() {
                 @Override public void run() {
                   mPathAdapter.add(0, new ReposCodePath("root", mSha));
                 }
               });
+              break;
             }
           }
         } catch (IOException e) {
@@ -243,5 +245,4 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
   @Override public void respondWithError(Throwable t) {
 
   }
-
 }
