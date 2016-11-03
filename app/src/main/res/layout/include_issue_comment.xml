@@ -3,19 +3,14 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:showIn="@layout/fragment_issue_detail"
+    style="@style/LayoutMatch"
     >
   <TextView
       android:id="@+id/text_issue_title"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="8dp"
-      android:layout_marginStart="8dp"
-      android:textSize="24sp"
       tools:text="Bootstrap 4 Navbar with Dropdown and sub-dropdown"
+      style="@style/IssueComment.Title"
       />
   <LinearLayout
       android:layout_width="match_parent"
@@ -24,46 +19,24 @@
       >
     <TextView
         android:id="@+id/text_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/shape_issue_open"
-        android:drawableLeft="@drawable/ic_issue_open_white"
-        android:drawablePadding="2dp"
-        android:drawableStart="@drawable/ic_issue_open_white"
-        android:padding="6dp"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
         tools:text="Open"
+        style="@style/IssueComment.State"
         />
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:orientation="vertical"
+        style="@style/LayoutMatch"
         >
       <TextView
           android:id="@+id/text_login"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center"
-          android:layout_marginLeft="8dp"
-          android:layout_marginStart="8dp"
-          android:layout_marginTop="8dp"
-          android:textSize="18sp"
-          android:textStyle="bold"
           tools:text="bobrinch"
+          style="@style/IssueComment.Login"
           />
       <TextView
           android:id="@+id/text_create_at"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center"
-          android:layout_marginLeft="8dp"
-          android:layout_marginStart="8dp"
           tools:text="opened this issue 7 hours ago "
+          style="@style/IssueComment.CreateAt"
           />
     </LinearLayout>
   </LinearLayout>
