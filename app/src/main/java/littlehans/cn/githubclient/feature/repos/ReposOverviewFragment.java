@@ -7,26 +7,37 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.mukesh.MarkdownView;
+import java.io.IOException;
+import java.util.List;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
 import littlehans.cn.githubclient.api.service.GitDateService;
+import littlehans.cn.githubclient.api.service.RepositoryService;
+import littlehans.cn.githubclient.model.entity.Blob;
+import littlehans.cn.githubclient.model.entity.Branch;
 import littlehans.cn.githubclient.model.entity.SearchRepos;
-import littlehans.cn.githubclient.ui.fragment.BaseFragment;
+import littlehans.cn.githubclient.model.entity.Trees;
+import littlehans.cn.githubclient.ui.fragment.NetworkFragment;
+import littlehans.cn.githubclient.ui.widget.MarkdownView;
 import littlehans.cn.githubclient.utilities.DateFormatUtil;
 import littlehans.cn.githubclient.utilities.FormatUtils;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by LittleHans on 2016/10/30.
  */
 
-public class ReposOverviewFragment extends BaseFragment implements OnDatePassListener {
+public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnDatePassListener {
+  public static final String README_MD = "README.md";
   @BindView(R.id.markdown_view) MarkdownView mMarkdownView;
   @BindView(R.id.bottom_sheet) LinearLayout mBottomSheet;
   @BindView(R.id.avatar) SimpleDraweeView mAvatar;
@@ -47,6 +58,11 @@ public class ReposOverviewFragment extends BaseFragment implements OnDatePassLis
   private BottomSheetBehavior<LinearLayout> mBehavior;
   private SearchRepos.Items mItems;
   private GitDateService mGitDateService;
+  private String mOwner;
+  private String mRepo;
+  private String mDefaultBranch;
+  private String mSha;
+  private RepositoryService mRepositoryService;
 
   public static Fragment create() {
     return new ReposOverviewFragment();
@@ -55,7 +71,7 @@ public class ReposOverviewFragment extends BaseFragment implements OnDatePassLis
   @Override public void onAttach(Context context) {
     super.onAttach(context);
     ReposActivity reposActivity = (ReposActivity) context;
-    reposActivity.setOnDatePassListenerA(this);
+    reposActivity.addOnDatePassListener(this);
   }
 
   @Override protected int getFragmentLayout() {
@@ -66,51 +82,26 @@ public class ReposOverviewFragment extends BaseFragment implements OnDatePassLis
     super.onViewCreated(view, savedInstanceState);
     mBehavior = BottomSheetBehavior.from(mBottomSheet);
     mGitDateService = GithubService.createGitDateService();
-
+    mRepositoryService = GithubService.createRepositoryService();
     setupData();
-
-    // Blob blob = mGitDateService.getBlob(mOwner, mRepo, tree.sha).execute().body();
-
-    mMarkdownView.setMarkDownText(
-        "[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-BaseRecyclerViewAdapterHelper-green.svg?style=true)](https://android-arsenal.com/details/1/3644)\n"
-            + "[![](https://jitpack.io/v/CymChad/BaseRecyclerViewAdapterHelper.svg)](https://jitpack.io/#CymChad/BaseRecyclerViewAdapterHelper)  \n"
-            + "Powerful and flexible RecyclerAdapter \n"
-            + "Please feel free to use this.(Welcome to **Star** and **Fork**)\n"
-            + "## Google Play Demo\n"
-            + "\n"
-            + "[![Get it on Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=com.chad.baserecyclerviewadapterhelper)\n"
-            + "#Document\n"
-            + "##v1.9.8\n"
-            + "- [English](https://github.com/CymChad/BaseRecyclerViewAdapterHelper/wiki/old_doc)\n"
-            + "- [中文](https://github.com/CymChad/BaseRecyclerViewAdapterHelper/wiki/old_doc-cn)\n"
-            + "\n"
-            + "##v2.0.0\n"
-            + "- [English](https://github.com/CymChad/BaseRecyclerViewAdapterHelper/wiki)\n"
-            + "- [中文](https://github.com/CymChad/BaseRecyclerViewAdapterHelper/wiki/%E9%A6%96%E9%A1%B5)\n"
-            + "\n"
-            + "#Extension library\n"
-            + "[PinnedSectionItemDecoration](https://github.com/oubowu/PinnedSectionItemDecoration)  \n"
-            + "[EasyRefreshLayout](https://github.com/anzaizai/EasyRefreshLayout)\n"
-            + "\n"
-            + "#Thanks\n"
-            + "[JoanZapata / base-adapter-helper](https://github.com/JoanZapata/base-adapter-helper)\n"
-            + "\n"
-            + "#License\n"
-            + "```\n"
-            + "Copyright 2016 陈宇明\n"
-            + "\n"
-            + "Licensed under the Apache License, Version 2.0 (the \"License\");\n"
-            + "you may not use this file except in compliance with the License.\n"
-            + "You may obtain a copy of the License at\n"
-            + "\n"
-            + "   http://www.apache.org/licenses/LICENSE-2.0\n"
-            + "\n"
-            + "Unless required by applicable law or agreed to in writing, software\n"
-            + "distributed under the License is distributed on an \"AS IS\" BASIS,\n"
-            + "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n"
-            + "See the License for the specific language governing permissions and\n"
-            + "limitations under the License.\n"
-            + "```\n");
+    Thread threadX = new Thread(new Runnable() {
+      @Override public void run() {
+        try {
+          List<Branch> branches = mRepositoryService.getBranchList(mOwner, mRepo).execute().body();
+          for (Branch branch : branches) {
+            if (branch.name.equals(mDefaultBranch)) {
+              mSha = branch.commit.sha;
+              networkQueue().enqueue(
+                  mGitDateService.getTree(mOwner, mRepo, mSha)); // get the default tree
+              break;
+            }
+          }
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    });
+    threadX.start();
   }
 
   @OnClick({
@@ -146,6 +137,9 @@ public class ReposOverviewFragment extends BaseFragment implements OnDatePassLis
 
   @Override public void onCardTouchListener(Parcelable date) {
     mItems = (SearchRepos.Items) date;
+    mOwner = mItems.owner.login;
+    mRepo = mItems.name;
+    mDefaultBranch = mItems.default_branch;
   }
 
   public void setupData() {
@@ -161,5 +155,39 @@ public class ReposOverviewFragment extends BaseFragment implements OnDatePassLis
     DateFormatUtil dateFormat = new DateFormatUtil(getString(R.string.create_at));
     String createAt = dateFormat.formatTime(mItems.created_at);
     mTxtCreateAt.setText(createAt);
+  }
+
+  @Override public void respondSuccess(Trees data) {
+    for (Trees.Tree tree : data.tree) {
+      if (tree.path.equals(README_MD)) {
+        setMarkDownText(tree);
+        break;
+      }
+    }
+  }
+
+  private void setMarkDownText(final Trees.Tree tree) {
+    Thread thread = new Thread(new Runnable() {
+      @Override public void run() {
+        try {
+          Blob blob = mGitDateService.getBlob(mOwner, mRepo, tree.sha).execute().body();
+          final String txtMarkdown = new String(Base64.decode(blob.content, Base64.DEFAULT));
+          Log.d(TAG, "run: " + txtMarkdown); // log->success
+          getActivity().runOnUiThread(new Runnable() {
+            @Override public void run() {
+              mMarkdownView.setMarkDownText(txtMarkdown); // show abnormal,the markdown is blank
+              Log.d(TAG, "run: " + "already set markdownTxt"); // log->success
+            }
+          });
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    });
+    thread.start();
+  }
+
+  @Override public void respondWithError(Throwable t) {
+    Log.d(TAG, "respondWithError: " + t.getMessage());
   }
 }
