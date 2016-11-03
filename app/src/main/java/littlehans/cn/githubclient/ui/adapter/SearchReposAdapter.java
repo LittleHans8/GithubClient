@@ -40,6 +40,7 @@ public class SearchReposAdapter extends BaseQuickAdapter<SearchRepos.Items, Base
     if (TextUtils.isEmpty(items.description)) {
       baseViewHolder.getView(R.id.text_description).setVisibility(View.GONE);
     } else {
+      baseViewHolder.getView(R.id.text_description).setVisibility(View.VISIBLE);
       baseViewHolder.setText(R.id.text_description, getMatchString(items)[1]);
     }
     if (TextUtils.isEmpty(items.language)) {
@@ -53,6 +54,7 @@ public class SearchReposAdapter extends BaseQuickAdapter<SearchRepos.Items, Base
     if (TextUtils.isEmpty(data)) {
       baseViewHolder.setVisible(resId, false);
     } else {
+      baseViewHolder.setVisible(resId, true);
       baseViewHolder.setText(resId, data);
     }
   }
