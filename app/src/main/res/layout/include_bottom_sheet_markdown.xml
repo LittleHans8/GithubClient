@@ -22,7 +22,7 @@
       android:layout_height="match_parent"
       android:layout_marginBottom="16dp"
       >
-    <littlehans.cn.githubclient.ui.widget.MarkdownView
+    <com.mukesh.MarkdownView
         android:id="@+id/markdown_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

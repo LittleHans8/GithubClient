@@ -15,6 +15,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.mukesh.MarkdownView;
 import java.io.IOException;
 import java.util.List;
 import littlehans.cn.githubclient.R;
@@ -26,7 +27,6 @@ import littlehans.cn.githubclient.model.entity.Branch;
 import littlehans.cn.githubclient.model.entity.SearchRepos;
 import littlehans.cn.githubclient.model.entity.Trees;
 import littlehans.cn.githubclient.ui.fragment.NetworkFragment;
-import littlehans.cn.githubclient.ui.widget.MarkdownView;
 import littlehans.cn.githubclient.utilities.DateFormatUtil;
 import littlehans.cn.githubclient.utilities.FormatUtils;
 

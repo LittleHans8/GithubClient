@@ -66,7 +66,7 @@ dependencies {
 
   compile 'com.github.niorgai:StatusBarCompat:2.0.0'
 
-  compile 'com.github.mukeshsolanki:MarkdownView-Android:1.0.1'
+  compile 'com.github.mukeshsolanki:MarkdownView-Android:1.0.2'
 
   compile 'thereisnospon.codeview:codeview:0.3.1'
 
