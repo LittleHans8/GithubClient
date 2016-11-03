@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import butterknife.BindView;
+import java.util.ArrayList;
 import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.model.entity.SearchRepos;
@@ -24,6 +25,7 @@ public class ReposActivity extends BaseActivity {
   private Intent mIntent;
   private SearchRepos.Items mItems;
   private OnDatePassListener mOnDatePassListener;
+  private ArrayList<OnDatePassListener> mOnDatePassListeners;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -33,9 +35,21 @@ public class ReposActivity extends BaseActivity {
         .commit();
     StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorAccent));
     setSupportActionBar(mToolbar);
+    mOnDatePassListeners = new ArrayList<>();
     mIntent = getIntent();
     mItems = mIntent.getExtras().getParcelable(Nav.REPO_ITEM);
     setTitle(mItems.name);
+  }
+
+  public void addOnDatePassListener(OnDatePassListener onDatePassListener) {
+    mOnDatePassListeners.add(onDatePassListener);
+    for (OnDatePassListener OnDatePassListenerX : mOnDatePassListeners) {
+      OnDatePassListenerX.onCardTouchListener(mItems);
+    }
+  }
+
+  public void removeOnDatePassListener(OnDatePassListener onDatePassListener) {
+    mOnDatePassListeners.remove(mOnDatePassListeners);
   }
 
   public void setOnDatePassListenerA(OnDatePassListener onDatePassListenerA) {
