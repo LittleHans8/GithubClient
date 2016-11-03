@@ -147,4 +147,14 @@ public class SearchUsersFragment extends NetworkFragment<SearchUser>
     networkQueue().enqueue(
         GithubService.createSearchService().users(query, null, null, mCurrentPage));
   }
+
+  @Override public void startRequest() {
+    super.startRequest();
+    mSwipeRefreshLayout.setRefreshing(true);
+  }
+
+  @Override public void endRequest() {
+    super.endRequest();
+    mSwipeRefreshLayout.setRefreshing(false);
+  }
 }

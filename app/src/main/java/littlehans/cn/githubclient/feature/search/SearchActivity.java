@@ -46,7 +46,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
   @Override
   public boolean onQueryTextSubmit(String query) {
     mSearchListenerA.onSearch(query);
-    //mSearchListenerB.onSearch(query);// SearchUserFragment
+    mSearchListenerB.onSearch(query);// SearchUserFragment
     mSearchView.clearFocus();
     return true;
   }

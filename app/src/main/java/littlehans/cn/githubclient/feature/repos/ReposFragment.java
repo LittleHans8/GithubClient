@@ -24,9 +24,9 @@ import littlehans.cn.githubclient.ui.fragment.BaseFragment;
 public class ReposFragment extends BaseFragment implements TabLayout.OnTabSelectedListener {
   @BindView(R.id.tab_layout) TabLayout mTabLayout;
   @BindView(R.id.view_pager) ViewPager mViewPager;
-  int[] mDrawableNormal;
-  int[] mDrawableSelected;
-  String[] mTitles;
+  private int[] mDrawableNormal;
+  private int[] mDrawableSelected;
+  private String[] mTitles;
   private Adapter mAdapter;
 
   public static Fragment create() {
