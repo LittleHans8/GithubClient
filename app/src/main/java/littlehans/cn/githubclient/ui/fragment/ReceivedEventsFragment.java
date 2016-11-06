@@ -1,8 +1,21 @@
 package littlehans.cn.githubclient.ui.fragment;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+import butterknife.BindView;
 import java.util.List;
 import littlehans.cn.githubclient.R;
+import littlehans.cn.githubclient.api.GithubService;
+import littlehans.cn.githubclient.api.service.EventService;
 import littlehans.cn.githubclient.model.entity.ReceivedEvent;
+import littlehans.cn.githubclient.ui.adapter.ReceivedEventAdapter;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by LittleHans on 2016/11/4.
@@ -10,15 +23,40 @@ import littlehans.cn.githubclient.model.entity.ReceivedEvent;
 
 public class ReceivedEventsFragment extends NetworkFragment<List<ReceivedEvent>> {
 
+  @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
+  @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mLayoutSwipeRefresh;
+  private EventService mEventService;
+
+  @Override protected int getFragmentLayout() {
+    return R.layout.fragment_events;
+  }
+
+  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    mEventService = GithubService.createEventService();
+    Log.d(TAG, "onViewCreated: ");
+    networkQueue().enqueue(mEventService.getReceivedEvent("LittleHans8"));
+  }
+
   @Override public void respondSuccess(List<ReceivedEvent> data) {
+    Log.d(TAG, "respondSuccess: ");
+    ReceivedEventAdapter eventAdapter = new ReceivedEventAdapter(data);
+    mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    mRecyclerView.setAdapter(eventAdapter);
 
   }
 
   @Override public void respondWithError(Throwable t) {
-
+    Log.d(TAG, "respondWithError: " + t.getMessage());
   }
 
-  @Override protected int getFragmentLayout() {
-    return R.layout.fragment_events;
+  @Override public void startRequest() {
+    super.startRequest();
+    mLayoutSwipeRefresh.setRefreshing(true);
+  }
+
+  @Override public void endRequest() {
+    super.endRequest();
+    mLayoutSwipeRefresh.setRefreshing(false);
   }
 }
