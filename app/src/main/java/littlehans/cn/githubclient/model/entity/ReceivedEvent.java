@@ -2,13 +2,14 @@ package littlehans.cn.githubclient.model.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * Created by LittleHans on 2016/11/4.
  */
-public class ReceivedEvent implements Parcelable {
+@JsonIgnoreProperties(ignoreUnknown = true) public class ReceivedEvent implements Parcelable {
 
   public static final Creator<ReceivedEvent> CREATOR = new Creator<ReceivedEvent>() {
     @Override public ReceivedEvent createFromParcel(Parcel source) {
@@ -57,7 +58,7 @@ public class ReceivedEvent implements Parcelable {
     dest.writeParcelable(this.org, flags);
   }
 
-  public static class Actor implements Parcelable {
+  @JsonIgnoreProperties(ignoreUnknown = true) public static class Actor implements Parcelable {
     public static final Creator<Actor> CREATOR = new Creator<Actor>() {
       @Override public Actor createFromParcel(Parcel source) {
         return new Actor(source);
@@ -100,7 +101,7 @@ public class ReceivedEvent implements Parcelable {
     }
   }
 
-  public static class Repo implements Parcelable {
+  @JsonIgnoreProperties(ignoreUnknown = true) public static class Repo implements Parcelable {
     public static final Creator<Repo> CREATOR = new Creator<Repo>() {
       @Override public Repo createFromParcel(Parcel source) {
         return new Repo(source);
@@ -134,7 +135,7 @@ public class ReceivedEvent implements Parcelable {
     }
   }
 
-  public static class Payload implements Parcelable {
+  @JsonIgnoreProperties(ignoreUnknown = true) public static class Payload implements Parcelable {
     public static final Creator<Payload> CREATOR = new Creator<Payload>() {
       @Override public Payload createFromParcel(Parcel source) {
         return new Payload(source);
@@ -179,7 +180,7 @@ public class ReceivedEvent implements Parcelable {
       dest.writeTypedList(this.commits);
     }
 
-    public static class Commits implements Parcelable {
+    @JsonIgnoreProperties(ignoreUnknown = true) public static class Commits implements Parcelable {
       public static final Creator<Commits> CREATOR = new Creator<Commits>() {
         @Override public Commits createFromParcel(Parcel source) {
           return new Commits(source);
@@ -218,7 +219,7 @@ public class ReceivedEvent implements Parcelable {
         dest.writeString(this.url);
       }
 
-      public static class Author implements Parcelable {
+      @JsonIgnoreProperties(ignoreUnknown = true) public static class Author implements Parcelable {
         public static final Creator<Author> CREATOR = new Creator<Author>() {
           @Override public Author createFromParcel(Parcel source) {
             return new Author(source);
@@ -251,7 +252,7 @@ public class ReceivedEvent implements Parcelable {
     }
   }
 
-  public static class Org implements Parcelable {
+  @JsonIgnoreProperties(ignoreUnknown = true) public static class Org implements Parcelable {
     public static final Creator<Org> CREATOR = new Creator<Org>() {
       @Override public Org createFromParcel(Parcel source) {
         return new Org(source);
