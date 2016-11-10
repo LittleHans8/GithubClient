@@ -13,6 +13,7 @@ import butterknife.BindView;
 import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.ui.activity.BaseActivity;
+import littlehans.cn.githubclient.ui.fragment.ReceivedEventsFragment;
 import qiu.niorgai.StatusBarCompat;
 
 public class MainActivity extends BaseActivity
@@ -38,6 +39,9 @@ public class MainActivity extends BaseActivity
     mNavigationView.setNavigationItemSelectedListener(this);
 
     StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this,R.color.colorAccent));
+    getSupportFragmentManager().beginTransaction()
+        .add(R.id.content_main, new ReceivedEventsFragment())
+        .commit();
 
   }
 

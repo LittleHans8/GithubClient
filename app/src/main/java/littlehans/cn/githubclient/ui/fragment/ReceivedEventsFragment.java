@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import butterknife.BindView;
+import java.util.ArrayList;
 import java.util.List;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
@@ -40,10 +41,22 @@ public class ReceivedEventsFragment extends NetworkFragment<List<ReceivedEvent>>
 
   @Override public void respondSuccess(List<ReceivedEvent> data) {
     Log.d(TAG, "respondSuccess: ");
-    ReceivedEventAdapter eventAdapter = new ReceivedEventAdapter(data);
+    List<ReceivedEvent> copyDate = new ArrayList<>();
+    for (ReceivedEvent receivedEvent : data) {
+      String type = receivedEvent.type;
+      if (type.equals(ReceivedEvent.DELETE_EVENT)
+          || type.equals(ReceivedEvent.WATCH_EVENT)
+          || type.equals(ReceivedEvent.CREATE_EVENT)
+          || type.equals(ReceivedEvent.MEMBER_EVENT)
+          || type.equals(ReceivedEvent.FORK_EVENT)) {
+        receivedEvent.itemType = ReceivedEvent.TEXT;
+        copyDate.add(receivedEvent);
+      }
+    }
+
+    ReceivedEventAdapter eventAdapter = new ReceivedEventAdapter(getActivity(), copyDate);
     mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     mRecyclerView.setAdapter(eventAdapter);
-
   }
 
   @Override public void respondWithError(Throwable t) {
@@ -52,11 +65,20 @@ public class ReceivedEventsFragment extends NetworkFragment<List<ReceivedEvent>>
 
   @Override public void startRequest() {
     super.startRequest();
-    mLayoutSwipeRefresh.setRefreshing(true);
+    getActivity().runOnUiThread(new Runnable() {
+      @Override public void run() {
+        mLayoutSwipeRefresh.setRefreshing(true);
+        Log.d(TAG, "run: " + "setRefreshing");
+      }
+    });
   }
 
   @Override public void endRequest() {
     super.endRequest();
-    mLayoutSwipeRefresh.setRefreshing(false);
+    getActivity().runOnUiThread(new Runnable() {
+      @Override public void run() {
+        mLayoutSwipeRefresh.setRefreshing(false);
+      }
+    });
   }
 }
