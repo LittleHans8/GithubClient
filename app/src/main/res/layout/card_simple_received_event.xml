@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+  <TextView
+      android:id="@+id/text_received_event_body"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:drawableLeft="@drawable/ic_event_branch"
+      android:drawablePadding="2dp"
+      android:drawableStart="@drawable/ic_event_branch"
+      tools:text="Doublemine deleted branch dev_store at qijitech/android-starter-kit"
+      />
+
+  <TextView
+      android:id="@+id/text_create_at"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="24dp"
+      android:layout_marginStart="24dp"
+      android:layout_marginTop="8dp"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/text_received_event_body"
+      tools:text="12 hours ago"
+      />
+
+
+</android.support.constraint.ConstraintLayout>
