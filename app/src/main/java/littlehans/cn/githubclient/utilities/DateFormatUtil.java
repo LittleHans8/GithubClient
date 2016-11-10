@@ -22,8 +22,9 @@ public class DateFormatUtil {
   }
 
   public DateFormatUtil() {
+    dateFormat = new ISO8601DateFormat();
     String pattern = "d MMM yyyy ";
-    mSimpleDateFormat = new SimpleDateFormat(pattern);
+    mSimpleDateFormat = new SimpleDateFormat(pattern, Locale.US);
   }
 
   public String formatTime(String ISO860DateString) {

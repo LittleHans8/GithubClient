@@ -2,6 +2,7 @@ package littlehans.cn.githubclient.model.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -9,8 +10,19 @@ import java.util.List;
 /**
  * Created by LittleHans on 2016/11/4.
  */
-@JsonIgnoreProperties(ignoreUnknown = true) public class ReceivedEvent implements Parcelable {
+@JsonIgnoreProperties(ignoreUnknown = true) public class ReceivedEvent
+    implements Parcelable, MultiItemEntity {
 
+  public static final String DELETE_EVENT = "DeleteEvent";
+  public static final String WATCH_EVENT = "WatchEvent";
+  public static final String CREATE_EVENT = "CreateEvent";
+  public static final String MEMBER_EVENT = "MemberEvent";
+  public static final String FORK_EVENT = "ForkEvent";
+
+  public static final String PUSH_EVENT = "PushEvent";
+  public static final String ISSUE_COMMENT_EVENT = "IssueCommentEvent";
+  public static final int TEXT = 0;
+  public static final int TEXT_AVATAR = 1;
   public static final Creator<ReceivedEvent> CREATOR = new Creator<ReceivedEvent>() {
     @Override public ReceivedEvent createFromParcel(Parcel source) {
       return new ReceivedEvent(source);
@@ -28,6 +40,7 @@ import java.util.List;
   @JsonProperty("public") public boolean publicX;
   public String created_at;
   public Org org;
+  public int itemType = 1;
 
   public ReceivedEvent() {
   }
@@ -41,6 +54,11 @@ import java.util.List;
     this.publicX = in.readByte() != 0;
     this.created_at = in.readString();
     this.org = in.readParcelable(Org.class.getClassLoader());
+    this.itemType = in.readInt();
+  }
+
+  @Override public int getItemType() {
+    return itemType;
   }
 
   @Override public int describeContents() {
@@ -56,6 +74,7 @@ import java.util.List;
     dest.writeByte(this.publicX ? (byte) 1 : (byte) 0);
     dest.writeString(this.created_at);
     dest.writeParcelable(this.org, flags);
+    dest.writeInt(this.itemType);
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true) public static class Actor implements Parcelable {
@@ -136,6 +155,7 @@ import java.util.List;
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true) public static class Payload implements Parcelable {
+
     public static final Creator<Payload> CREATOR = new Creator<Payload>() {
       @Override public Payload createFromParcel(Parcel source) {
         return new Payload(source);
@@ -149,6 +169,7 @@ import java.util.List;
     public int size;
     public int distinct_size;
     public String ref;
+    public String ref_type;
     public String head;
     public String before;
     public List<Commits> commits;
@@ -161,6 +182,7 @@ import java.util.List;
       this.size = in.readInt();
       this.distinct_size = in.readInt();
       this.ref = in.readString();
+      this.ref_type = in.readString();
       this.head = in.readString();
       this.before = in.readString();
       this.commits = in.createTypedArrayList(Commits.CREATOR);
@@ -175,6 +197,7 @@ import java.util.List;
       dest.writeInt(this.size);
       dest.writeInt(this.distinct_size);
       dest.writeString(this.ref);
+      dest.writeString(this.ref_type);
       dest.writeString(this.head);
       dest.writeString(this.before);
       dest.writeTypedList(this.commits);
