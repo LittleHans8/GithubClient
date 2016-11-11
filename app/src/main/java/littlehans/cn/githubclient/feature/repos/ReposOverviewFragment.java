@@ -172,11 +172,9 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
         try {
           Blob blob = mGitDateService.getBlob(mOwner, mRepo, tree.sha).execute().body();
           final String txtMarkdown = new String(Base64.decode(blob.content, Base64.DEFAULT));
-          Log.d(TAG, "run: " + txtMarkdown); // log->success
           getActivity().runOnUiThread(new Runnable() {
             @Override public void run() {
-              mMarkdownView.setMarkDownText(txtMarkdown); // show abnormal,the markdown is blank
-              Log.d(TAG, "run: " + "already set markdownTxt"); // log->success
+              mMarkdownView.setMarkDownText(txtMarkdown);
             }
           });
         } catch (IOException e) {
