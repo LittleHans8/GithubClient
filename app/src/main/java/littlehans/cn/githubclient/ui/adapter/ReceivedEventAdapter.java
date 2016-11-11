@@ -15,6 +15,8 @@ import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.model.entity.ReceivedEvent;
 import littlehans.cn.githubclient.utilities.DateFormatUtil;
 
+import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
+
 /**
  * Created by LittleHans on 2016/11/6.
  */
@@ -32,6 +34,7 @@ public class ReceivedEventAdapter extends BaseMultiItemQuickAdapter<ReceivedEven
   }
 
   @Override protected void convert(BaseViewHolder baseViewHolder, ReceivedEvent receivedEvent) {
+
     switch (baseViewHolder.getItemViewType()) {
       case ReceivedEvent.TEXT:
         TextView textReceivedEventBody = baseViewHolder.getView(R.id.text_received_event_body);
@@ -39,22 +42,13 @@ public class ReceivedEventAdapter extends BaseMultiItemQuickAdapter<ReceivedEven
           case ReceivedEvent.DELETE_EVENT:
             textReceivedEventBody.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.ic_event_branch, 0, 0, 0);
-            Spannable login = new SpannableString(receivedEvent.actor.login);
-
+            String login = receivedEvent.actor.login;
             String ref_type = receivedEvent.payload.ref_type;
             String ref = receivedEvent.payload.ref;
             String repo = receivedEvent.repo.name;
             String deleteFormat = "%s deleted %s %s at %s";
             String body = String.format(deleteFormat, login, ref_type, ref, repo);
-            Spannable spannableBody = new SpannableString(body);
-            spannableBody.setSpan(getColorSpan(), 0, login.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            int refStart = spannableBody.toString().indexOf(ref);
-            spannableBody.setSpan(getColorSpan(), refStart, refStart + ref.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            int repoStart = spannableBody.toString().indexOf(repo);
-            spannableBody.setSpan(getColorSpan(), repoStart, repoStart + repo.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            Spannable spannableBody = getSpanText(body, login, ref, repo);
             textReceivedEventBody.setText(spannableBody);
             baseViewHolder.setText(R.id.text_create_at,
                 mDateFormatUtil.formatTime(receivedEvent.created_at));
@@ -63,10 +57,36 @@ public class ReceivedEventAdapter extends BaseMultiItemQuickAdapter<ReceivedEven
 
         break;
       case ReceivedEvent.TEXT_AVATAR:
+        TextView textCreateAtAndType = baseViewHolder.getView(R.id.text_create_at_and_type);
         SimpleDraweeView simpleDraweeView = baseViewHolder.getView(R.id.avatar);
         simpleDraweeView.setImageURI(receivedEvent.actor.avatar_url);
+        switch (receivedEvent.type) {
+          case ReceivedEvent.PUSH_EVENT:
+            String createAt = mDateFormatUtil.formatTime(receivedEvent.created_at) + "\n";
+            String login = receivedEvent.actor.login;
+            String ref[] = receivedEvent.payload.ref.split("/");
+            String branch = ref[ref.length - 1];
+            String repo = receivedEvent.repo.name;
+            String pushFormat = "%s %s pushed to %s at %s";
+            String pushBody = String.format(pushFormat, createAt, login, branch, repo);
+            Spannable spannablePushBody = getSpanText(pushBody, login, branch, repo);
+            textCreateAtAndType.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_event_commint,
+                0, 0, 0);
+            textCreateAtAndType.setText(spannablePushBody);
+            break;
+        }
         break;
     }
+  }
+
+  private Spannable getSpanText(String fullString, String... spanText) {
+    Spannable spannableString = new SpannableString(fullString);
+    for (String text : spanText) {
+      int start = fullString.indexOf(text);
+      int end = start + text.length();
+      spannableString.setSpan(getColorSpan(), start, end, SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+    return spannableString;
   }
 
   @NonNull private ForegroundColorSpan getColorSpan() {

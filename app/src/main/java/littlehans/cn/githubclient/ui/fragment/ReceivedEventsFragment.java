@@ -50,8 +50,8 @@ public class ReceivedEventsFragment extends NetworkFragment<List<ReceivedEvent>>
           || type.equals(ReceivedEvent.MEMBER_EVENT)
           || type.equals(ReceivedEvent.FORK_EVENT)) {
         receivedEvent.itemType = ReceivedEvent.TEXT;
-        copyDate.add(receivedEvent);
       }
+      copyDate.add(receivedEvent);
     }
 
     ReceivedEventAdapter eventAdapter = new ReceivedEventAdapter(getActivity(), copyDate);
