@@ -172,6 +172,7 @@ import java.util.List;
     public String ref_type;
     public String head;
     public String before;
+    public String action;
     public List<Commits> commits;
 
     public Payload() {
@@ -185,6 +186,7 @@ import java.util.List;
       this.ref_type = in.readString();
       this.head = in.readString();
       this.before = in.readString();
+      this.action = in.readString();
       this.commits = in.createTypedArrayList(Commits.CREATOR);
     }
 
@@ -200,6 +202,7 @@ import java.util.List;
       dest.writeString(this.ref_type);
       dest.writeString(this.head);
       dest.writeString(this.before);
+      dest.writeString(this.action);
       dest.writeTypedList(this.commits);
     }
 
