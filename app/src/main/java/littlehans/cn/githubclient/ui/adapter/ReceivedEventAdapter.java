@@ -35,21 +35,47 @@ public class ReceivedEventAdapter extends BaseMultiItemQuickAdapter<ReceivedEven
 
   @Override protected void convert(BaseViewHolder baseViewHolder, ReceivedEvent receivedEvent) {
 
+    String login = receivedEvent.actor.login;
+    String repo = receivedEvent.repo.name;
+
     switch (baseViewHolder.getItemViewType()) {
       case ReceivedEvent.TEXT:
+
         TextView textReceivedEventBody = baseViewHolder.getView(R.id.text_received_event_body);
         switch (receivedEvent.type) {
           case ReceivedEvent.DELETE_EVENT:
             textReceivedEventBody.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.ic_event_branch, 0, 0, 0);
-            String login = receivedEvent.actor.login;
             String ref_type = receivedEvent.payload.ref_type;
             String ref = receivedEvent.payload.ref;
-            String repo = receivedEvent.repo.name;
             String deleteFormat = "%s deleted %s %s at %s";
             String body = String.format(deleteFormat, login, ref_type, ref, repo);
             Spannable spannableBody = getSpanText(body, login, ref, repo);
             textReceivedEventBody.setText(spannableBody);
+            baseViewHolder.setText(R.id.text_create_at,
+                mDateFormatUtil.formatTime(receivedEvent.created_at));
+            break;
+          case ReceivedEvent.WATCH_EVENT:
+            textReceivedEventBody.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_event_star,
+                0, 0, 0);
+            String action = receivedEvent.payload.action;
+            String eventBodyFormat = "%s %s %s";
+            String eventBody = String.format(eventBodyFormat, login, action, repo);
+            textReceivedEventBody.setText(getSpanText(eventBody, login, repo));
+            baseViewHolder.setText(R.id.text_create_at,
+                mDateFormatUtil.formatTime(receivedEvent.created_at));
+            break;
+
+          /**
+           * ref_type	The object that was created. Can be one of "repository", "branch", or "tag"
+           */
+
+          case ReceivedEvent.CREATE_EVENT:
+            String type = receivedEvent.payload.ref_type;
+
+            String createEventBodyFormat = "%s created %s %s";
+            String createEventBody = String.format(createEventBodyFormat, login, type, repo);
+            textReceivedEventBody.setText(getSpanText(createEventBody, login, repo));
             baseViewHolder.setText(R.id.text_create_at,
                 mDateFormatUtil.formatTime(receivedEvent.created_at));
             break;
@@ -63,10 +89,8 @@ public class ReceivedEventAdapter extends BaseMultiItemQuickAdapter<ReceivedEven
         switch (receivedEvent.type) {
           case ReceivedEvent.PUSH_EVENT:
             String createAt = mDateFormatUtil.formatTime(receivedEvent.created_at) + "\n";
-            String login = receivedEvent.actor.login;
             String ref[] = receivedEvent.payload.ref.split("/");
             String branch = ref[ref.length - 1];
-            String repo = receivedEvent.repo.name;
             String pushFormat = "%s %s pushed to %s at %s";
             String pushBody = String.format(pushFormat, createAt, login, branch, repo);
             Spannable spannablePushBody = getSpanText(pushBody, login, branch, repo);
