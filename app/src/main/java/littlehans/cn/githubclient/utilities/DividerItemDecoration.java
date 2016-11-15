@@ -5,100 +5,81 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DimenRes;
-import android.support.annotation.DrawableRes;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
-  private static final int[] ATTRS = { android.R.attr.listDivider };
+  public static final int HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL;
+  public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
+  private static final int[] ATTRS = new int[] {
+      android.R.attr.listDivider
+  };
+  private Drawable mDivider;
 
-  private Drawable divider;
-  private int insets;
-  private Context context;
-  private boolean addInsets = false;
+  private int mOrientation;
 
-  public DividerItemDecoration(Context context, Drawable divider) {
-    this.context = context;
-    this.divider = divider;
-  }
-
-  public DividerItemDecoration(Context context) {
-    this.context = context;
-    TypedArray a = context.obtainStyledAttributes(ATTRS);
-    divider = a.getDrawable(0);
+  public DividerItemDecoration(Context context, int orientation) {
+    final TypedArray a = context.obtainStyledAttributes(ATTRS);
+    mDivider = a.getDrawable(0);
     a.recycle();
+    setOrientation(orientation);
   }
 
-  public void setDivider(@DrawableRes int dividerDrawableRes) {
-    divider = ContextCompat.getDrawable(context, dividerDrawableRes);
+  public void setOrientation(int orientation) {
+    if (orientation != HORIZONTAL_LIST && orientation != VERTICAL_LIST) {
+      throw new IllegalArgumentException("invalid orientation");
+    }
+    mOrientation = orientation;
   }
 
-  public void setInsets(@DimenRes int insets) {
-    addInsets = true;
-    this.insets = context.getResources().getDimensionPixelSize(insets);
+  @Override public void onDraw(Canvas c, RecyclerView parent) {
+    if (mOrientation == VERTICAL_LIST) {
+      drawVertical(c, parent);
+    } else {
+      drawHorizontal(c, parent);
+    }
   }
 
-  @Override public void onDrawOver(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
-    drawHorizontal(canvas, parent);
-    drawToTheRightOfEachChildren(canvas, parent);
+  public void drawVertical(Canvas c, RecyclerView parent) {
+    final int left = parent.getPaddingLeft();
+    final int right = parent.getWidth() - parent.getPaddingRight();
+
+    final int childCount = parent.getChildCount();
+    for (int i = 0; i < childCount; i++) {
+      final View child = parent.getChildAt(i);
+      final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+      final int top = child.getBottom() + params.bottomMargin +
+          Math.round(ViewCompat.getTranslationY(child));
+      final int bottom = top + mDivider.getIntrinsicHeight();
+      mDivider.setBounds(left, top, right, bottom);
+      mDivider.draw(c);
+    }
   }
 
   public void drawHorizontal(Canvas c, RecyclerView parent) {
-    int childCount = parent.getChildCount();
-    if (childCount == 0) return;
-    int left, top, right, bottom;
-    View currentChild;
+    final int top = parent.getPaddingTop();
+    final int bottom = parent.getHeight() - parent.getPaddingBottom();
+
+    final int childCount = parent.getChildCount();
     for (int i = 0; i < childCount; i++) {
-      currentChild = parent.getChildAt(i);
-      int currentChildBottom = currentChild.getBottom();
-      if (currentChildBottom > parent.getPaddingTop()
-          && currentChildBottom < parent.getBottom() - parent.getPaddingBottom()) {
-        left = currentChild.getLeft();
-        right = currentChild.getRight();
-        top = currentChildBottom;
-        bottom = top + divider.getIntrinsicHeight();
-        divider.setBounds(left, top, right, bottom);
-        divider.draw(c);
-      }
+      final View child = parent.getChildAt(i);
+      final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+      final int left = child.getRight() + params.rightMargin +
+          Math.round(ViewCompat.getTranslationX(child));
+      final int right = left + mDivider.getIntrinsicHeight();
+      mDivider.setBounds(left, top, right, bottom);
+      mDivider.draw(c);
     }
   }
 
-  public void drawToTheRightOfEachChildren(Canvas c, RecyclerView parent) {
-    if (parent.getChildCount() == 0) return;
-    int top, left, right, bottom;
-    int childCount = parent.getChildCount();
-    View currentChild;
-    for (int i = 0; i < childCount; i++) {
-      currentChild = parent.getChildAt(i);
-      int offset = 2;
-      if (currentChild.getRight() < parent.getRight() - parent.getPaddingRight() - offset) {
-        //Avoid drawing over top padding
-        top = currentChild.getTop();
-        if (top < parent.getPaddingTop()) {
-          top = parent.getPaddingTop();
-        }
-        bottom = currentChild.getBottom() + divider.getIntrinsicHeight();
-        //Avoid drawing over bottom padding
-        int parentBottom = parent.getBottom() - parent.getPaddingBottom();
-        if (bottom > parentBottom) {
-          bottom = parentBottom;
-        }
-        left = currentChild.getRight();
-        right = left + divider.getIntrinsicWidth();
-        divider.setBounds(left, top, right, bottom);
-        divider.draw(c);
-      }
-    }
-  }
-
-  @Override public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
-      RecyclerView.State state) {
-    //We can supply forced insets for each item view here in the Rect
-    if (addInsets) {
-      outRect.set(insets, insets, insets, insets);
+  @Override public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
+    if (mOrientation == VERTICAL_LIST) {
+      outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
+    } else {
+      outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
     }
   }
 }
