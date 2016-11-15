@@ -21,6 +21,7 @@ import java.util.List;
 
   public static final String PUSH_EVENT = "PushEvent";
   public static final String ISSUE_COMMENT_EVENT = "IssueCommentEvent";
+  public static final String RELEASE_EVENT = "ReleaseEvent";
   public static final int TEXT = 0;
   public static final int TEXT_AVATAR = 1;
   public static final Creator<ReceivedEvent> CREATOR = new Creator<ReceivedEvent>() {
@@ -174,6 +175,7 @@ import java.util.List;
     public String before;
     public String action;
     public List<Commits> commits;
+    public Release release;
 
     public Payload() {
     }
@@ -188,6 +190,7 @@ import java.util.List;
       this.before = in.readString();
       this.action = in.readString();
       this.commits = in.createTypedArrayList(Commits.CREATOR);
+      this.release = in.readParcelable(Release.class.getClassLoader());
     }
 
     @Override public int describeContents() {
@@ -204,6 +207,7 @@ import java.util.List;
       dest.writeString(this.before);
       dest.writeString(this.action);
       dest.writeTypedList(this.commits);
+      dest.writeParcelable(this.release, flags);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true) public static class Commits implements Parcelable {
@@ -317,4 +321,33 @@ import java.util.List;
       dest.writeString(this.avatar_url);
     }
   }
+
+  @JsonIgnoreProperties(ignoreUnknown = true) public static class Release implements Parcelable {
+    public static final Creator<Release> CREATOR = new Creator<Release>() {
+      @Override public Release createFromParcel(Parcel source) {
+        return new Release(source);
+      }
+
+      @Override public Release[] newArray(int size) {
+        return new Release[size];
+      }
+    };
+    public String tag_name;
+
+    public Release() {
+    }
+
+    protected Release(Parcel in) {
+      this.tag_name = in.readString();
+    }
+
+    @Override public int describeContents() {
+      return 0;
+    }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+      dest.writeString(this.tag_name);
+    }
+  }
+
 }

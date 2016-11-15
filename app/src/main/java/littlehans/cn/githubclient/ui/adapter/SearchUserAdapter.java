@@ -18,7 +18,7 @@ public class SearchUserAdapter extends BaseQuickAdapter<User, BaseViewHolder> {
   DateFormatUtil mDateFormat;
 
   public SearchUserAdapter(List<User> data) {
-    super(R.layout.card_user, data);
+    super(R.layout.item_search_user, data);
     mDateFormat = new DateFormatUtil("Joined on");
   }
 

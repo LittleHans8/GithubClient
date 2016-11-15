@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import butterknife.BindView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -20,6 +19,7 @@ import littlehans.cn.githubclient.model.entity.SearchUser;
 import littlehans.cn.githubclient.model.entity.User;
 import littlehans.cn.githubclient.ui.adapter.SearchUserAdapter;
 import littlehans.cn.githubclient.ui.fragment.NetworkFragment;
+import littlehans.cn.githubclient.utilities.DividerItemDecoration;
 import okhttp3.Headers;
 
 /**
@@ -79,6 +79,8 @@ public class SearchUsersFragment extends NetworkFragment<SearchUser>
               if (mCurrentPage == 1) {
                 mLinearLayoutManager = new LinearLayoutManager(getActivity());
                 mRecycler.setLayoutManager(mLinearLayoutManager);
+                mRecycler.addItemDecoration(
+                    new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
                 mSearchUserAdapter = new SearchUserAdapter(users);
                 mSearchUserAdapter.openLoadMore(30);
                 mRecycler.setAdapter(mSearchUserAdapter);
@@ -119,7 +121,6 @@ public class SearchUsersFragment extends NetworkFragment<SearchUser>
       if (pageLink.getLastPage() != 0) {
         mLastPage = pageLink.getLastPage();
       }
-      Log.d("SearchUsersFragment", "respondHeader: " + mLastPage);
     }
   }
 

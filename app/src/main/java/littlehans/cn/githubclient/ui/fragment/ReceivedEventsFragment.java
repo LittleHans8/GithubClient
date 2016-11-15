@@ -15,6 +15,7 @@ import littlehans.cn.githubclient.api.GithubService;
 import littlehans.cn.githubclient.api.service.EventService;
 import littlehans.cn.githubclient.model.entity.ReceivedEvent;
 import littlehans.cn.githubclient.ui.adapter.ReceivedEventAdapter;
+import littlehans.cn.githubclient.utilities.DividerItemDecoration;
 
 import static android.content.ContentValues.TAG;
 
@@ -56,6 +57,8 @@ public class ReceivedEventsFragment extends NetworkFragment<List<ReceivedEvent>>
 
     ReceivedEventAdapter eventAdapter = new ReceivedEventAdapter(getActivity(), copyDate);
     mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    mRecyclerView.addItemDecoration(
+        new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
     mRecyclerView.setAdapter(eventAdapter);
   }
 

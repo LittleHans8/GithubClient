@@ -99,7 +99,8 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
     mRecyclerView.setLayoutManager(mLinearLayoutManager);
     mPathAdapter = new ReposCodePathAdapter(mPath);
     mRecyclerViewPath.setAdapter(mPathAdapter);
-    mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
+    mRecyclerView.addItemDecoration(
+        new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
 
     mTreeComparator = new Comparator<Trees.Tree>() {
       @Override public int compare(Trees.Tree o1, Trees.Tree o2) {

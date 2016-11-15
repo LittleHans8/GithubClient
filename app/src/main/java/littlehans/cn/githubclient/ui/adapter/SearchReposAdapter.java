@@ -25,7 +25,7 @@ public class SearchReposAdapter extends BaseQuickAdapter<SearchRepos.Items, Base
   DateFormatUtil mDateFormat;
 
   public SearchReposAdapter(List<SearchRepos.Items> items) {
-    super(R.layout.card_repos, items);
+    super(R.layout.item_search_repos, items);
     mDateFormat = new DateFormatUtil("Updated");
   }
 

@@ -22,6 +22,7 @@ import littlehans.cn.githubclient.model.ErrorModel;
 import littlehans.cn.githubclient.model.entity.SearchRepos;
 import littlehans.cn.githubclient.ui.adapter.SearchReposAdapter;
 import littlehans.cn.githubclient.ui.fragment.NetworkFragment;
+import littlehans.cn.githubclient.utilities.DividerItemDecoration;
 import okhttp3.Headers;
 
 /**
@@ -74,6 +75,8 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
         if (mCurrentPage == 1) {
           mLinearLayoutManager = new LinearLayoutManager(getActivity());
           mRecyclerView.setLayoutManager(mLinearLayoutManager);
+          mRecyclerView.addItemDecoration(
+              new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
           mQuickSearchAdapter = new SearchReposAdapter(data.items);
           mRecyclerView.setAdapter(mQuickSearchAdapter);
           mQuickSearchAdapter.openLoadMore(30);
@@ -118,9 +121,7 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
       mLastPage = pageLink.getLastPage();
       Log.d(TAG, "mLastPage: " + mLastPage);
     }
-
     List<String> remains = headers.values("X-RateLimit-Remaining");
-
     if (!remains.isEmpty()) {
       String remain = remains.get(0);
       Log.d(TAG, "X-RateLimit-Remaining: " + remain);
