@@ -69,6 +69,10 @@ public abstract class NetworkFragment<T> extends BaseFragment implements Generic
     showException(e);
   }
 
+  @Override public void respondWithError(Throwable t) {
+
+  }
+
   @Override public void error(ErrorModel errorModel) {
     showErrorModel(errorModel);
   }

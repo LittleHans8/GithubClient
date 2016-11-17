@@ -1,41 +1,31 @@
 package littlehans.cn.githubclient.feature.search;
 
+/**
+ * Created by LittleHans on 2016/11/15.
+ */
+
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import butterknife.BindView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
-import java.util.List;
 import littlehans.cn.githubclient.Nav;
-import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
 import littlehans.cn.githubclient.feature.repos.ReposActivity;
-import littlehans.cn.githubclient.model.ErrorModel;
 import littlehans.cn.githubclient.model.entity.SearchRepos;
 import littlehans.cn.githubclient.ui.adapter.SearchReposAdapter;
-import littlehans.cn.githubclient.ui.fragment.NetworkFragment;
-import littlehans.cn.githubclient.utilities.DividerItemDecoration;
+import littlehans.cn.githubclient.ui.fragment.PageFragment;
 import okhttp3.Headers;
 
 /**
  * Created by littlehans on 2016/10/1.
  */
-public class SearchReposFragment extends NetworkFragment<SearchRepos>
-    implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
+public class SearchReposFragment extends PageFragment<SearchRepos>
+    implements BaseQuickAdapter.RequestLoadMoreListener,
     SearchActivity.onSearchListenerA {
 
   private static final String TAG = "SearchReposFragment";
-  @BindView(R.id.user_recycler_search) RecyclerView mRecyclerView;
-  @BindView(R.id.user_layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
-  private LinearLayoutManager mLinearLayoutManager;
   private SearchReposAdapter mQuickSearchAdapter;
   private String mQuery;
   private int mCurrentPage = 1;
@@ -52,36 +42,22 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
     searchActivity.setOnSearchListenerA(this);
   }
 
-  @Override protected int getFragmentLayout() {
-    return R.layout.fragment_search_repos;
-  }
-
-  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
-    initUI();
-  }
-
   @Override public void respondSuccess(final SearchRepos data) {
-
     updateRecyclerView(data);
-    mSwipeRefreshLayout.setRefreshing(false);
   }
 
   private void updateRecyclerView(final SearchRepos data) {
 
-
     mRecyclerView.post(new Runnable() {
       @Override public void run() {
         if (mCurrentPage == 1) {
-          mLinearLayoutManager = new LinearLayoutManager(getActivity());
-          mRecyclerView.setLayoutManager(mLinearLayoutManager);
-          mRecyclerView.addItemDecoration(
-              new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
           mQuickSearchAdapter = new SearchReposAdapter(data.items);
           mRecyclerView.setAdapter(mQuickSearchAdapter);
+          mRecyclerView.invalidate();
           mQuickSearchAdapter.openLoadMore(30);
           mQuickSearchAdapter.setOnLoadMoreListener(SearchReposFragment.this);
           mCurrentPage++;
+          removeOnItemClickListener();
           addOnItemClickListener();
           return;
         }
@@ -93,9 +69,7 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
           mCurrentPage++;
           addOnItemClickListener();
         }
-
       }
-
     });
   }
 
@@ -104,36 +78,12 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
   }
 
   @Override public void onRefresh() {
-    mCurrentPage = 1;
+    super.onRefresh();
     loadData(mQuery);
   }
 
-  @Override public void respondWithError(Throwable t) {
-    mSwipeRefreshLayout.setRefreshing(false);
-  }
-
   @Override public void respondHeader(Headers headers) {
-    List<String> links = headers.values("Link");
-
-    if (!links.isEmpty()) {
-      String link = links.get(0);
-      PageLink pageLink = new PageLink(link);
-      mLastPage = pageLink.getLastPage();
-      Log.d(TAG, "mLastPage: " + mLastPage);
-    }
-    List<String> remains = headers.values("X-RateLimit-Remaining");
-    if (!remains.isEmpty()) {
-      String remain = remains.get(0);
-      Log.d(TAG, "X-RateLimit-Remaining: " + remain);
-    }
-  }
-
-
-
-  private void initUI() {
-    mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1,
-        R.color.refresh_progress_2, R.color.refresh_progress_3);
-    mSwipeRefreshLayout.setOnRefreshListener(this);
+    mLastPage = getLastPage(headers);
   }
 
   private void addOnItemClickListener() {
@@ -153,10 +103,6 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
         GithubService.createSearchService().repositories(query, null, null, mCurrentPage));
   }
 
-  @Override public void errorNotFound(ErrorModel errorModel) {
-    super.errorNotFound(errorModel);
-  }
-
   @Override public void onSearch(String query) {
     mQuery = query;
     onRefresh();
@@ -167,15 +113,5 @@ public class SearchReposFragment extends NetworkFragment<SearchRepos>
     if (mOnItemClickListener != null) {
       mRecyclerView.removeOnItemTouchListener(mOnItemClickListener);
     }
-  }
-
-  @Override public void startRequest() {
-    super.startRequest();
-    mSwipeRefreshLayout.setRefreshing(true);
-  }
-
-  @Override public void endRequest() {
-    super.endRequest();
-    mSwipeRefreshLayout.setRefreshing(false);
   }
 }
