@@ -25,6 +25,7 @@ public class FileDetailActivity extends BaseActivity {
     setContentView(R.layout.activity_file_detail);
     Intent intent = getIntent();
     String content = intent.getStringExtra("content");
+    mMarkdownView.setOpenUrlInBrowser(true);
     boolean isMarkDownFile = intent.getBooleanExtra("isMarkDownFile", false);
     if (isMarkDownFile) {
       mCodeView.setVisibility(View.GONE);
