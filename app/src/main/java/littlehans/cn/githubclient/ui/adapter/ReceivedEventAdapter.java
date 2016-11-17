@@ -128,6 +128,10 @@ public class ReceivedEventAdapter extends BaseMultiItemQuickAdapter<ReceivedEven
             textMessage.setText(getSpanText(sourceZip, "Source", "code", "(zip)"));
             textCreateAtAndType.setText(getSpanText(eventBody, login, tagName, repo));
             break;
+
+          case ReceivedEvent.ISSUE_COMMENT_EVENT:
+
+            break;
         }
         break;
     }
