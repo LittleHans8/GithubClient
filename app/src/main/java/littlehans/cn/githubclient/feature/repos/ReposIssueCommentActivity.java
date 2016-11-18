@@ -43,6 +43,7 @@ public class ReposIssueCommentActivity extends NetworkActivity<List<Comment>>
   @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
   @BindView(R.id.toolbar) Toolbar mToolbar;
   @BindView(R.id.collapsing_app_bar) CollapsingToolbarLayout mCollapsingToolbarLayout;
+  Comment mOwnIssueComment;
   private Intent mIntent;
   private String mOwner;
   private String mRepo;
@@ -79,9 +80,20 @@ public class ReposIssueCommentActivity extends NetworkActivity<List<Comment>>
   private void initData() {
     mIntent = getIntent();
     mIssue = mIntent.getExtras().getParcelable(Nav.ISSUE);
-    mOwner = mIntent.getStringExtra(Nav.OWNER);
+    mOwner = mIntent.getExtras().getString(Nav.OWNER);
     mRepo = mIntent.getStringExtra(Nav.REPO);
+    initOwnIssueComment();
     mIssuesService = GithubService.createIssuesService();
+  }
+
+  private void initOwnIssueComment() {
+    mOwnIssueComment = new Comment();
+    Comment.User user = new Comment.User();
+    user.login = mOwner;
+    user.avatar_url = mIssue.user.avatar_url;
+    mOwnIssueComment.user = user;
+    mOwnIssueComment.body = mIssue.body;
+    mOwnIssueComment.created_at = mIssue.created_at;
   }
 
   /**
@@ -121,6 +133,8 @@ public class ReposIssueCommentActivity extends NetworkActivity<List<Comment>>
 
   @Override public void respondSuccess(List<Comment> data) {
     IssueCommentAdapter issueCommentAdapter = new IssueCommentAdapter(data);
+
+    issueCommentAdapter.add(0, mOwnIssueComment);
     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     mRecyclerView.setAdapter(issueCommentAdapter);
   }

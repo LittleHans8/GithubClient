@@ -41,6 +41,7 @@ public class ReposActivity extends BaseActivity {
   public void addOnDatePassListener(OnDatePassListener onDatePassListener) {
     mOnDatePassListener = onDatePassListener;
     mOnDatePassListener.onCardTouchListener(mItems);
+    // bug: will touch off twice
     //mOnDatePassListeners.add(onDatePassListener);
     //for (OnDatePassListener OnDatePassListenerX : mOnDatePassListeners) {
     //  OnDatePassListenerX.onCardTouchListener(mItems);
