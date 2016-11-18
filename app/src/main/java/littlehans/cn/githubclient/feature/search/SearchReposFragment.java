@@ -31,6 +31,7 @@ public class SearchReposFragment extends PageFragment<SearchRepos>
   private int mCurrentPage = 1;
   private int mLastPage;
   private OnItemClickListener mOnItemClickListener;
+  private boolean onRefresh = false;
 
   public static Fragment create() {
     return new SearchReposFragment();
@@ -50,15 +51,21 @@ public class SearchReposFragment extends PageFragment<SearchRepos>
 
     mRecyclerView.post(new Runnable() {
       @Override public void run() {
-        if (mCurrentPage == 1) {
+        if (mCurrentPage == 1 && onRefresh) {
           mQuickSearchAdapter = new SearchReposAdapter(data.items);
           mRecyclerView.setAdapter(mQuickSearchAdapter);
-          mRecyclerView.invalidate();
           mQuickSearchAdapter.openLoadMore(30);
           mQuickSearchAdapter.setOnLoadMoreListener(SearchReposFragment.this);
           mCurrentPage++;
           removeOnItemClickListener();
           addOnItemClickListener();
+          return;
+        } else if(mCurrentPage == 1 && !onRefresh) {
+          onRefresh = false;
+          mQuickSearchAdapter.setNewData(data.items);
+          mRecyclerView.setAdapter(mQuickSearchAdapter);
+          mQuickSearchAdapter.openLoadMore(30);
+          mRecyclerView.invalidate();
           return;
         }
 
@@ -67,7 +74,6 @@ public class SearchReposFragment extends PageFragment<SearchRepos>
         } else {
           mQuickSearchAdapter.addData(data.items);
           mCurrentPage++;
-          addOnItemClickListener();
         }
       }
     });
@@ -79,6 +85,7 @@ public class SearchReposFragment extends PageFragment<SearchRepos>
 
   @Override public void onRefresh() {
     super.onRefresh();
+    onRefresh = true;
     loadData(mQuery);
   }
 
