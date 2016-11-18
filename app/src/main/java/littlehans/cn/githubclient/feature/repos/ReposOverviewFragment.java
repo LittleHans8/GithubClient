@@ -136,6 +136,7 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
   }
 
   @Override public void onCardTouchListener(Parcelable date) {
+    Log.d(TAG, "onCardTouchListener: " + "11");
     mItems = (SearchRepos.Items) date;
     mOwner = mItems.owner.login;
     mRepo = mItems.name;

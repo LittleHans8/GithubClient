@@ -39,7 +39,8 @@ public class ReposFragment extends BaseFragment implements TabLayout.OnTabSelect
     mAdapter.addFragment(ReposOverviewFragment.create());
     mAdapter.addFragment(ReposCodeFragment.create());
     mAdapter.addFragment(ReposIssueFragment.create());
-    mAdapter.addFragment(ReposPullRequestFragment.create());
+    // TODO: 2016/11/18
+    //mAdapter.addFragment(ReposPullRequestFragment.create());
 
   }
 

@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -73,7 +74,6 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
     setHasOptionsMenu(true);
     ReposActivity reposActivity = (ReposActivity) context;
     reposActivity.addOnDatePassListener(this);
-    mPath = new ArrayList<>();
   }
 
   @Override protected int getFragmentLayout() {
@@ -84,6 +84,7 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
     super.onViewCreated(view, savedInstanceState);
     mGitDateService = GithubService.createGitDateService();
     networkQueue().enqueue(mGitDateService.getTree(mOwner, mRepo, mSha));
+    mPath = new ArrayList<>();
     initUI();
   }
 
@@ -190,19 +191,20 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
     mOwner = items.owner.login;
     mRepo = items.name;
     mDefaultBranch = items.default_branch;
-
+    Log.d("TAG", "run: " + mDefaultBranch);
     Thread thread = new Thread(new Runnable() {
       @Override public void run() {
         try {
           mRepositoryService = GithubService.createRepositoryService();
           List<Branch> branches = mRepositoryService.getBranchList(mOwner, mRepo).execute().body();
           for (Branch branch : branches) {
-            if (branch.name.equals(mDefaultBranch)) {
+            if (mDefaultBranch.equals(branch.name)) {
               mSha = branch.commit.sha;
               networkQueue().enqueue(mGitDateService.getTree(mOwner, mRepo, mSha));
               mRecyclerViewPath.post(new Runnable() {
                 @Override public void run() {
                   mPathAdapter.add(0, new ReposCodePath("root", mSha));
+                  Log.d("TAG", "run: " + mSha);
                 }
               });
               break;

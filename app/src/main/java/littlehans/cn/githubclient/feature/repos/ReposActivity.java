@@ -22,6 +22,7 @@ public class ReposActivity extends BaseActivity {
   private Intent mIntent;
   private SearchRepos.Items mItems;
   private ArrayList<OnDatePassListener> mOnDatePassListeners;
+  private OnDatePassListener mOnDatePassListener;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -38,10 +39,12 @@ public class ReposActivity extends BaseActivity {
   }
 
   public void addOnDatePassListener(OnDatePassListener onDatePassListener) {
-    mOnDatePassListeners.add(onDatePassListener);
-    for (OnDatePassListener OnDatePassListenerX : mOnDatePassListeners) {
-      OnDatePassListenerX.onCardTouchListener(mItems);
-    }
+    mOnDatePassListener = onDatePassListener;
+    mOnDatePassListener.onCardTouchListener(mItems);
+    //mOnDatePassListeners.add(onDatePassListener);
+    //for (OnDatePassListener OnDatePassListenerX : mOnDatePassListeners) {
+    //  OnDatePassListenerX.onCardTouchListener(mItems);
+    //}
   }
 
   public void removeOnDatePassListener(OnDatePassListener onDatePassListener) {

@@ -80,7 +80,7 @@
       android:layout_height="wrap_content"
       android:background="@android:color/white"
       app:tabIndicatorColor="@color/blue_500"
-      app:tabMode="scrollable"
+      app:tabMode="fixed"
       app:tabSelectedTextColor="@color/colorAccent"
       app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
       />
