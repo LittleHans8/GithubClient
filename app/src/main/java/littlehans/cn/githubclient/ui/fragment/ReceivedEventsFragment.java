@@ -2,6 +2,7 @@ package littlehans.cn.githubclient.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +30,10 @@ public class ReceivedEventsFragment extends NetworkFragment<List<ReceivedEvent>>
   @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mLayoutSwipeRefresh;
   private EventService mEventService;
 
+  public static Fragment create() {
+    return new ReceivedEventsFragment();
+  }
+
   @Override protected int getFragmentLayout() {
     return R.layout.fragment_events;
   }
@@ -36,7 +41,6 @@ public class ReceivedEventsFragment extends NetworkFragment<List<ReceivedEvent>>
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     mEventService = GithubService.createEventService();
-    Log.d(TAG, "onViewCreated: ");
     networkQueue().enqueue(mEventService.getReceivedEvent("LittleHans8"));
   }
 

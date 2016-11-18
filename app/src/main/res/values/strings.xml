@@ -50,5 +50,9 @@
   <string name="watch">Watch</string>
   <string name="Start">Start</string>
   <string name="Fork">Fork</string>
+  <string name="events">Events</string>
+  <string name="starts">Starts</string>
+  <string name="followers">Followers</string>
+  <string name="following">Following</string>
 
 </resources>
