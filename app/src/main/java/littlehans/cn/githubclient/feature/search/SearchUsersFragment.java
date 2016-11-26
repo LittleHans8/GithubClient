@@ -82,7 +82,6 @@ public class SearchUsersFragment extends NetworkFragment<SearchUser>
                 mRecycler.addItemDecoration(
                     new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
                 mSearchUserAdapter = new SearchUserAdapter(users);
-                mSearchUserAdapter.openLoadMore(30);
                 mRecycler.setAdapter(mSearchUserAdapter);
                 mSearchUserAdapter.setOnLoadMoreListener(SearchUsersFragment.this);
                 mCurrentPage++;
@@ -91,7 +90,7 @@ public class SearchUsersFragment extends NetworkFragment<SearchUser>
               }
 
               if (mCurrentPage > mLastPage) {
-                mSearchUserAdapter.loadComplete();
+                mSearchUserAdapter.loadMoreEnd();
                 mSwipeRefreshLayout.setRefreshing(false);
               } else {
                 mSearchUserAdapter.addData(users);

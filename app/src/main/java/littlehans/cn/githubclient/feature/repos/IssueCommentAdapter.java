@@ -17,7 +17,7 @@ import littlehans.cn.githubclient.utilities.DateFormatUtil;
 public class IssueCommentAdapter extends BaseQuickAdapter<Comment, BaseViewHolder> {
   private DateFormatUtil mDateFormat;
   public IssueCommentAdapter(List<Comment> data) {
-    super(R.layout.card_issue_detail, data);
+    super(R.layout.item_issue_detail, data);
     mDateFormat = new DateFormatUtil("commented");
   }
 
@@ -25,6 +25,7 @@ public class IssueCommentAdapter extends BaseQuickAdapter<Comment, BaseViewHolde
     baseViewHolder.setText(R.id.text_login, comment.user.login);
     baseViewHolder.setText(R.id.text_create_at, mDateFormat.formatTime(comment.created_at));
     MarkdownView markdownView = baseViewHolder.getView(R.id.markdown_view);
+    markdownView.setOpenUrlInBrowser(true);
     if (!TextUtils.isEmpty(comment.body)) {
       markdownView.setMarkDownText(comment.body);
     } else {

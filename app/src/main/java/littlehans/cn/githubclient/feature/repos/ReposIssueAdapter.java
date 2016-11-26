@@ -17,7 +17,7 @@ public class ReposIssueAdapter extends BaseQuickAdapter<Issue, BaseViewHolder> {
   private DateFormatUtil mDateFormat;
 
   public ReposIssueAdapter(List<Issue> data) {
-    super(R.layout.card_issue, data);
+    super(R.layout.item_issue, data);
     mDateFormat = new DateFormatUtil("opened");
   }
 

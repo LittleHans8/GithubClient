@@ -161,14 +161,13 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
         if (mCurrentPage == 1) {
 
           mIssueAdapter = new ReposIssueAdapter(issues);
-          mIssueAdapter.openLoadMore(30);
           mRecyclerView.setAdapter(mIssueAdapter);
           mIssueAdapter.setOnLoadMoreListener(ReposIssueFragment.this);
           mCurrentPage++;
           return;
         }
         if (mCurrentPage > mLastPage) {
-          mIssueAdapter.loadComplete();
+          mIssueAdapter.loadMoreEnd();
         } else {
           mIssueAdapter.addData(issues);
           mCurrentPage++;

@@ -44,6 +44,7 @@ public class MainFragment extends BaseFragment {
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     mViewPager.setAdapter(mAdapter);
+    mViewPager.setOffscreenPageLimit(5);
     mTabLayout.setupWithViewPager(mViewPager);
   }
 
