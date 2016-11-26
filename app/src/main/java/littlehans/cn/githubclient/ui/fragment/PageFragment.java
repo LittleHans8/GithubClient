@@ -45,9 +45,6 @@ public abstract class PageFragment<T> extends NetworkFragment<T>
     mLayoutSwipeRefresh.setOnRefreshListener(this);
   }
 
-  @Override public void respondSuccess(T data) {
-  }
-
   @Override public void respondWithError(Throwable t) {
 
   }

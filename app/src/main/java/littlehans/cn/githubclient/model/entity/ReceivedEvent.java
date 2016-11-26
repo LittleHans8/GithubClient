@@ -176,6 +176,8 @@ import java.util.List;
     public String action;
     public List<Commits> commits;
     public Release release;
+    public Issue issue;
+    public Comment comment;
 
     public Payload() {
     }
@@ -191,6 +193,8 @@ import java.util.List;
       this.action = in.readString();
       this.commits = in.createTypedArrayList(Commits.CREATOR);
       this.release = in.readParcelable(Release.class.getClassLoader());
+      this.issue = in.readParcelable(Issue.class.getClassLoader());
+      this.comment = in.readParcelable(Comment.class.getClassLoader());
     }
 
     @Override public int describeContents() {
@@ -208,6 +212,8 @@ import java.util.List;
       dest.writeString(this.action);
       dest.writeTypedList(this.commits);
       dest.writeParcelable(this.release, flags);
+      dest.writeParcelable(this.issue, flags);
+      dest.writeParcelable(this.comment, flags);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true) public static class Commits implements Parcelable {

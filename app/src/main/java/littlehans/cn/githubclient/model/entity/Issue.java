@@ -43,6 +43,7 @@ import java.util.List;
   public ClosedBy closed_by;
   public List<Labels> labels;
   public List<Assignees> assignees;
+  public PullRequest pull_request;
 
   public Issue() {
   }
@@ -70,6 +71,7 @@ import java.util.List;
     this.closed_by = in.readParcelable(ClosedBy.class.getClassLoader());
     this.labels = in.createTypedArrayList(Labels.CREATOR);
     this.assignees = in.createTypedArrayList(Assignees.CREATOR);
+    this.pull_request = in.readParcelable(PullRequest.class.getClassLoader());
   }
 
   @Override public int describeContents() {
@@ -99,6 +101,44 @@ import java.util.List;
     dest.writeParcelable(this.closed_by, flags);
     dest.writeTypedList(this.labels);
     dest.writeTypedList(this.assignees);
+    dest.writeParcelable(this.pull_request, flags);
+  }
+
+  public static class PullRequest implements Parcelable {
+    public static final Creator<PullRequest> CREATOR = new Creator<PullRequest>() {
+      @Override public PullRequest createFromParcel(Parcel source) {
+        return new PullRequest(source);
+      }
+
+      @Override public PullRequest[] newArray(int size) {
+        return new PullRequest[size];
+      }
+    };
+    public String url;
+    public String html_url;
+    public String diff_url;
+    public String patch_url;
+
+    public PullRequest() {
+    }
+
+    protected PullRequest(Parcel in) {
+      this.url = in.readString();
+      this.html_url = in.readString();
+      this.diff_url = in.readString();
+      this.patch_url = in.readString();
+    }
+
+    @Override public int describeContents() {
+      return 0;
+    }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+      dest.writeString(this.url);
+      dest.writeString(this.html_url);
+      dest.writeString(this.diff_url);
+      dest.writeString(this.patch_url);
+    }
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true) public static class User implements Parcelable {
