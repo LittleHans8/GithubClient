@@ -12,8 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnClick;
+import butterknife.Bind;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mukesh.MarkdownView;
 import java.io.IOException;
@@ -38,23 +37,21 @@ import static android.content.ContentValues.TAG;
 
 public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnDatePassListener {
   public static final String README_MD = "README.md";
-  @BindView(R.id.markdown_view) MarkdownView mMarkdownView;
-  @BindView(R.id.bottom_sheet) LinearLayout mBottomSheet;
-  @BindView(R.id.avatar) SimpleDraweeView mAvatar;
-  @BindView(R.id.text_login) TextView mTxtLogin;
-  @BindView(R.id.text_repo_name) TextView mTxtRepoName;
-  @BindView(R.id.text_watch) TextView mTxtWatch;
-  @BindView(R.id.text_start) TextView mTxtStart;
-  @BindView(R.id.text_fork) TextView mTxtFork;
+  @Bind(R.id.markdown_view) MarkdownView mMarkdownView;
+  @Bind(R.id.bottom_sheet) LinearLayout mBottomSheet;
+  @Bind(R.id.avatar) SimpleDraweeView mAvatar;
+  @Bind(R.id.text_login) TextView mTxtLogin;
+  @Bind(R.id.text_repo_name) TextView mTxtRepoName;
+  @Bind(R.id.text_watch) TextView mTxtWatch;
+  @Bind(R.id.text_start) TextView mTxtStart;
+  @Bind(R.id.text_watch_count) TextView mTxtWatchCount;
+  @Bind(R.id.text_start_count) TextView mTxtStartCount;
+  @Bind(R.id.text_fork_counts) TextView mTxtForkCount;
 
-  @BindView(R.id.text_watch_count) TextView mTxtWatchCount;
-  @BindView(R.id.text_start_count) TextView mTxtStartCount;
-  @BindView(R.id.text_fork_count) TextView mTxtForkCount;
-
-  @BindView(R.id.layout_fork) LinearLayout mLayoutFork;
-  @BindView(R.id.text_description) TextView mTxtDescription;
-  @BindView(R.id.text_create_at) TextView mTxtCreateAt;
-  @BindView(R.id.coordinator) CoordinatorLayout mCoordinator;
+  @Bind(R.id.layout_fork) LinearLayout mLayoutFork;
+  @Bind(R.id.text_description) TextView mTxtDescription;
+  @Bind(R.id.text_create_at) TextView mTxtCreateAt;
+  @Bind(R.id.coordinator) CoordinatorLayout mCoordinator;
   private BottomSheetBehavior<LinearLayout> mBehavior;
   private SearchRepos.Items mItems;
   private GitDateService mGitDateService;
@@ -102,37 +99,6 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
       }
     });
     threadX.start();
-  }
-
-  @OnClick({
-      R.id.avatar, R.id.text_login, R.id.text_repo_name, R.id.text_watch, R.id.text_watch_count,
-      R.id.text_start, R.id.text_start_count, R.id.text_fork, R.id.text_fork_count,
-      R.id.text_description, R.id.text_create_at
-  }) public void onClick(View view) {
-    switch (view.getId()) {
-      case R.id.avatar:
-        break;
-      case R.id.text_login:
-        break;
-      case R.id.text_repo_name:
-        break;
-      case R.id.text_watch:
-        break;
-      case R.id.text_watch_count:
-        break;
-      case R.id.text_start:
-        break;
-      case R.id.text_start_count:
-        break;
-      case R.id.text_fork:
-        break;
-      case R.id.text_fork_count:
-        break;
-      case R.id.text_description:
-        break;
-      case R.id.text_create_at:
-        break;
-    }
   }
 
   @Override public void onCardTouchListener(Parcelable date) {

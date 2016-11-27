@@ -9,20 +9,20 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import butterknife.BindView;
+import butterknife.Bind;
 import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.R;
+import littlehans.cn.githubclient.feature.owner.MainFragment;
 import littlehans.cn.githubclient.ui.activity.BaseActivity;
-import littlehans.cn.githubclient.ui.fragment.MainFragment;
 import qiu.niorgai.StatusBarCompat;
 
 public class MainActivity extends BaseActivity
     implements NavigationView.OnNavigationItemSelectedListener {
 
   private static final String TAG = "MainActivity";
-  @BindView(R.id.toolbar) Toolbar mToolbar;
-  @BindView(R.id.drawer_layout) DrawerLayout mDrawer;
-  @BindView(R.id.nav_view) NavigationView mNavigationView;
+  @Bind(R.id.toolbar) Toolbar mToolbar;
+  @Bind(R.id.drawer_layout) DrawerLayout mDrawer;
+  @Bind(R.id.nav_view) NavigationView mNavigationView;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

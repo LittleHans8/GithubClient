@@ -8,7 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import butterknife.BindView;
+import butterknife.Bind;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,8 +29,8 @@ public class SearchUsersFragment extends NetworkFragment<SearchUser>
     implements SwipeRefreshLayout.OnRefreshListener, SearchActivity.onSearchListenerB,
     BaseQuickAdapter.RequestLoadMoreListener {
 
-  @BindView(R.id.user_recycler_search) RecyclerView mRecycler;
-  @BindView(R.id.user_layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
+  @Bind(R.id.user_recycler_search) RecyclerView mRecycler;
+  @Bind(R.id.user_layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
   private LinearLayoutManager mLinearLayoutManager;
   private String mQuery;
   private int mCurrentPage = 1;

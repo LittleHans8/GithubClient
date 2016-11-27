@@ -6,7 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import butterknife.BindView;
+import butterknife.Bind;
 import java.util.List;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.feature.search.PageLink;
@@ -20,8 +20,8 @@ import okhttp3.Headers;
 public abstract class PageFragment<T> extends NetworkFragment<T>
     implements SwipeRefreshLayout.OnRefreshListener {
 
-  protected @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
-  protected @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mLayoutSwipeRefresh;
+  protected @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
+  protected @Bind(R.id.layout_swipe_refresh) SwipeRefreshLayout mLayoutSwipeRefresh;
   protected int mLastPage;
   protected int mCurrentPage = 1;
 

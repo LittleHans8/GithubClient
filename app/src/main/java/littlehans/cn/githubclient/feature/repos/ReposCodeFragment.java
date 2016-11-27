@@ -15,7 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.TextView;
-import butterknife.BindView;
+import butterknife.Bind;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import java.io.IOException;
@@ -49,9 +49,9 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
   public static final String MARKDOWN = "markdown";
   public static final String IS_MARK_DOWN_FILE = "isMarkDownFile";
 
-  @BindView(R.id.recycler_view_path) RecyclerView mRecyclerViewPath;
-  @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
-  @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
+  @Bind(R.id.recycler_view_path) RecyclerView mRecyclerViewPath;
+  @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
+  @Bind(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
   Comparator<Trees.Tree> mTreeComparator;
   ReposCodePathAdapter mPathAdapter;
   private GitDateService mGitDateService;

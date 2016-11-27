@@ -13,7 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
-import butterknife.BindView;
+import butterknife.Bind;
 import java.util.List;
 import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.R;
@@ -35,14 +35,14 @@ public class ReposIssueCommentActivity extends NetworkActivity<List<Comment>>
 
 
   private static final String TAG = "ReposIssueComment";
-  @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
-  @BindView(R.id.text_create_at) TextView mTxtCreateAt;
-  @BindView(R.id.text_issue_title) TextView mTxtIssueTitle;
-  @BindView(R.id.text_state) TextView mTxtState;
-  @BindView(R.id.text_login) TextView mTxtLogin;
-  @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
-  @BindView(R.id.toolbar) Toolbar mToolbar;
-  @BindView(R.id.collapsing_app_bar) CollapsingToolbarLayout mCollapsingToolbarLayout;
+  @Bind(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
+  @Bind(R.id.text_create_at) TextView mTxtCreateAt;
+  @Bind(R.id.text_issue_title) TextView mTxtIssueTitle;
+  @Bind(R.id.text_state) TextView mTxtState;
+  @Bind(R.id.text_login) TextView mTxtLogin;
+  @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
+  @Bind(R.id.toolbar) Toolbar mToolbar;
+  @Bind(R.id.collapsing_app_bar) CollapsingToolbarLayout mCollapsingToolbarLayout;
   Comment mOwnIssueComment;
   private Intent mIntent;
   private String mOwner;

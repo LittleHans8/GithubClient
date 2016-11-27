@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import butterknife.BindView;
+import butterknife.Bind;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import java.util.ArrayList;
@@ -38,9 +38,9 @@ import static android.content.ContentValues.TAG;
 public class ReposIssueFragment extends NetworkFragment<List<Issue>>
     implements OnDatePassListener, BaseQuickAdapter.RequestLoadMoreListener,
     SwipeRefreshLayout.OnRefreshListener {
-  @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
-  @BindView(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
-  @BindView(R.id.spinner) Spinner mSpinner;
+  @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
+  @Bind(R.id.layout_swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
+  @Bind(R.id.spinner) Spinner mSpinner;
   private IssuesService mIssuesService;
   private ReposIssueAdapter mIssueAdapter;
   private SimpleOnItemSelectedListener mSpinnerOnItemSelectedListener;

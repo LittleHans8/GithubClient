@@ -1,4 +1,4 @@
-package littlehans.cn.githubclient.ui.fragment;
+package littlehans.cn.githubclient.feature.owner;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,9 +12,10 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 import littlehans.cn.githubclient.api.GithubService;
-import littlehans.cn.githubclient.api.service.EventService;
+import littlehans.cn.githubclient.api.service.ActivityService;
 import littlehans.cn.githubclient.model.entity.ReceivedEvent;
 import littlehans.cn.githubclient.ui.adapter.ReceivedEventAdapter;
+import littlehans.cn.githubclient.ui.fragment.PageFragment;
 import okhttp3.Headers;
 
 import static android.content.ContentValues.TAG;
@@ -27,7 +28,7 @@ public class ReceivedEventsFragment extends PageFragment<List<ReceivedEvent>>
     implements BaseQuickAdapter.RequestLoadMoreListener {
 
   ReceivedEventAdapter mEventAdapter;
-  private EventService mEventService;
+  private ActivityService mActivityService;
   private boolean mIsFirstLoad = true;
   private boolean mOnRefreshing = false;
 
@@ -37,7 +38,7 @@ public class ReceivedEventsFragment extends PageFragment<List<ReceivedEvent>>
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    mEventService = GithubService.createEventService();
+    mActivityService = GithubService.createActivityService();
     loadData();
   }
 
@@ -104,7 +105,7 @@ public class ReceivedEventsFragment extends PageFragment<List<ReceivedEvent>>
   }
 
   private void loadData() {
-    networkQueue().enqueue(mEventService.getReceivedEvent("LittleHans8", mCurrentPage));
+    networkQueue().enqueue(mActivityService.getReceivedEvents("LittleHans8", mCurrentPage));
     Log.d(TAG, "loadData: " + mLastPage);
   }
 

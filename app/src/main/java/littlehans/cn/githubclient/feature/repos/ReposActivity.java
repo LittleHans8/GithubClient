@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import butterknife.BindView;
+import butterknife.Bind;
 import java.util.ArrayList;
 import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.R;
@@ -18,7 +18,7 @@ import qiu.niorgai.StatusBarCompat;
  */
 
 public class ReposActivity extends BaseActivity {
-  @BindView(R.id.toolbar) Toolbar mToolbar;
+  @Bind(R.id.toolbar) Toolbar mToolbar;
   private Intent mIntent;
   private SearchRepos.Items mItems;
   private ArrayList<OnDatePassListener> mOnDatePassListeners;

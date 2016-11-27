@@ -1,4 +1,4 @@
-package littlehans.cn.githubclient.ui.fragment;
+package littlehans.cn.githubclient.feature.owner;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,10 +8,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import butterknife.BindView;
+import butterknife.Bind;
 import java.util.ArrayList;
 import java.util.List;
 import littlehans.cn.githubclient.R;
+import littlehans.cn.githubclient.ui.fragment.BaseFragment;
 
 /**
  * Created by LittleHans on 2016/11/18.
@@ -19,8 +20,8 @@ import littlehans.cn.githubclient.R;
 
 public class MainFragment extends BaseFragment {
 
-  @BindView(R.id.tab_layout) TabLayout mTabLayout;
-  @BindView(R.id.view_pager) ViewPager mViewPager;
+  @Bind(R.id.tab_layout) TabLayout mTabLayout;
+  @Bind(R.id.view_pager) ViewPager mViewPager;
   private MainFragment.Adapter mAdapter;
 
   public static Fragment create() {

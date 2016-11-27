@@ -29,7 +29,7 @@ public class SearchUserAdapter extends BaseQuickAdapter<User, BaseViewHolder> {
     }
     checkSet(baseViewHolder, R.id.text_repo_name, user.login);
     checkSet(baseViewHolder, R.id.text_email, user.email);
-    checkSet(baseViewHolder, R.id.text_location, user.location);
+    checkSet(baseViewHolder, R.id.text_name, user.location);
     ISO8601DateFormat dateFormat = new ISO8601DateFormat();
       checkSet(baseViewHolder, R.id.text_join_time, mDateFormat.formatTime(user.created_at));
   }

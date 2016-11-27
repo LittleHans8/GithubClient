@@ -11,7 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
-import butterknife.BindView;
+import butterknife.Bind;
 import java.util.ArrayList;
 import java.util.List;
 import littlehans.cn.githubclient.R;
@@ -22,8 +22,8 @@ import littlehans.cn.githubclient.ui.fragment.BaseFragment;
  */
 
 public class ReposFragment extends BaseFragment implements TabLayout.OnTabSelectedListener {
-  @BindView(R.id.tab_layout) TabLayout mTabLayout;
-  @BindView(R.id.view_pager) ViewPager mViewPager;
+  @Bind(R.id.tab_layout) TabLayout mTabLayout;
+  @Bind(R.id.view_pager) ViewPager mViewPager;
   private int[] mDrawableNormal;
   private int[] mDrawableSelected;
   private String[] mTitles;

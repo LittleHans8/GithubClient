@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.SearchView;
 import android.widget.FrameLayout;
-import butterknife.BindView;
+import butterknife.Bind;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.ui.activity.BaseActivity;
 import qiu.niorgai.StatusBarCompat;
@@ -18,8 +18,8 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
 
 
   private static final String TAG = "SearchActivity";
-  @BindView(R.id.fragment_container) FrameLayout mFragmentContainer;
-  @BindView(R.id.search_view) SearchView mSearchView;
+  @Bind(R.id.fragment_container) FrameLayout mFragmentContainer;
+  @Bind(R.id.search_view) SearchView mSearchView;
   private onSearchListenerA mSearchListenerA;
   private onSearchListenerB mSearchListenerB;
 

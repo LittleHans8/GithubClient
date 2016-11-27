@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import butterknife.BindView;
+import butterknife.Bind;
 import com.mukesh.MarkdownView;
 import littlehans.cn.githubclient.R;
 import thereisnospon.codeview.CodeView;
@@ -16,8 +16,8 @@ import thereisnospon.codeview.CodeViewTheme;
 
 public class FileDetailActivity extends BaseActivity {
   private static final String TAG = "FileDetailActivity";
-  @BindView(R.id.code_view) CodeView mCodeView;
-  @BindView(R.id.markdown_view) MarkdownView mMarkdownView;
+  @Bind(R.id.code_view) CodeView mCodeView;
+  @Bind(R.id.markdown_view) MarkdownView mMarkdownView;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
 
