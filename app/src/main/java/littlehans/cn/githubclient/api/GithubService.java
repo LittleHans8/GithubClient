@@ -1,6 +1,6 @@
 package littlehans.cn.githubclient.api;
 
-import littlehans.cn.githubclient.api.service.EventService;
+import littlehans.cn.githubclient.api.service.ActivityService;
 import littlehans.cn.githubclient.api.service.GitDateService;
 import littlehans.cn.githubclient.api.service.InfoService;
 import littlehans.cn.githubclient.api.service.IssuesService;
@@ -15,8 +15,8 @@ import retrofit2.Retrofit;
 
 public class GithubService {
 
-  public static EventService createEventService() {
-    return retrofit().create(EventService.class);
+  public static ActivityService createActivityService() {
+    return retrofit().create(ActivityService.class);
   }
 
   public static SearchService createSearchService() {
