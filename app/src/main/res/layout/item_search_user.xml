@@ -41,7 +41,7 @@
       style="@style/CardUser.Meta"
       />
   <TextView
-      android:id="@+id/text_location"
+      android:id="@+id/text_name"
       android:layout_marginBottom="8dp"
       android:drawableLeft="@drawable/ic_location"
       android:drawableStart="@drawable/ic_location"
@@ -54,9 +54,9 @@
       android:id="@+id/text_join_time"
       android:drawableLeft="@drawable/ic_join"
       android:drawableStart="@drawable/ic_join"
-      app:layout_constraintBottom_toBottomOf="@+id/text_location"
-      app:layout_constraintLeft_toRightOf="@+id/text_location"
-      app:layout_constraintTop_toTopOf="@+id/text_location"
+      app:layout_constraintBottom_toBottomOf="@+id/text_name"
+      app:layout_constraintLeft_toRightOf="@+id/text_name"
+      app:layout_constraintTop_toTopOf="@+id/text_name"
       tools:text="Joined on 11 Nov 2015"
       style="@style/CardUser.Meta"
       />
