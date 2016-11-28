@@ -3,6 +3,7 @@ package littlehans.cn.githubclient.model.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.smartydroid.android.starter.kit.model.entity.Entity;
 
 /**
  * Created by LittleHans on 2016/10/28.
@@ -56,7 +57,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
     dest.writeString(this.body);
   }
 
-  @JsonIgnoreProperties(ignoreUnknown = true) public static class User implements Parcelable {
+  @JsonIgnoreProperties(ignoreUnknown = true) public static class User extends Entity {
     public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
       @Override public User createFromParcel(Parcel source) {
         return new User(source);

@@ -6,6 +6,7 @@ import littlehans.cn.githubclient.api.service.InfoService;
 import littlehans.cn.githubclient.api.service.IssuesService;
 import littlehans.cn.githubclient.api.service.RepositoryService;
 import littlehans.cn.githubclient.api.service.SearchService;
+import littlehans.cn.githubclient.api.service.UserService;
 import littlehans.cn.githubclient.network.retrofit2.RetrofitBuilder;
 import retrofit2.Retrofit;
 
@@ -42,5 +43,9 @@ public class GithubService {
   private static Retrofit retrofit() {
 
     return RetrofitBuilder.get().retrofit();
+  }
+
+  public static UserService createUserService() {
+    return retrofit().create(UserService.class);
   }
 }

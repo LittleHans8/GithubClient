@@ -1,5 +1,7 @@
 package littlehans.cn.githubclient.api.service;
 
+import java.util.ArrayList;
+
 import littlehans.cn.githubclient.model.entity.Comment;
 import littlehans.cn.githubclient.model.entity.Issue;
 import littlehans.cn.githubclient.model.entity.User;
@@ -21,11 +23,11 @@ public interface UserService {
      */
 
     //List the authenticated user's followers:
-    @GET("/user/followers") Call<Comment.User> getUserFollowers(@Query("page") int page);
+    @GET("/user/followers") Call<ArrayList<Comment.User>> getOwnFollowers(@Query("page") int page);
 
     // List a user's followers
     @GET("/users/{username}/followers")
-    Call<Comment.User> getOwnFollowers(@Path("username")String userName, @Query("page")int page);
+    Call<ArrayList<Comment.User>> getUserFollowers(@Path("username")String userName, @Query("page")int page);
 
     /**
      * List users followed by another user

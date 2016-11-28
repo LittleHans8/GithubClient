@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     >
 
   <com.facebook.drawee.view.SimpleDraweeView
-      android:id="@+id/simpleDraweeView"
+      android:id="@+id/image_avatar"
       android:layout_width="48dp"
       android:layout_height="48dp"
       android:layout_marginLeft="8dp"
@@ -23,8 +23,8 @@
       android:layout_height="wrap_content"
       android:layout_marginLeft="8dp"
       android:layout_marginStart="8dp"
-      app:layout_constraintLeft_toRightOf="@+id/simpleDraweeView"
-      app:layout_constraintTop_toTopOf="@+id/simpleDraweeView"
+      app:layout_constraintLeft_toRightOf="@+id/image_avatar"
+      app:layout_constraintTop_toTopOf="@+id/image_avatar"
       tools:text="LittleHans"
       />
   <TextView
@@ -34,14 +34,13 @@
       android:layout_marginLeft="8dp"
       android:layout_marginStart="8dp"
       android:textColor="@color/gray"
-      android:textSize="12sp"
       app:layout_constraintLeft_toRightOf="@+id/text_name"
       app:layout_constraintTop_toTopOf="@+id/text_name"
       tools:text="LittleHans8"
       />
 
   <TextView
-      android:id="@+id/textView10"
+      android:id="@+id/text_organization"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginLeft="8dp"
@@ -50,13 +49,13 @@
       android:drawablePadding="4dp"
       android:drawableStart="@drawable/ic_organization"
       android:textSize="12sp"
-      app:layout_constraintBottom_toBottomOf="@+id/simpleDraweeView"
-      app:layout_constraintLeft_toRightOf="@+id/simpleDraweeView"
+      app:layout_constraintBottom_toBottomOf="@+id/image_avatar"
+      app:layout_constraintLeft_toRightOf="@+id/image_avatar"
       tools:text="Student:-) "
       />
 
   <TextView
-      android:id="@+id/text_name"
+      android:id="@+id/text_location"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginLeft="8dp"
@@ -65,8 +64,8 @@
       android:drawablePadding="4dp"
       android:drawableStart="@drawable/ic_location"
       android:textSize="12sp"
-      app:layout_constraintBottom_toBottomOf="@+id/textView10"
-      app:layout_constraintLeft_toRightOf="@+id/textView10"
+      app:layout_constraintBottom_toBottomOf="@+id/text_organization"
+      app:layout_constraintLeft_toRightOf="@+id/text_organization"
       tools:text="China"
       />
 
