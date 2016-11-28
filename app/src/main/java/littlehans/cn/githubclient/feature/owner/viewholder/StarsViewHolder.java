@@ -10,7 +10,10 @@ import butterknife.ButterKnife;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.model.entity.Repository;
 import littlehans.cn.githubclient.utilities.DateFormatUtil;
+import littlehans.cn.githubclient.utilities.FormatUtils;
 import support.ui.adapters.EasyViewHolder;
+
+import static littlehans.cn.githubclient.utilities.TextViewUtils.setTextNotEmpty;
 
 /**
  * Created by LittleHans on 2016/11/27.
@@ -36,17 +39,9 @@ public class StarsViewHolder extends EasyViewHolder<Repository> {
     mTextName.setText(value.full_name);
     setTextNotEmpty(mTextDescription, value.description);
     setTextNotEmpty(mTextLanguage, value.language);
-    mTextStartCount.setText(String.valueOf(value.stargazers_count));
-    mTextForkCount.setText(String.valueOf(value.forks_count));
+    mTextStartCount.setText(FormatUtils.decimalFormat(value.stargazers_count));
+    mTextForkCount.setText(FormatUtils.decimalFormat(value.forks_count));
     mTextUpdatedAt.setText(mDateFormatUtil.formatTime(value.updated_at));
   }
 
-  public void setTextNotEmpty(TextView textView, String text) {
-    if (TextUtils.isEmpty(text)) {
-      textView.setVisibility(View.VISIBLE);
-      textView.setText(text);
-    } else {
-      textView.setVisibility(View.GONE);
-    }
-  }
 }

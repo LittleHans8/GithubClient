@@ -13,6 +13,7 @@ import support.ui.adapters.EasyViewHolder;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static littlehans.cn.githubclient.utilities.TextViewUtils.setTextNotEmpty;
 
 /**
  * Created by LittleHans on 2016/11/27.
@@ -34,18 +35,8 @@ public class AllReposViewHolder extends EasyViewHolder<Repository> {
 
   @Override public void bindTo(int position, Repository value) {
     mTextName.setText(value.name);
-    if (!TextUtils.isEmpty(value.description)) {
-      mTextDescription.setVisibility(VISIBLE);
-      mTextDescription.setText(value.description);
-    } else {
-      mTextDescription.setVisibility(GONE);
-    }
-    if (!TextUtils.isEmpty(value.language)) {
-      mTextLanguage.setVisibility(VISIBLE);
-      mTextLanguage.setText(value.language);
-    } else {
-      mTextLanguage.setVisibility(GONE);
-    }
+    setTextNotEmpty(mTextDescription,value.description);
+    setTextNotEmpty(mTextLanguage,value.language);
     mTextUpdatedAt.setText(mDateFormatUtil.formatTime(value.updated_at));
   }
 }

@@ -1,5 +1,6 @@
 package littlehans.cn.githubclient.api.service;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import littlehans.cn.githubclient.model.entity.ReceivedEvent;
@@ -30,6 +31,6 @@ public interface ActivityService {
   @GET("/user/starred") Call<ArrayList<Repository>> getOwnStarredRepos(@Query("page") int page);
 
   //List repositories being starred by the authenticated user.
-  @GET("/users/{username}/starred") Call<List<Repository>> getUserStarredRepos(
+  @GET("/users/{username}/starred") Call<ArrayList<Repository>> getUserStarredRepos(
       @Path("username") String userName, @Query("page") int page);
 }

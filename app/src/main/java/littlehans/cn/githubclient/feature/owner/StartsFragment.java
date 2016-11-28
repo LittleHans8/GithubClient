@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import littlehans.cn.githubclient.api.GithubService;
 import littlehans.cn.githubclient.api.service.ActivityService;
@@ -38,10 +40,16 @@ public class StartsFragment extends PagedFragment<Repository> {
   }
 
   @Override public Call<ArrayList<Repository>> paginate(int page, int perPage) {
-    return mActivityService.getOwnStarredRepos(1);
+    return mActivityService.getUserStarredRepos("LittleHans8",page);
   }
 
   @Override public Object getKeyForData(Repository item) {
     return item.id;
+  }
+
+  @Override public void onItemClick(int position, View view) {
+    super.onItemClick(position, view);
+    Repository repository = getItem(position);
+    Toast.makeText(getActivity(), repository.full_name + position, Toast.LENGTH_SHORT).show();
   }
 }
