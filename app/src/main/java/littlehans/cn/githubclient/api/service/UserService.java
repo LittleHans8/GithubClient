@@ -32,5 +32,12 @@ public interface UserService {
     /**
      * List users followed by another user
      */
+
+    //List who the authenticated user is following:
+    @GET("/user/following") Call<ArrayList<Comment.User>> getOwnFollowing(@Query("page")int page);
+
+    //List who a user is following
+    @GET("/users/{username}/following")  Call<ArrayList<Comment.User>> getUserFollowing(@Path("username") String userName,@Query("page") int page);
+
     
 }
