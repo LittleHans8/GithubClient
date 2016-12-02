@@ -11,7 +11,7 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class DefaultHeaderInterceptor implements HeaderInterceptor {
+public class LoginInterceptor implements HeaderInterceptor {
 
   //AccountProvider mAccountProvider;
   /**
@@ -22,9 +22,17 @@ public class DefaultHeaderInterceptor implements HeaderInterceptor {
   public final static String ACCEPT_JSON = "application/json";
   public final static String ACCEPT_FULL_JSON = "application/vnd.github.v3.full+json";
 
+  private String mAccount;
+  private String mPassword;
+
+  public LoginInterceptor(String account,String password){
+    this.mAccount = account;
+    this.mPassword = password;
+  }
+
   @Override public Response intercept(Interceptor.Chain chain) throws IOException {
 
-    String credentials = "LittleHans8" + ":" + "asd6629236";
+    String credentials = mAccount + ":" + mPassword;
     String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
     Log.v("Basic", basic);
     Request originalRequest = chain.request();

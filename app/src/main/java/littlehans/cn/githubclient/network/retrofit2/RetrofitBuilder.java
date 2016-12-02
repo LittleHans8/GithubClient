@@ -90,7 +90,7 @@ public class RetrofitBuilder {
           });
       loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
       builder.addInterceptor(loggingInterceptor);
-      builder.addInterceptor(new DefaultHeaderInterceptor());
+//      builder.addInterceptor(new LoginInterceptor());
       return builder.build();
     }
 
