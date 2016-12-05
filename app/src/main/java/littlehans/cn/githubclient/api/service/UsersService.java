@@ -16,7 +16,13 @@ import retrofit2.http.Query;
  * https://developer.github.com/v3/users/
  */
 
-public interface UserService {
+public interface UsersService {
+
+    /**
+     * Get the authenticated user
+     */
+
+    @GET("/user") Call<User> getAuthUser();
 
     /**
      * List followers of a user

@@ -12,10 +12,10 @@ import timber.log.Timber;
 public class GithubApplication extends Application {
   @Override public void onCreate() {
     super.onCreate();
-    new RetrofitBuilder
-        .Builder()
-        .baseUrl(Profile.API_ENDPOINT)
-        .build();
+//    new RetrofitBuilder
+//        .Builder()
+//        .baseUrl(Profile.API_ENDPOINT)
+//        .build();
     Fresco.initialize(this);
   }
 }

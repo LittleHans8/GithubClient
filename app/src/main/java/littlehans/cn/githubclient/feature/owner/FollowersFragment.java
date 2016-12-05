@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import java.util.ArrayList;
 
 import littlehans.cn.githubclient.api.GithubService;
-import littlehans.cn.githubclient.api.service.UserService;
+import littlehans.cn.githubclient.api.service.UsersService;
 import littlehans.cn.githubclient.feature.owner.viewholder.FollowerViewHolder;
 import littlehans.cn.githubclient.model.entity.Comment;
 import littlehans.cn.githubclient.ui.fragment.PagedFragment;
@@ -17,12 +17,12 @@ import support.ui.adapters.EasyRecyclerAdapter;
  * Created by LittleHans on 2016/11/18.
  */
 public class FollowersFragment extends PagedFragment<Comment.User> {
-  private UserService mUserService;
+  private UsersService mUsersService;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mUserService = GithubService.createUserService();
+    mUsersService = GithubService.createUserService();
   }
 
   public static Fragment create() {
@@ -36,7 +36,7 @@ public class FollowersFragment extends PagedFragment<Comment.User> {
 
   @Override
   public Call<ArrayList<Comment.User>> paginate(int page, int perPage) {
-    return mUserService.getUserFollowers("LittleHans8",page);
+    return mUsersService.getUserFollowers("LittleHans8",page);
   }
 
   @Override

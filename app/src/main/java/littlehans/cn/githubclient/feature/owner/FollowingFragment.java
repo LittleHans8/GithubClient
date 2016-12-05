@@ -8,22 +8,19 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
-import littlehans.cn.githubclient.api.service.UserService;
+import littlehans.cn.githubclient.api.service.UsersService;
 import littlehans.cn.githubclient.feature.owner.viewholder.FollowerViewHolder;
 import littlehans.cn.githubclient.model.entity.Comment;
-import littlehans.cn.githubclient.ui.fragment.BaseFragment;
 import littlehans.cn.githubclient.ui.fragment.PagedFragment;
 import retrofit2.Call;
-import retrofit2.http.POST;
 import support.ui.adapters.EasyRecyclerAdapter;
 
 /**
  * Created by LittleHans on 2016/11/18.
  */
 public class FollowingFragment extends PagedFragment<Comment.User> {
-  private UserService mUserService;
+  private UsersService mUsersService;
 
   public static Fragment create() {
     return new FollowingFragment();
@@ -37,7 +34,7 @@ public class FollowingFragment extends PagedFragment<Comment.User> {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mUserService = GithubService.createUserService();
+    mUsersService = GithubService.createUserService();
   }
 
   @Override
@@ -47,7 +44,7 @@ public class FollowingFragment extends PagedFragment<Comment.User> {
 
   @Override
   public Call<ArrayList<Comment.User>> paginate(int page, int perPage) {
-    return mUserService.getUserFollowing("yyx990803",page);
+    return mUsersService.getUserFollowing("yyx990803",page);
   }
 
   @Override
