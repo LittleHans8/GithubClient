@@ -38,10 +38,9 @@ public class MainActivity extends BaseActivity
 
     mNavigationView.setNavigationItemSelectedListener(this);
 
-    StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this,R.color.colorAccent));
+    StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorAccent));
     getSupportFragmentManager().beginTransaction().add(R.id.content_main, MainFragment.create())
         .commit();
-
   }
 
   @Override public void onBackPressed() {
@@ -56,8 +55,7 @@ public class MainActivity extends BaseActivity
 
     getMenuInflater().inflate(R.menu.main, menu);
 
-     //Associate searchable configuration with the SearchView
-
+    //Associate searchable configuration with the SearchView
 
     return true;
   }
@@ -79,20 +77,13 @@ public class MainActivity extends BaseActivity
   public boolean onNavigationItemSelected(MenuItem item) {
     // Handle navigation view item clicks here.
     int id = item.getItemId();
-
-    if (id == R.id.nav_camera) {
-      // Handle the camera action
-    } else if (id == R.id.nav_gallery) {
-
-    } else if (id == R.id.nav_slideshow) {
-
-    } else if (id == R.id.nav_manage) {
-
-    } else if (id == R.id.nav_share) {
-
-    } else if (id == R.id.nav_send) {
-
-    }
+    //if (id == R.id.nav_manage) {
+    //
+    //} else if (id == R.id.nav_share) {
+    //
+    //} else if (id == R.id.nav_send) {
+    //
+    //}
 
     mDrawer.closeDrawer(GravityCompat.START);
     return true;

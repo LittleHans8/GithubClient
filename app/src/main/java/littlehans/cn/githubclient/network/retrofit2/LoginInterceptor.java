@@ -4,8 +4,8 @@
  */
 package littlehans.cn.githubclient.network.retrofit2;
 
+import android.text.TextUtils;
 import android.util.Base64;
-import android.util.Log;
 import java.io.IOException;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -24,6 +24,11 @@ public class LoginInterceptor implements HeaderInterceptor {
 
   private String mAccount;
   private String mPassword;
+  private String mBasicCode;
+
+  public LoginInterceptor(String basicCode) {
+    this.mBasicCode = basicCode;
+  }
 
   public LoginInterceptor(String account,String password){
     this.mAccount = account;
@@ -31,18 +36,32 @@ public class LoginInterceptor implements HeaderInterceptor {
   }
 
   @Override public Response intercept(Interceptor.Chain chain) throws IOException {
+    String basic;
+    Request.Builder requestBuilder;
+    Request request;
+    if (TextUtils.isEmpty(mAccount)) {
+      basic = "Basic " + mBasicCode;
+      Request originalRequest = chain.request();
+      requestBuilder = originalRequest.newBuilder()
+          .header("Authorization", basic)
+          .header("Accept", "application/json")
+          .header(ACCEPT, ACCEPT_TEXT_MATCH + "," + ACCEPT_JSON + "," + ACCEPT_FULL_JSON)
+          .method(originalRequest.method(), originalRequest.body());
+      request = requestBuilder.build();
+      return chain.proceed(request);
+    } else {
+      String credentials = mAccount + ":" + mPassword;
 
-    String credentials = mAccount + ":" + mPassword;
-    String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-    Log.v("Basic", basic);
-    Request originalRequest = chain.request();
+      basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+      Request originalRequest = chain.request();
 
-    Request.Builder requestBuilder = originalRequest.newBuilder()
-        .header("Authorization", basic)
-        .header("Accept", "application/json")
-        .header(ACCEPT, ACCEPT_TEXT_MATCH + "," + ACCEPT_JSON + "," + ACCEPT_FULL_JSON)
-        .method(originalRequest.method(), originalRequest.body());
-    Request request = requestBuilder.build();
-    return chain.proceed(request);
+      requestBuilder = originalRequest.newBuilder()
+          .header("Authorization", basic)
+          .header("Accept", "application/json")
+          .header(ACCEPT, ACCEPT_TEXT_MATCH + "," + ACCEPT_JSON + "," + ACCEPT_FULL_JSON)
+          .method(originalRequest.method(), originalRequest.body());
+      request = requestBuilder.build();
+      return chain.proceed(request);
+    }
   }
 }
