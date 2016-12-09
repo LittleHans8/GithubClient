@@ -13,6 +13,7 @@ import butterknife.Bind;
 import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.feature.owner.MainFragment;
+import littlehans.cn.githubclient.model.entity.User;
 import littlehans.cn.githubclient.ui.activity.BaseActivity;
 import qiu.niorgai.StatusBarCompat;
 
@@ -27,7 +28,6 @@ public class MainActivity extends BaseActivity
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-
     setSupportActionBar(mToolbar);
 
     ActionBarDrawerToggle toggle =
@@ -67,8 +67,6 @@ public class MainActivity extends BaseActivity
         Nav.startSearchActivity(this);
         return true;
     }
-
-    //noinspection SimplifiableIfStatement
 
     return super.onOptionsItemSelected(item);
   }

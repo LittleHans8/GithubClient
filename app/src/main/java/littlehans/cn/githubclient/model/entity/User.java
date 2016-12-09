@@ -4,11 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.smartydroid.android.starter.kit.account.Account;
 
 /**
  * Created by littlehans on 2016/10/17.
  */
-@JsonIgnoreProperties(ignoreUnknown = true) public class User implements Parcelable{
+@JsonIgnoreProperties(ignoreUnknown = true) public class User implements Parcelable,Account{
 
 
   /**
@@ -232,4 +235,25 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
       dest.writeInt(collaborators);
     }
   }
+
+  @Override
+  public String token() {
+    return null;
+  }
+
+  @Override
+  public Object key() {
+    return id;
+  }
+
+  public String toJson(){
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+      return objectMapper.writeValueAsString(this);
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
 }

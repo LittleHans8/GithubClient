@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import littlehans.cn.githubclient.api.GithubService;
 import littlehans.cn.githubclient.api.service.ActivityService;
 import littlehans.cn.githubclient.feature.owner.viewholder.StarsViewHolder;
+import littlehans.cn.githubclient.model.AccountManager;
 import littlehans.cn.githubclient.model.entity.Repository;
+import littlehans.cn.githubclient.model.entity.User;
 import littlehans.cn.githubclient.ui.fragment.PagedFragment;
 import retrofit2.Call;
 import support.ui.adapters.EasyRecyclerAdapter;
@@ -21,6 +23,7 @@ import support.ui.adapters.EasyRecyclerAdapter;
 public class StartsFragment extends PagedFragment<Repository> {
 
   private ActivityService mActivityService;
+  private User mUser;
 
   public static Fragment create() {
     return new StartsFragment();
@@ -29,6 +32,7 @@ public class StartsFragment extends PagedFragment<Repository> {
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mActivityService = GithubService.createActivityService();
+    mUser = AccountManager.getAccount();
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -40,7 +44,7 @@ public class StartsFragment extends PagedFragment<Repository> {
   }
 
   @Override public Call<ArrayList<Repository>> paginate(int page, int perPage) {
-    return mActivityService.getUserStarredRepos("LittleHans8",page);
+    return mActivityService.getUserStarredRepos(mUser.login,page);
   }
 
   @Override public Object getKeyForData(Repository item) {

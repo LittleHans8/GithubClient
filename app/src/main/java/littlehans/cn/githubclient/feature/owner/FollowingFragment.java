@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import littlehans.cn.githubclient.api.GithubService;
 import littlehans.cn.githubclient.api.service.UsersService;
 import littlehans.cn.githubclient.feature.owner.viewholder.FollowerViewHolder;
+import littlehans.cn.githubclient.model.AccountManager;
 import littlehans.cn.githubclient.model.entity.Comment;
+import littlehans.cn.githubclient.model.entity.User;
 import littlehans.cn.githubclient.ui.fragment.PagedFragment;
 import retrofit2.Call;
 import support.ui.adapters.EasyRecyclerAdapter;
@@ -21,6 +23,7 @@ import support.ui.adapters.EasyRecyclerAdapter;
  */
 public class FollowingFragment extends PagedFragment<Comment.User> {
   private UsersService mUsersService;
+  private User mUser;
 
   public static Fragment create() {
     return new FollowingFragment();
@@ -29,6 +32,7 @@ public class FollowingFragment extends PagedFragment<Comment.User> {
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    mUser = AccountManager.getAccount();
   }
 
   @Override
@@ -44,7 +48,7 @@ public class FollowingFragment extends PagedFragment<Comment.User> {
 
   @Override
   public Call<ArrayList<Comment.User>> paginate(int page, int perPage) {
-    return mUsersService.getUserFollowing("yyx990803",page);
+    return mUsersService.getUserFollowing(mUser.login,page);
   }
 
   @Override

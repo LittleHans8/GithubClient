@@ -8,17 +8,19 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.Profile;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.api.GithubService;
 import littlehans.cn.githubclient.api.service.UsersService;
+import littlehans.cn.githubclient.model.AccountManager;
 import littlehans.cn.githubclient.model.entity.User;
 import littlehans.cn.githubclient.network.retrofit2.LoginInterceptor;
 import littlehans.cn.githubclient.network.retrofit2.RetrofitBuilder;
@@ -34,7 +36,7 @@ public class LoginActivity extends NetworkActivity<User> {
 
   @Bind(R.id.auto_text_account) AutoCompleteTextView mAutoTextAccount;
   @Bind(R.id.edit_password) EditText mEditPassword;
-  @Bind(R.id.btn_sign_in) Button mBtnSign;
+  @Bind(R.id.btn_sign_in) TextView mBtnSign;
   private UsersService mUsersService;
   private LoginInterceptor mLoginInterceptor;
   private RetrofitBuilder mRetrofitBuilder;
@@ -98,6 +100,9 @@ public class LoginActivity extends NetworkActivity<User> {
   @Override
   public void respondSuccess(User data) {
     Toast.makeText(this, "login success", Toast.LENGTH_SHORT).show();
+    AccountManager.storeAccount(data);
+    AccountManager.storeBasic(getAccount(),getPassword());
+    Nav.startMainActivity(this);
     Log.d("TAG ", "respondSuccess: " + data.email);
   }
 
