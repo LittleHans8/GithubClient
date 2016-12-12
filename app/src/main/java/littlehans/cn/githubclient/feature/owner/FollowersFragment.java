@@ -2,6 +2,7 @@ package littlehans.cn.githubclient.feature.owner;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,8 @@ import littlehans.cn.githubclient.model.entity.User;
 import littlehans.cn.githubclient.ui.fragment.PagedFragment;
 import retrofit2.Call;
 import support.ui.adapters.EasyRecyclerAdapter;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by LittleHans on 2016/11/18.
@@ -39,7 +42,7 @@ public class FollowersFragment extends PagedFragment<Comment.User> {
 
   @Override
   public Call<ArrayList<Comment.User>> paginate(int page, int perPage) {
-    return mUsersService.getUserFollowers(mUser.name,page);
+    return mUsersService.getUserFollowers(mUser.login,page);
   }
 
   @Override

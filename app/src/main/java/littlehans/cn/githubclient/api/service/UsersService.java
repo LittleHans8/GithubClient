@@ -18,6 +18,10 @@ import retrofit2.http.Query;
 
 public interface UsersService {
 
+
+
+    @GET("/users/{username}") Call<User> getUser(@Path("username") String userName);
+
     /**
      * Get the authenticated user
      */
@@ -45,5 +49,5 @@ public interface UsersService {
     //List who a user is following
     @GET("/users/{username}/following")  Call<ArrayList<Comment.User>> getUserFollowing(@Path("username") String userName,@Query("page") int page);
 
-    
+
 }

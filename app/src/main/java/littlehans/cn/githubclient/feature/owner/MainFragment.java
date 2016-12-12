@@ -31,7 +31,8 @@ public class MainFragment extends BaseFragment {
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mAdapter = new MainFragment.Adapter(getChildFragmentManager());
-    mAdapter.addFragment(ReceivedEventsFragment.create(), getString(R.string.events));
+    //TODO EventFragment
+//    mAdapter.addFragment(ReceivedEventsFragment.create(), getString(R.string.events));
     mAdapter.addFragment(AllReposFragment.create(), getString(R.string.repositories));
     mAdapter.addFragment(StartsFragment.create(), getString(R.string.starts));
     mAdapter.addFragment(FollowersFragment.create(), getString(R.string.followers));

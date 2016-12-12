@@ -1,20 +1,26 @@
 package littlehans.cn.githubclient.ui.activity;
 
+import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.AutoCompleteTextView;
+import android.view.TextureView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.io.IOException;
+
 import butterknife.Bind;
 import butterknife.OnClick;
+import butterknife.OnFocusChange;
 import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.Profile;
 import littlehans.cn.githubclient.R;
@@ -34,9 +40,11 @@ import timber.log.Timber;
  */
 public class LoginActivity extends NetworkActivity<User> {
 
-  @Bind(R.id.auto_text_account) AutoCompleteTextView mAutoTextAccount;
+  @Bind(R.id.edit_text_account) EditText mEditTextAccount;
   @Bind(R.id.edit_password) EditText mEditPassword;
   @Bind(R.id.btn_sign_in) TextView mBtnSign;
+  @Bind(R.id.toolbar) Toolbar mToolbar;
+  @Bind(R.id.avatar) SimpleDraweeView mAvatar;
   private UsersService mUsersService;
   private LoginInterceptor mLoginInterceptor;
   private RetrofitBuilder mRetrofitBuilder;
@@ -45,13 +53,14 @@ public class LoginActivity extends NetworkActivity<User> {
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
+    setSupportActionBar(mToolbar);
 
   }
 
 
   @OnClick(R.id.btn_sign_in) void sigIn(){
 
-    if(checkAccount()) {
+    if(!checkAccount()) {
       OkHttpClient.Builder builder = new OkHttpClient.Builder();
       HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
         @Override
@@ -74,17 +83,46 @@ public class LoginActivity extends NetworkActivity<User> {
                 .baseUrl(Profile.API_ENDPOINT)
                 .client(client)
                 .build();
+      mUsersService = GithubService.createUserService();
+      networkQueue().enqueue(mUsersService.getAuthUser());
+    }else {
+      Toast.makeText(this, getString(R.string.error_invalid_password), Toast.LENGTH_SHORT).show();
     }
-    mUsersService = GithubService.createUserService();
-    networkQueue().enqueue(mUsersService.getAuthUser());
+
+  }
+
+  @OnFocusChange(R.id.edit_text_account) void editTextAccountFocusChange(){
+    Toast.makeText(this, "changed", Toast.LENGTH_SHORT).show();
+    if(!TextUtils.isEmpty(getAccount())){
+      new RetrofitBuilder
+              .Builder()
+              .baseUrl(Profile.API_ENDPOINT)
+              .build();
+      mUsersService = GithubService.createUserService();
+      new Thread(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            final User user = mUsersService.getUser(getAccount()).execute().body();
+            Timber.d(user.avatar_url);
+            mAvatar.post(new Runnable() {
+              @Override
+              public void run() {
+               mAvatar.setImageURI(user.avatar_url);
+              }
+            });
+
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+      }).start();
+
+    }
   }
 
   private boolean checkAccount() {
-    if(TextUtils.isEmpty(getAccount()) && TextUtils.isEmpty(getPassword())) {
-      Toast.makeText(this, "Incorrect username or password.", Toast.LENGTH_SHORT).show();
-      return false;
-    }
-    return true;
+   return TextUtils.isEmpty(getAccount()) || TextUtils.isEmpty(getPassword());
   }
 
   @NonNull
@@ -94,7 +132,7 @@ public class LoginActivity extends NetworkActivity<User> {
 
   @NonNull
   private String getAccount() {
-    return mAutoTextAccount.getText().toString().trim();
+    return mEditTextAccount.getText().toString().trim();
   }
 
   @Override
