@@ -14,7 +14,7 @@ public interface GitDateService {
 
   /**
    * Get a Trees
-   * GET /repos/:owner/:repo/git/trees/:sha
+   * GET /items/:owner/:repo/git/trees/:sha
    * see: https://developer.github.com/v3/git/trees/#get-a-tree
    */
   @GET("/repos/{owner}/{repo}/git/trees/{sha}") Call<Trees> getTree(
@@ -23,7 +23,7 @@ public interface GitDateService {
       @Path("sha") String sha);
 
   /**
-   * /repos/:owner/:repo/git/blobs/:sha
+   * /items/:owner/:repo/git/blobs/:sha
    */
   @GET("/repos/{owner}/{repo}/git/blobs/{sha}") Call<Blob> getBlob(
       @Path("owner") String owner,

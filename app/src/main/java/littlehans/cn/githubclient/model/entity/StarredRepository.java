@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true) public class StarredRepository {
 
   public int id;
-  public SearchRepos.Items.Owner owner;
+  public User owner;
   public String name;
   public String full_name;
   public String description;

@@ -29,7 +29,7 @@ import littlehans.cn.githubclient.api.service.GitDateService;
 import littlehans.cn.githubclient.api.service.RepositoryService;
 import littlehans.cn.githubclient.model.entity.Blob;
 import littlehans.cn.githubclient.model.entity.Branch;
-import littlehans.cn.githubclient.model.entity.SearchRepos;
+import littlehans.cn.githubclient.model.entity.Repository;
 import littlehans.cn.githubclient.model.entity.Trees;
 import littlehans.cn.githubclient.ui.activity.FileDetailActivity;
 import littlehans.cn.githubclient.ui.fragment.NetworkFragment;
@@ -186,10 +186,11 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
 
   @Override public void onCardTouchListener(Parcelable parcelableDate) {
 
-    SearchRepos.Items items = (SearchRepos.Items) parcelableDate;
+    Repository items = (Repository) parcelableDate;
 
     mOwner = items.owner.login;
     mRepo = items.name;
+    Log.d("TAG", "onCardTouchListener: " + mOwner + mRepo);
     mDefaultBranch = items.default_branch;
     Log.d("TAG", "run: " + mDefaultBranch);
     Thread thread = new Thread(new Runnable() {

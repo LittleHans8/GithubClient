@@ -25,7 +25,7 @@ import littlehans.cn.githubclient.api.GitHubService;
 import littlehans.cn.githubclient.api.service.IssuesService;
 import littlehans.cn.githubclient.feature.search.PageLink;
 import littlehans.cn.githubclient.model.entity.Issue;
-import littlehans.cn.githubclient.model.entity.SearchRepos;
+import littlehans.cn.githubclient.model.entity.Repository;
 import littlehans.cn.githubclient.ui.fragment.NetworkFragment;
 import okhttp3.Headers;
 
@@ -188,7 +188,7 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
   }
 
   @Override public void onCardTouchListener(Parcelable parcelableDate) {
-    SearchRepos.Items item = (SearchRepos.Items) parcelableDate;
+    Repository item = (Repository) parcelableDate;
     mOwner = item.owner.login;
     mRepo = item.name;
     removeOnItemClickListener();

@@ -9,7 +9,7 @@ import butterknife.Bind;
 import java.util.ArrayList;
 import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.R;
-import littlehans.cn.githubclient.model.entity.SearchRepos;
+import littlehans.cn.githubclient.model.entity.Repository;
 import littlehans.cn.githubclient.ui.activity.BaseActivity;
 import qiu.niorgai.StatusBarCompat;
 
@@ -20,7 +20,7 @@ import qiu.niorgai.StatusBarCompat;
 public class ReposActivity extends BaseActivity {
   @Bind(R.id.toolbar) Toolbar mToolbar;
   private Intent mIntent;
-  private SearchRepos.Items mItems;
+  private Repository mItems;
   private ArrayList<OnDatePassListener> mOnDatePassListeners;
   private OnDatePassListener mOnDatePassListener;
 

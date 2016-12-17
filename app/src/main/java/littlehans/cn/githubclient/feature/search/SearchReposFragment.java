@@ -13,6 +13,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.api.GitHubService;
 import littlehans.cn.githubclient.feature.repos.ReposActivity;
+import littlehans.cn.githubclient.model.entity.Repository;
 import littlehans.cn.githubclient.model.entity.SearchRepos;
 import littlehans.cn.githubclient.ui.adapter.SearchReposAdapter;
 import littlehans.cn.githubclient.ui.fragment.PageFragment;
@@ -95,7 +96,7 @@ public class SearchReposFragment extends PageFragment<SearchRepos>
   private void addOnItemClickListener() {
     mOnItemClickListener = new OnItemClickListener() {
       @Override public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-        SearchRepos.Items repoItem = (SearchRepos.Items) baseQuickAdapter.getItem(i);
+        Repository repoItem = (Repository) baseQuickAdapter.getItem(i);
         Intent intent = new Intent(getActivity(), ReposActivity.class);
         intent.putExtra(Nav.REPO_ITEM, repoItem); //reposTests
         startActivity(intent);

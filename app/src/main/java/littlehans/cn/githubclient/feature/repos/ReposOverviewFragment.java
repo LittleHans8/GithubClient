@@ -23,7 +23,7 @@ import littlehans.cn.githubclient.api.service.GitDateService;
 import littlehans.cn.githubclient.api.service.RepositoryService;
 import littlehans.cn.githubclient.model.entity.Blob;
 import littlehans.cn.githubclient.model.entity.Branch;
-import littlehans.cn.githubclient.model.entity.SearchRepos;
+import littlehans.cn.githubclient.model.entity.Repository;
 import littlehans.cn.githubclient.model.entity.Trees;
 import littlehans.cn.githubclient.ui.fragment.NetworkFragment;
 import littlehans.cn.githubclient.utilities.DateFormatUtil;
@@ -53,7 +53,7 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
   @Bind(R.id.text_create_at) TextView mTxtCreateAt;
   @Bind(R.id.coordinator) CoordinatorLayout mCoordinator;
   private BottomSheetBehavior<LinearLayout> mBehavior;
-  private SearchRepos.Items mItems;
+  private Repository mItems;
   private GitDateService mGitDateService;
   private String mOwner;
   private String mRepo;
@@ -103,7 +103,7 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
 
   @Override public void onCardTouchListener(Parcelable date) {
     Log.d(TAG, "onCardTouchListener: " + "11");
-    mItems = (SearchRepos.Items) date;
+    mItems = (Repository) date;
     mOwner = mItems.owner.login;
     mRepo = mItems.name;
     mDefaultBranch = mItems.default_branch;

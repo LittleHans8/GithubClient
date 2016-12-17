@@ -11,9 +11,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 import littlehans.cn.githubclient.R;
-import littlehans.cn.githubclient.model.entity.SearchRepos;
-import littlehans.cn.githubclient.model.entity.SearchRepos.Items.TextMatches;
-import littlehans.cn.githubclient.model.entity.SearchRepos.Items.TextMatches.Matches;
+import littlehans.cn.githubclient.model.entity.Repository;
 import littlehans.cn.githubclient.utilities.DateFormatUtil;
 import littlehans.cn.githubclient.utilities.FormatUtils;
 
@@ -21,15 +19,15 @@ import littlehans.cn.githubclient.utilities.FormatUtils;
  * Created by littlehans on 2016/10/7.
  */
 
-public class SearchReposAdapter extends BaseQuickAdapter<SearchRepos.Items, BaseViewHolder> {
+public class SearchReposAdapter extends BaseQuickAdapter<Repository, BaseViewHolder> {
   DateFormatUtil mDateFormat;
 
-  public SearchReposAdapter(List<SearchRepos.Items> items) {
+  public SearchReposAdapter(List<Repository> items) {
     super(R.layout.item_search_repos, items);
     mDateFormat = new DateFormatUtil("Updated");
   }
 
-  @Override protected void convert(BaseViewHolder baseViewHolder, SearchRepos.Items items) {
+  @Override protected void convert(BaseViewHolder baseViewHolder, Repository items) {
     baseViewHolder.setText(R.id.text_full_name, getMatchString(items)[0]);
     baseViewHolder.setText(R.id.text_stargazers_count,
         FormatUtils.decimalFormat(items.stargazers_count));
@@ -59,7 +57,7 @@ public class SearchReposAdapter extends BaseQuickAdapter<SearchRepos.Items, Base
     }
   }
 
-  private Spannable[] getMatchString(SearchRepos.Items items) {
+  private Spannable[] getMatchString(Repository items) {
     Spannable spanTxtName = new SpannableString(items.full_name);
     Spannable spanTxtDescription;
     if (TextUtils.isEmpty(items.description)) {
@@ -69,12 +67,12 @@ public class SearchReposAdapter extends BaseQuickAdapter<SearchRepos.Items, Base
     }
     Spannable spanArray[] = { spanTxtName, spanTxtDescription };
 
-    List<TextMatches> originTextMatches = items.text_matches;
+    List<Repository.TextMatches> originTextMatches = items.text_matches;
 
-    for (TextMatches textMatches : originTextMatches) {
+    for (Repository.TextMatches textMatches : originTextMatches) {
       switch (textMatches.property) {
         case "name":
-          for (Matches matches : textMatches.matches) {
+          for (Repository.TextMatches.Matches matches : textMatches.matches) {
             //int start = matches.indices.get(0);
             int start = items.full_name.indexOf('/') + 1;
             int end = matches.indices.get(1) + start;
@@ -85,7 +83,7 @@ public class SearchReposAdapter extends BaseQuickAdapter<SearchRepos.Items, Base
           break;
 
         case "description":
-          for (Matches matches : textMatches.matches) {
+          for (Repository.TextMatches.Matches matches : textMatches.matches) {
             int start = matches.indices.get(0);
             int end = matches.indices.get(1);
 
