@@ -20,8 +20,26 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
-        />
+
+        >
+      <com.facebook.drawee.view.SimpleDraweeView
+          android:id="@+id/small_avatar"
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          app:placeholderImage="@drawable/littlehans"
+          app:roundAsCircle="true"
+          style="@style/TextAppearance.AppCompat.Small.Inverse"
+          />
+      <TextView
+          android:id="@+id/text_small_name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          tools:text="LittleHans"
+          android:paddingStart="8dp"
+          android:paddingLeft="8dp"
+          />
+
+    </android.support.v7.widget.Toolbar>
 
   </android.support.design.widget.AppBarLayout>
 

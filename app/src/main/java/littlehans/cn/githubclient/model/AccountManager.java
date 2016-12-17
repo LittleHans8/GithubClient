@@ -2,9 +2,7 @@ package littlehans.cn.githubclient.model;
 
 import android.content.Context;
 import android.util.Base64;
-
 import com.smartydroid.android.starter.kit.app.StarterKitApp;
-
 import littlehans.cn.githubclient.model.entity.User;
 import me.alexrs.prefs.lib.Prefs;
 
@@ -22,7 +20,7 @@ public class AccountManager {
     return prefs().getBoolean(PREFS_KEY_ACCOUNT_IS_LOGIN_,false);
   }
 
-  public void clearAllData() {
+  public static void clearAllData() {
     prefs().removeAll();
   }
 

@@ -9,12 +9,18 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import butterknife.Bind;
+import butterknife.ButterKnife;
+import com.facebook.drawee.view.SimpleDraweeView;
 import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.feature.owner.MainFragment;
+import littlehans.cn.githubclient.model.AccountManager;
 import littlehans.cn.githubclient.model.entity.User;
 import littlehans.cn.githubclient.ui.activity.BaseActivity;
+import littlehans.cn.githubclient.utilities.TextViewUtils;
 import qiu.niorgai.StatusBarCompat;
 
 public class MainActivity extends BaseActivity
@@ -24,16 +30,32 @@ public class MainActivity extends BaseActivity
   @Bind(R.id.toolbar) Toolbar mToolbar;
   @Bind(R.id.drawer_layout) DrawerLayout mDrawer;
   @Bind(R.id.nav_view) NavigationView mNavigationView;
+  @Bind(R.id.small_avatar) SimpleDraweeView mSmallAvatar;
+  @Bind(R.id.text_small_name) TextView mTextSmallName;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     setSupportActionBar(mToolbar);
+    setTitle("");
+    View headerView = mNavigationView.getHeaderView(0);
+    SimpleDraweeView mAvatar = ButterKnife.findById(headerView, R.id.avatar);
+    TextView mTextName = ButterKnife.findById(headerView, R.id.text_name);
+    TextView mTextEmail = ButterKnife.findById(headerView, R.id.text_email);
+    User user = AccountManager.getAccount();
+    if (user != null) {
+      mSmallAvatar.setImageURI(user.avatar_url);
+      mAvatar.setImageURI(user.avatar_url);
+      TextViewUtils.setTextNotEmpty(mTextEmail, user.email);
+      mTextName.setText(user.name);
+      mTextSmallName.setText(user.name);
+    }
 
     ActionBarDrawerToggle toggle =
         new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.navigation_drawer_open,
             R.string.navigation_drawer_close);
-    mDrawer.setDrawerListener(toggle);
+    //mDrawer.setDrawerListener(toggle);
+    mDrawer.addDrawerListener(toggle);
     toggle.syncState();
 
     mNavigationView.setNavigationItemSelectedListener(this);
@@ -75,13 +97,10 @@ public class MainActivity extends BaseActivity
   public boolean onNavigationItemSelected(MenuItem item) {
     // Handle navigation view item clicks here.
     int id = item.getItemId();
-    //if (id == R.id.nav_manage) {
-    //
-    //} else if (id == R.id.nav_share) {
-    //
-    //} else if (id == R.id.nav_send) {
-    //
-    //}
+    if (id == R.id.nav_sing_out) {
+      AccountManager.clearAllData();
+      Nav.startLoginActivity(this);
+    }
 
     mDrawer.closeDrawer(GravityCompat.START);
     return true;

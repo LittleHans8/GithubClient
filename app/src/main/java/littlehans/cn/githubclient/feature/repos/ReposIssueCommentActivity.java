@@ -17,7 +17,7 @@ import butterknife.Bind;
 import java.util.List;
 import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.R;
-import littlehans.cn.githubclient.api.GithubService;
+import littlehans.cn.githubclient.api.GitHubService;
 import littlehans.cn.githubclient.api.service.IssuesService;
 import littlehans.cn.githubclient.model.entity.Comment;
 import littlehans.cn.githubclient.model.entity.Issue;
@@ -83,7 +83,7 @@ public class ReposIssueCommentActivity extends NetworkActivity<List<Comment>>
     mOwner = mIntent.getExtras().getString(Nav.OWNER);
     mRepo = mIntent.getStringExtra(Nav.REPO);
     initOwnIssueComment();
-    mIssuesService = GithubService.createIssuesService();
+    mIssuesService = GitHubService.createIssuesService();
   }
 
   private void initOwnIssueComment() {

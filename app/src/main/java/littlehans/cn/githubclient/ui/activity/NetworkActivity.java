@@ -2,7 +2,10 @@ package littlehans.cn.githubclient.ui.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.widget.Toast;
 import java.net.UnknownHostException;
+import littlehans.cn.githubclient.Nav;
+import littlehans.cn.githubclient.R;
 import littlehans.cn.githubclient.model.ErrorModel;
 import littlehans.cn.githubclient.network.callback.GenericCallback;
 import littlehans.cn.githubclient.network.retrofit2.NetworkQueue;
@@ -43,6 +46,8 @@ public abstract class NetworkActivity<T> extends BaseActivity implements Generic
 
   @Override public void errorUnauthorized(ErrorModel errorModel) {
     showErrorModel(errorModel);
+    Toast.makeText(this, getString(R.string.error_404), Toast.LENGTH_SHORT).show();
+    Nav.startLoginActivity(this);
   }
 
   @Override public void errorForbidden(ErrorModel errorModel) {

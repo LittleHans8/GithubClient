@@ -11,7 +11,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
-import littlehans.cn.githubclient.api.GithubService;
+import littlehans.cn.githubclient.api.GitHubService;
 import littlehans.cn.githubclient.api.service.ActivityService;
 import littlehans.cn.githubclient.model.entity.ReceivedEvent;
 import littlehans.cn.githubclient.ui.adapter.ReceivedEventAdapter;
@@ -38,7 +38,7 @@ public class ReceivedEventsFragment extends PageFragment<List<ReceivedEvent>>
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    mActivityService = GithubService.createActivityService();
+    mActivityService = GitHubService.createActivityService();
     loadData();
   }
 

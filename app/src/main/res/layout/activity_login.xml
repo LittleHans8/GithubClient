@@ -1,95 +1,97 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:gravity="center_horizontal"
-              android:orientation="vertical"
-              tools:context="littlehans.cn.githubclient.ui.activity.LoginActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="littlehans.cn.githubclient.ui.activity.LoginActivity"
     >
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        app:titleTextColor="@android:color/white"
-        android:background="@color/blue_400"/>
+  <android.support.v7.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?android:attr/actionBarSize"
+      android:background="@color/blue_400"
+      app:titleTextColor="@android:color/white"
+      />
 
   <com.facebook.drawee.view.SimpleDraweeView
       android:id="@+id/avatar"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
       android:layout_marginTop="48dp"
-      android:layout_width="70dp"
-      android:layout_height="70dp"
-      app:roundAsCircle="true"
       app:placeholderImage="@drawable/ic_mark_github"
+      app:roundAsCircle="true"
       />
 
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_margin="8dp"
       android:text="@string/sign_in_to_github"
       android:textSize="24sp"
-      android:layout_margin="8dp"
       />
 
 
-    <LinearLayout
-          android:padding="16dp"
-          android:id="@+id/email_login_form"
+  <LinearLayout
+      android:id="@+id/email_login_form"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="16dp"
+      >
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+      <EditText
+          android:id="@+id/edit_text_account"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:orientation="vertical"
-          >
+          android:hint="@string/prompt_email"
+          android:maxLines="1"
+          android:text="LittleHans8"
+          />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+    </android.support.design.widget.TextInputLayout>
 
-          <EditText
-              android:id="@+id/edit_text_account"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:hint="@string/prompt_email"
-              android:maxLines="1"
-              android:text="LittleHans8"
-              />
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
 
-        </android.support.design.widget.TextInputLayout>
+      <EditText
+          android:id="@+id/edit_password"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/prompt_password"
+          android:imeActionId="@+id/btn_sign_in"
+          android:imeActionLabel="@string/action_sign_in_short"
+          android:imeOptions="actionUnspecified"
+          android:inputType="textPassword"
+          android:maxLines="1"
+          android:text="asd6629236"
+          />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+    </android.support.design.widget.TextInputLayout>
 
-          <EditText
-              android:id="@+id/edit_password"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:hint="@string/prompt_password"
-              android:imeActionId="@+id/btn_sign_in"
-              android:imeActionLabel="@string/action_sign_in_short"
-              android:imeOptions="actionUnspecified"
-              android:inputType="textPassword"
-              android:maxLines="1"
-              android:text="asd6629236"
-              />
 
-        </android.support.design.widget.TextInputLayout>
+    <TextView
+        android:id="@+id/btn_sign_in"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/selector_btn_sign_in"
+        android:clickable="true"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/action_sign_in"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        style="?android:textAppearanceMedium"
+        />
 
-      <TextView
-            android:clickable="true"
-            android:id="@+id/btn_sign_in"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/action_sign_in"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:padding="8dp"
-            android:textColor="@android:color/white"
-            android:background="@drawable/selector_btn_sign_in"
-            style="?android:textAppearanceMedium"
-            />
-
-      </LinearLayout>
+  </LinearLayout>
 </LinearLayout>

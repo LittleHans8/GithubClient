@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import littlehans.cn.githubclient.R;
-import littlehans.cn.githubclient.api.GithubService;
+import littlehans.cn.githubclient.api.GitHubService;
 import littlehans.cn.githubclient.api.service.GitDateService;
 import littlehans.cn.githubclient.api.service.RepositoryService;
 import littlehans.cn.githubclient.model.entity.Blob;
@@ -82,7 +82,7 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    mGitDateService = GithubService.createGitDateService();
+    mGitDateService = GitHubService.createGitDateService();
     networkQueue().enqueue(mGitDateService.getTree(mOwner, mRepo, mSha));
     mPath = new ArrayList<>();
     initUI();
@@ -195,7 +195,7 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
     Thread thread = new Thread(new Runnable() {
       @Override public void run() {
         try {
-          mRepositoryService = GithubService.createRepositoryService();
+          mRepositoryService = GitHubService.createRepositoryService();
           List<Branch> branches = mRepositoryService.getBranchList(mOwner, mRepo).execute().body();
           for (Branch branch : branches) {
             if (mDefaultBranch.equals(branch.name)) {

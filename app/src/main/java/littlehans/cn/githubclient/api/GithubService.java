@@ -14,7 +14,7 @@ import retrofit2.Retrofit;
  * Created by littlehans on 2016/9/27.
  */
 
-public class GithubService {
+public class GitHubService {
 
   public static ActivityService createActivityService() {
     return retrofit().create(ActivityService.class);

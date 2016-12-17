@@ -18,7 +18,7 @@ import com.mukesh.MarkdownView;
 import java.io.IOException;
 import java.util.List;
 import littlehans.cn.githubclient.R;
-import littlehans.cn.githubclient.api.GithubService;
+import littlehans.cn.githubclient.api.GitHubService;
 import littlehans.cn.githubclient.api.service.GitDateService;
 import littlehans.cn.githubclient.api.service.RepositoryService;
 import littlehans.cn.githubclient.model.entity.Blob;
@@ -78,8 +78,8 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     mBehavior = BottomSheetBehavior.from(mBottomSheet);
-    mGitDateService = GithubService.createGitDateService();
-    mRepositoryService = GithubService.createRepositoryService();
+    mGitDateService = GitHubService.createGitDateService();
+    mRepositoryService = GitHubService.createRepositoryService();
     setupData();
     Thread threadX = new Thread(new Runnable() {
       @Override public void run() {

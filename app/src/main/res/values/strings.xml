@@ -55,5 +55,9 @@
   <string name="followers">Followers</string>
   <string name="following">Following</string>
   <string name="sign_in_to_github">Sign in to GitHub</string>
+  <string name="error_404">Required Auth.Nav to login</string>
+  <string name="signing_in">Signing in...</string>
+  <string name="error_incorrect_field">Incorrect username or password.</string>
+  <string name="nav_sign_out">Sign Out</string>
 
 </resources>

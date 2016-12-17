@@ -5,9 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Toast;
-
 import java.util.ArrayList;
-import littlehans.cn.githubclient.api.GithubService;
+import littlehans.cn.githubclient.api.GitHubService;
 import littlehans.cn.githubclient.api.service.ActivityService;
 import littlehans.cn.githubclient.feature.owner.viewholder.StarsViewHolder;
 import littlehans.cn.githubclient.model.AccountManager;
@@ -31,7 +30,7 @@ public class StartsFragment extends PagedFragment<Repository> {
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mActivityService = GithubService.createActivityService();
+    mActivityService = GitHubService.createActivityService();
     mUser = AccountManager.getAccount();
   }
 

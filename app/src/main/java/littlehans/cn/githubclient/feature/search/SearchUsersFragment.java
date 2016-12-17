@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import littlehans.cn.githubclient.R;
-import littlehans.cn.githubclient.api.GithubService;
+import littlehans.cn.githubclient.api.GitHubService;
 import littlehans.cn.githubclient.model.entity.SearchUser;
 import littlehans.cn.githubclient.model.entity.User;
 import littlehans.cn.githubclient.ui.adapter.SearchUserAdapter;
@@ -67,7 +67,7 @@ public class SearchUsersFragment extends NetworkFragment<SearchUser>
 
           for (SearchUser.Items i : items) {
             try {
-              User user = GithubService.createInfoService().user(i.login).execute().body();
+              User user = GitHubService.createInfoService().user(i.login).execute().body();
               users.add(user);
             } catch (IOException e) {
               e.printStackTrace();
@@ -145,7 +145,7 @@ public class SearchUsersFragment extends NetworkFragment<SearchUser>
 
   private void loadData(String query) {
     networkQueue().enqueue(
-        GithubService.createSearchService().users(query, null, null, mCurrentPage));
+        GitHubService.createSearchService().users(query, null, null, mCurrentPage));
   }
 
   @Override public void startRequest() {

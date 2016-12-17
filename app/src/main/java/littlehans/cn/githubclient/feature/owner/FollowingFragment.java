@@ -5,10 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Toast;
-
 import java.util.ArrayList;
-
-import littlehans.cn.githubclient.api.GithubService;
+import littlehans.cn.githubclient.api.GitHubService;
 import littlehans.cn.githubclient.api.service.UsersService;
 import littlehans.cn.githubclient.feature.owner.viewholder.FollowerViewHolder;
 import littlehans.cn.githubclient.model.AccountManager;
@@ -38,7 +36,7 @@ public class FollowingFragment extends PagedFragment<Comment.User> {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mUsersService = GithubService.createUserService();
+    mUsersService = GitHubService.createUserService();
   }
 
   @Override

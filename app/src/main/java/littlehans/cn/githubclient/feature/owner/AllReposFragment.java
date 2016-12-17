@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Toast;
 import java.util.ArrayList;
-import littlehans.cn.githubclient.api.GithubService;
+import littlehans.cn.githubclient.api.GitHubService;
 import littlehans.cn.githubclient.api.service.RepositoryService;
 import littlehans.cn.githubclient.feature.owner.viewholder.AllReposViewHolder;
 import littlehans.cn.githubclient.model.AccountManager;
@@ -30,7 +30,7 @@ public class AllReposFragment extends PagedFragment<Repository> {
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mRepositoryService = GithubService.createRepositoryService();
+    mRepositoryService = GitHubService.createRepositoryService();
     mUser = AccountManager.getAccount();
   }
 

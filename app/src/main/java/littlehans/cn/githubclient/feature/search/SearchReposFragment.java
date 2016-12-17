@@ -11,7 +11,7 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import littlehans.cn.githubclient.Nav;
-import littlehans.cn.githubclient.api.GithubService;
+import littlehans.cn.githubclient.api.GitHubService;
 import littlehans.cn.githubclient.feature.repos.ReposActivity;
 import littlehans.cn.githubclient.model.entity.SearchRepos;
 import littlehans.cn.githubclient.ui.adapter.SearchReposAdapter;
@@ -106,7 +106,7 @@ public class SearchReposFragment extends PageFragment<SearchRepos>
 
   private void loadData(String query) {
     networkQueue().enqueue(
-        GithubService.createSearchService().repositories(query, null, null, mCurrentPage));
+        GitHubService.createSearchService().repositories(query, null, null, mCurrentPage));
   }
 
   @Override public void onSearch(String query) {

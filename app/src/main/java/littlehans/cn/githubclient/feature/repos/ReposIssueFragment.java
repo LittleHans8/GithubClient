@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.R;
-import littlehans.cn.githubclient.api.GithubService;
+import littlehans.cn.githubclient.api.GitHubService;
 import littlehans.cn.githubclient.api.service.IssuesService;
 import littlehans.cn.githubclient.feature.search.PageLink;
 import littlehans.cn.githubclient.model.entity.Issue;
@@ -68,7 +68,7 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    mIssuesService = GithubService.createIssuesService();
+    mIssuesService = GitHubService.createIssuesService();
     loadOpenIssues();
     initUI();
     addListener();

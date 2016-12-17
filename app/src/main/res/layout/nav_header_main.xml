@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
     android:background="@drawable/side_nav_bar"
@@ -15,7 +16,7 @@
     >
 
   <com.facebook.drawee.view.SimpleDraweeView
-      android:id="@+id/imageView"
+      android:id="@+id/avatar"
       android:layout_width="70dp"
       android:layout_height="70dp"
       android:paddingTop="@dimen/nav_header_vertical_spacing"
@@ -24,18 +25,19 @@
       />
 
   <TextView
+      android:id="@+id/text_name"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:paddingTop="@dimen/nav_header_vertical_spacing"
-      android:text="LittleHans"
       android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+      tools:text="LittleHans"
       />
 
   <TextView
-      android:id="@+id/textView"
+      android:id="@+id/text_email"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="LittleHans8@gmail.com"
+      tools:text="LittleHans8@gmail.com"
       />
 
 </LinearLayout>
