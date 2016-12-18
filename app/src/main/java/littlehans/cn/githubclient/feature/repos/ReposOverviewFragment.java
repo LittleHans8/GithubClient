@@ -72,7 +72,7 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
   }
 
   @Override protected int getFragmentLayout() {
-    return R.layout.fragment_reop_overview;
+    return R.layout.fragment_repo_overview;
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

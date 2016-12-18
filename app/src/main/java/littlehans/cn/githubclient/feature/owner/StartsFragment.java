@@ -1,14 +1,16 @@
 package littlehans.cn.githubclient.feature.owner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.Toast;
 import java.util.ArrayList;
+import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.api.GitHubService;
 import littlehans.cn.githubclient.api.service.ActivityService;
 import littlehans.cn.githubclient.feature.owner.viewholder.StarsViewHolder;
+import littlehans.cn.githubclient.feature.repos.ReposActivity;
 import littlehans.cn.githubclient.model.AccountManager;
 import littlehans.cn.githubclient.model.entity.Repository;
 import littlehans.cn.githubclient.model.entity.User;
@@ -43,7 +45,7 @@ public class StartsFragment extends PagedFragment<Repository> {
   }
 
   @Override public Call<ArrayList<Repository>> paginate(int page, int perPage) {
-    return mActivityService.getUserStarredRepos(mUser.login,page);
+    return mActivityService.getUserStarredRepos(mUser.login, page);
   }
 
   @Override public Object getKeyForData(Repository item) {
@@ -53,6 +55,8 @@ public class StartsFragment extends PagedFragment<Repository> {
   @Override public void onItemClick(int position, View view) {
     super.onItemClick(position, view);
     Repository repository = getItem(position);
-    Toast.makeText(getActivity(), repository.full_name + position, Toast.LENGTH_SHORT).show();
+    Intent intent = new Intent(getActivity(), ReposActivity.class);
+    intent.putExtra(Nav.REPO_ITEM, repository); //reposTests
+    startActivity(intent);
   }
 }
