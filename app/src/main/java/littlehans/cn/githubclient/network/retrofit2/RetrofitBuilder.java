@@ -13,10 +13,10 @@ import timber.log.Timber;
 
 public class RetrofitBuilder {
 
-  private String baseUrl;
+  private String mBaseUrl;
   private Retrofit mRetrofit;
 
-  private OkHttpClient client;
+  private OkHttpClient mClient;
 
   private RetrofitBuilder() {
   }
@@ -35,17 +35,15 @@ public class RetrofitBuilder {
   }
 
   public Retrofit retrofit() {
-    Preconditions.checkNotNull(baseUrl, "Base URL required.");
+    Preconditions.checkNotNull(mBaseUrl, "Base URL required.");
 
-    if (mRetrofit == null) {
+    //if (mRetrofit == null) {
       Retrofit.Builder builder = newRetrofitBuilder();
 
-      mRetrofit = builder
-          .client(client)
-          .baseUrl(baseUrl)
+      mRetrofit = builder.client(mClient).baseUrl(mBaseUrl)
           .addConverterFactory(JacksonConverterFactory.create())
           .build();
-    }
+    //}
 
     return mRetrofit;
   }
@@ -67,8 +65,8 @@ public class RetrofitBuilder {
       ensureSaneDefaults();
 
       RetrofitBuilder retrofitBuilder = get();
-      retrofitBuilder.baseUrl = baseUrl;
-      retrofitBuilder.client = mClient;
+      retrofitBuilder.mBaseUrl = baseUrl;
+      retrofitBuilder.mClient = mClient;
 
       return retrofitBuilder;
     }
@@ -100,7 +98,7 @@ public class RetrofitBuilder {
     }
 
     public Builder baseUrl(String baseUrl) {
-      Preconditions.checkNotNull(baseUrl, "baseUrl == null");
+      Preconditions.checkNotNull(baseUrl, "mBaseUrl == null");
       this.baseUrl = baseUrl;
       return this;
     }
