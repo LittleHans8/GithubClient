@@ -2,6 +2,7 @@ package littlehans.cn.githubclient.feature.owner;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -30,10 +31,23 @@ public class StartsFragment extends PagedFragment<Repository> {
     return new StartsFragment();
   }
 
+  public static Fragment create(Parcelable data) {
+    StartsFragment fragment = new StartsFragment();
+    Bundle bundle = new Bundle();
+    bundle.putParcelable(Nav.USER, data);
+    fragment.setArguments(bundle);
+    return fragment;
+  }
+
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mActivityService = GitHubService.createActivityService();
-    mUser = AccountManager.getAccount();
+    if (getArguments() != null) {
+      User user = getArguments().getParcelable(Nav.USER);
+      mUser = user;
+    } else {
+      mUser = AccountManager.getAccount();
+    }
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

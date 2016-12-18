@@ -59,5 +59,6 @@
   <string name="signing_in">Signing in...</string>
   <string name="error_incorrect_field">Incorrect username or password.</string>
   <string name="nav_sign_out">Sign Out</string>
+  <string name="follower">Follower</string>
 
 </resources>

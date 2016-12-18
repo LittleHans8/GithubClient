@@ -51,6 +51,10 @@
         android:name=".feature.repos.ReposIssueCommentActivity"
         android:theme="@style/AppTheme.NoActionBar"/>
 
+    <activity
+        android:name=".feature.user.UserActivity"
+        android:theme="@style/AppTheme.NoActionBar"/>
+
   </application>
 
 </manifest>

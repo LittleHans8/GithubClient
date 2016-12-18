@@ -40,7 +40,7 @@ public class GitHubService {
     return retrofit().create(IssuesService.class);
   }
 
-  public static UsersService createUserService() {
+  public static UsersService createUsersService() {
     return retrofit().create(UsersService.class);
   }
 

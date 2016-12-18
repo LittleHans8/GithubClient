@@ -1,28 +1,22 @@
 package littlehans.cn.githubclient.feature.owner.viewholder;
 
 import android.content.Context;
-import android.support.v7.widget.ViewUtils;
-import android.view.View;
-
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.facebook.drawee.view.SimpleDraweeView;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.facebook.drawee.view.SimpleDraweeView;
 import littlehans.cn.githubclient.R;
-import littlehans.cn.githubclient.model.entity.Comment;
-import littlehans.cn.githubclient.utilities.TextViewUtils;
+import littlehans.cn.githubclient.model.entity.User;
 import support.ui.adapters.EasyViewHolder;
 
-import static com.smartydroid.android.starter.kit.utilities.ViewUtils.*;
+import static com.smartydroid.android.starter.kit.utilities.ViewUtils.setGone;
 
 /**
  * Created by littlehans on 16/11/28.
  */
 
-public class FollowerViewHolder extends EasyViewHolder<Comment.User>{
+public class FollowerViewHolder extends EasyViewHolder<User> {
 
     @Bind(R.id.image_avatar) SimpleDraweeView mImageAvatar;
     @Bind(R.id.text_name) TextView mTextName;
@@ -36,8 +30,7 @@ public class FollowerViewHolder extends EasyViewHolder<Comment.User>{
         ButterKnife.bind(this,itemView);
     }
 
-    @Override
-    public void bindTo(int position, Comment.User value) {
+    @Override public void bindTo(int position, User value) {
         mImageAvatar.setImageURI(value.avatar_url);
         mTextLoginName.setText(value.login);
         setGone(mTextName, true);

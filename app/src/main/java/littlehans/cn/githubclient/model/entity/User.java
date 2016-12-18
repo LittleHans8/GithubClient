@@ -2,16 +2,16 @@ package littlehans.cn.githubclient.model.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smartydroid.android.starter.kit.account.Account;
+import com.smartydroid.android.starter.kit.model.entity.Entity;
 
 /**
  * Created by littlehans on 2016/10/17.
  */
-@JsonIgnoreProperties(ignoreUnknown = true) public class User implements Parcelable,Account{
+@JsonIgnoreProperties(ignoreUnknown = true) public class User extends Entity implements Account {
 
 
   /**

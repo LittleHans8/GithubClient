@@ -39,15 +39,21 @@
       </intent-filter>
     </activity>
 
-    <activity android:name=".feature.repos.ReposActivity"
+    <activity
+        android:name=".feature.repos.ReposActivity"
         android:theme="@style/AppTheme.NoActionBar">
 
     </activity>
 
-    <activity android:name=".ui.activity.FileDetailActivity"
+    <activity
+        android:name=".ui.activity.FileDetailActivity"
         android:theme="@style/AppTheme.NoActionBar">
 
     </activity>
+
+    <activity
+        android:name=".feature.user.UserActivity"
+        android:theme="@style/AppTheme.NoActionBar"/>
   </application>
 
 </manifest>

@@ -14,6 +14,7 @@ public class Nav {
 
   public static final String OWNER = "owner"; // ps:twbs
   public static final String REPO = "repo"; // ps:bootstrap
+  public static final String USER = "user";
 
   public static final String REPO_ITEM = "REPO_ITEM"; //  SearchRepos.Item
   public static final String ISSUE = "ISSUE"; //  Issue

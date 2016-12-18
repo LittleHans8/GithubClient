@@ -2,9 +2,9 @@ package littlehans.cn.githubclient.feature.owner;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 import java.util.ArrayList;
 import littlehans.cn.githubclient.Nav;
@@ -27,16 +27,30 @@ public class AllReposFragment extends PagedFragment<Repository> {
 
   private RepositoryService mRepositoryService;
   private User mUser;
+  private boolean isUser = false;
 
   public static Fragment create() {
     return new AllReposFragment();
   }
 
+  public static Fragment create(Parcelable data) {
+    AllReposFragment fragment = new AllReposFragment();
+    Bundle bundle = new Bundle();
+    bundle.putParcelable(Nav.USER, data);
+    fragment.setArguments(bundle);
+    return fragment;
+  }
+
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mRepositoryService = GitHubService.createRepositoryService();
-    mUser = AccountManager.getAccount();
-    Log.d("TAG", "onCreate: " + mUser.login);
+    if (getArguments() != null) {
+      User user = getArguments().getParcelable(Nav.USER);
+      mUser = user;
+      isUser = true;
+    } else {
+      mUser = AccountManager.getAccount();
+    }
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -48,8 +62,11 @@ public class AllReposFragment extends PagedFragment<Repository> {
   }
 
   @Override public Call<ArrayList<Repository>> paginate(int page, int perPage) {
-    Timber.d(mUser.login);
-    return mRepositoryService.getOwnRepos(page);
+    if (isUser) {
+      return mRepositoryService.getUserRepos(mUser.login, page);
+    } else {
+      return mRepositoryService.getOwnRepos(page);
+    }
   }
 
   @Override public Object getKeyForData(Repository item) {
