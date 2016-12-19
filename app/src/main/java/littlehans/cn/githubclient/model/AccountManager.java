@@ -28,6 +28,10 @@ public class AccountManager {
     prefs().save(PREFS_KEY_ACCOUNT_IS_LOGIN_,isLogin);
   }
 
+  public static boolean getIsLogin() {
+    return prefs().getBoolean(PREFS_KEY_ACCOUNT_IS_LOGIN_, false);
+  }
+
   public static void storeAccount(User user){
     prefs().save(PREFS_KEY_ACCOUNT_JSON,user.toJson());
     setIsLogin(true);
@@ -38,6 +42,11 @@ public class AccountManager {
     String basic = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
     prefs().save(PREFS_KEY_ACCOUNT_AUTH_BASIC,basic);
   }
+
+  public static String getBasic() {
+    return prefs().getString(PREFS_KEY_ACCOUNT_AUTH_BASIC, null);
+  }
+
 
   public static User getAccount(){
     String accountJson = prefs().getString(PREFS_KEY_ACCOUNT_JSON,null);

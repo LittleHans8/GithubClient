@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">Github</string>
+  <string name="app_name">GitHub</string>
   <string name="title_activity_main">MainActivity</string>
 
   <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -56,9 +56,27 @@
   <string name="following">Following</string>
   <string name="sign_in_to_github">Sign in to GitHub</string>
   <string name="error_404">Required Auth.Nav to login</string>
-  <string name="signing_in">Signing in...</string>
+  <string name="signing_in">Signing in &#8230;</string>
   <string name="error_incorrect_field">Incorrect username or password.</string>
   <string name="nav_sign_out">Sign Out</string>
   <string name="follower">Follower</string>
+
+  <!--page1-->
+  <string name="welcome_title">Welcome home, developers</string>
+  <string name="welcome_content">GitHub fosters a fast, flexible, and collaborative development process that lets you work on your own or with others.</string>
+
+  <!--page2-->
+  <string name="welcome_build_title">For everything you build</string>
+  <string name="welcome_build_content">Host and manage your code on GitHub. You can keep your work private or share it with the world.</string>
+  <!--page3-->
+  <string name="welcome_work_title">A better way to work</string>
+  <string name="welcome_work_content">From hobbyists to professionals, GitHub helps developers simplify the way they build software.</string>
+  <!--page4-->
+  <string name="welcome_projects_title">Millions of projects</string>
+  <string name="welcome_projects_content">GitHub is home to millions of open source projects. Try one out or get inspired to create your own.</string>
+  <!--page5-->
+  <string name="welcome_platform_title">One platform, from start to finish</string>
+  <string name="welcome_platform_content">With hundreds of integrations, GitHub is flexible enough to be at the center of your development process.</string>
+  <string name="version">Version:%s</string>
 
 </resources>

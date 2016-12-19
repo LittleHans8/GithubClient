@@ -10,7 +10,7 @@
   <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
   <application
-      android:name=".GithubApplication"
+      android:name=".GitHubApplication"
       android:allowBackup="true"
       android:icon="@mipmap/github_mark"
       android:label="@string/app_name"
@@ -31,19 +31,17 @@
     <activity
         android:name=".ui.activity.LoginActivity"
         android:label="@string/title_activity_login">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
 
-        <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
     </activity>
 
-    <activity android:name=".feature.repos.ReposActivity"
+    <activity
+        android:name=".feature.repos.ReposActivity"
         android:theme="@style/AppTheme.NoActionBar">
 
     </activity>
 
-    <activity android:name=".ui.activity.FileDetailActivity"
+    <activity
+        android:name=".ui.activity.FileDetailActivity"
         android:theme="@style/AppTheme.NoActionBar">
 
     </activity>
@@ -55,6 +53,21 @@
         android:name=".feature.user.UserActivity"
         android:theme="@style/AppTheme.NoActionBar"/>
 
+    <activity
+        android:name=".GitHubWelcomeActivity"
+        android:theme="@style/WelcomeScreenTheme">
+    </activity>
+
+
+    <activity
+        android:name=".SplashActivity"
+        android:theme="@style/AppTheme.NoActionBar">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
   </application>
 
 </manifest>

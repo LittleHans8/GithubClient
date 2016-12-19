@@ -40,7 +40,7 @@ public class LoginInterceptor implements HeaderInterceptor {
     Request.Builder requestBuilder;
     Request request;
     if (TextUtils.isEmpty(mAccount)) {
-      basic = "Basic " + mBasicCode;
+      basic = mBasicCode;
       Request originalRequest = chain.request();
       requestBuilder = originalRequest.newBuilder()
           .header("Authorization", basic)

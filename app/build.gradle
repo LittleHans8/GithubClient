@@ -72,4 +72,6 @@ dependencies {
   compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
 
   compile 'com.smartydroid:android-starter-kit:0.1.14'
+
+  compile 'com.stephentuso:welcome:1.1.0'
 }

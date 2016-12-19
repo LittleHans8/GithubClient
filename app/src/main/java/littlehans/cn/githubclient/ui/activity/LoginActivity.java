@@ -13,8 +13,11 @@ import butterknife.OnClick;
 import butterknife.OnFocusChange;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kaopiz.kprogresshud.KProgressHUD;
+import com.smartydroid.android.starter.kit.app.StarterKitApp;
 import com.smartydroid.android.starter.kit.utilities.HudUtils;
+import com.stephentuso.welcome.WelcomeHelper;
 import java.io.IOException;
+import littlehans.cn.githubclient.GitHubWelcomeActivity;
 import littlehans.cn.githubclient.Nav;
 import littlehans.cn.githubclient.Profile;
 import littlehans.cn.githubclient.R;
@@ -48,21 +51,42 @@ public class LoginActivity extends NetworkActivity<User> {
   private Retrofit mDefaultRetrofit;// get the user'avatar
   private Retrofit mRetrofit; // auth the user;
   private KProgressHUD mKProgressHUD;
+  WelcomeHelper welcomeScreen;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
     setSupportActionBar(mToolbar);
+    if (StarterKitApp.isFirstEnterApp()) {
+      welcomeScreen = new WelcomeHelper(this, GitHubWelcomeActivity.class);
+      welcomeScreen.show(savedInstanceState);
+      StarterKitApp.enterApp();
+    }
+
+    if (AccountManager.getIsLogin()) {
+      User user = AccountManager.getAccount();
+      mEditTextAccount.setText(user.login);
+      new RetrofitBuilder.Builder().baseUrl(Profile.API_ENDPOINT)
+          .client(newLoginClient(AccountManager.getBasic()))
+          .build();
+      Nav.startMainActivity(this);
+    }
+
     mDefaultRetrofit = new Retrofit.Builder().baseUrl(Profile.API_ENDPOINT).
         addConverterFactory(JacksonConverterFactory.create()).
         build();
     mUsersService = mDefaultRetrofit.create(UsersService.class);
   }
 
+  @Override protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    welcomeScreen.onSaveInstanceState(outState);
+  }
+
   @OnClick(R.id.btn_sign_in) void sigIn() {
 
     if (!checkAccount()) {
-      OkHttpClient client = newLoginClient();
+      OkHttpClient client = newLoginClient(null);
       mRetrofit = new Retrofit.Builder().baseUrl(Profile.API_ENDPOINT)
           .client(client)
           .addConverterFactory(JacksonConverterFactory.create())
@@ -74,7 +98,7 @@ public class LoginActivity extends NetworkActivity<User> {
     }
   }
 
-  @NonNull private OkHttpClient newLoginClient() {
+  @NonNull private OkHttpClient newLoginClient(@Nullable String basicCode) {
     OkHttpClient.Builder builder = new OkHttpClient.Builder();
     HttpLoggingInterceptor loggingInterceptor =
         new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
@@ -84,8 +108,12 @@ public class LoginActivity extends NetworkActivity<User> {
         });
     loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
     builder.addInterceptor(loggingInterceptor);
+    if (TextUtils.isEmpty(basicCode)) {
+      mLoginInterceptor = new LoginInterceptor(getAccount(), getPassword());
+    } else {
+      mLoginInterceptor = new LoginInterceptor(basicCode);
+    }
 
-    mLoginInterceptor = new LoginInterceptor(getAccount(), getPassword());
     builder.addInterceptor(mLoginInterceptor);
     return builder.build();
   }
@@ -132,7 +160,9 @@ public class LoginActivity extends NetworkActivity<User> {
 
   @Override public void respondSuccess(User data) {
     Toast.makeText(this, "login success", Toast.LENGTH_SHORT).show();
-    new RetrofitBuilder.Builder().baseUrl(Profile.API_ENDPOINT).client(newLoginClient()).build();
+    new RetrofitBuilder.Builder().baseUrl(Profile.API_ENDPOINT)
+        .client(newLoginClient(null))
+        .build();
     AccountManager.storeAccount(data);
     AccountManager.storeBasic(getAccount(), getPassword());
     Nav.startMainActivity(this);
