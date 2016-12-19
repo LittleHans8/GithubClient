@@ -94,11 +94,11 @@
           android:id="@+id/layout_start"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_margin="8dp"
+          android:layout_margin="16dp"
           android:background="@drawable/shape_border"
           android:orientation="horizontal"
-          app:layout_constraintRight_toLeftOf="@+id/layout_fork"
-          app:layout_constraintTop_toBottomOf="@+id/avatar"
+          app:layout_constraintLeft_toRightOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/text_repo_name"
           >
         <TextView
             android:id="@+id/text_start"
@@ -127,11 +127,11 @@
           android:id="@+id/layout_fork"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_margin="8dp"
+          android:layout_margin="16dp"
           android:background="@drawable/shape_border"
           android:orientation="horizontal"
-          app:layout_constraintRight_toRightOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/avatar"
+          app:layout_constraintLeft_toRightOf="@+id/layout_start"
+          app:layout_constraintTop_toBottomOf="@+id/text_repo_name"
           >
 
         <TextView
@@ -166,7 +166,7 @@
           android:textColor="#767676"
           android:textSize="18sp"
           app:layout_constraintLeft_toRightOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/text_repo_name"
+          app:layout_constraintTop_toBottomOf="@+id/layout_start"
           tools:text="Fluent assertions for RxJava's TestSubscriberFluent assertions for RxJava's TestSubscriberFluent assertions for RxJava's TestSubscriberFluent assertions for RxJava's TestSubscriberFluent assertions for RxJava's TestSubscriberFluent assertions for RxJava's TestSubscriber"
           />
 

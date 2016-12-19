@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
     >
 
   <com.facebook.drawee.view.SimpleDraweeView
       android:id="@+id/image_avatar"
       android:layout_width="48dp"
       android:layout_height="48dp"
+      android:layout_marginBottom="8dp"
       android:layout_marginLeft="8dp"
       android:layout_marginStart="8dp"
       android:layout_marginTop="8dp"
@@ -68,6 +70,5 @@
       app:layout_constraintLeft_toRightOf="@+id/text_organization"
       tools:text="China"
       />
-
 
 </android.support.constraint.ConstraintLayout>
