@@ -25,6 +25,7 @@ import cn.littlehans.githubclient.model.entity.Blob;
 import cn.littlehans.githubclient.model.entity.Branch;
 import cn.littlehans.githubclient.model.entity.Repository;
 import cn.littlehans.githubclient.model.entity.Trees;
+import cn.littlehans.githubclient.network.StarRepoAsyncTask;
 import cn.littlehans.githubclient.ui.fragment.NetworkFragment;
 import cn.littlehans.githubclient.utilities.DateFormatUtil;
 import cn.littlehans.githubclient.utilities.FormatUtils;
@@ -44,17 +45,18 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
   @Bind(R.id.markdown_view) MarkdownView mMarkdownView;
   @Bind(R.id.bottom_sheet) LinearLayout mBottomSheet;
   @Bind(R.id.avatar) SimpleDraweeView mAvatar;
-  @Bind(R.id.text_login) TextView mTxtLogin;
-  @Bind(R.id.text_repo_name) TextView mTxtRepoName;
-  @Bind(R.id.text_watch) TextView mTxtWatch;
-  @Bind(R.id.text_start) TextView mTxtStart;
-  @Bind(R.id.text_watch_count) TextView mTxtWatchCount;
-  @Bind(R.id.text_start_count) TextView mTxtStartCount;
-  @Bind(R.id.text_fork_counts) TextView mTxtForkCount;
+  @Bind(R.id.text_login) TextView mTextLogin;
+  @Bind(R.id.text_repo_name) TextView mTextRepoName;
+  @Bind(R.id.text_watch) TextView mTextWatch;
+  @Bind(R.id.text_star) TextView mTextStart;
+
+  @Bind(R.id.text_watch_count) TextView mTextWatchCount;
+  @Bind(R.id.text_start_count) TextView mTextStartCount;
+  @Bind(R.id.text_fork_counts) TextView mTextForkCount;
 
   @Bind(R.id.layout_fork) LinearLayout mLayoutFork;
-  @Bind(R.id.text_description) TextView mTxtDescription;
-  @Bind(R.id.text_create_at) TextView mTxtCreateAt;
+  @Bind(R.id.text_description) TextView mTextDescription;
+  @Bind(R.id.text_create_at) TextView mTextCreateAt;
   @Bind(R.id.coordinator) CoordinatorLayout mCoordinator;
   private BottomSheetBehavior<LinearLayout> mBehavior;
   private Repository mItems;
@@ -85,6 +87,7 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
     mGitDateService = GitHubService.createGitDateService();
     mRepositoryService = GitHubService.createRepositoryService();
     setupData();
+    executeStarRepoTask(StarRepoAsyncTask.TYPE_CHECK_STAR);
     Thread threadX = new Thread(new Runnable() {
       @Override public void run() {
         try {
@@ -105,6 +108,19 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
     threadX.start();
   }
 
+  private void executeStarRepoTask(int type) {
+    new StarRepoAsyncTask(new TextView[] { mTextStart, mTextStartCount }, type).execute(mOwner,
+        mRepo);
+  }
+
+  @OnClick(R.id.text_star) void startRepo() {
+    if (mTextStart.getText().toString().equals("Star")) {
+      executeStarRepoTask(StarRepoAsyncTask.TYPE_STAR);
+    } else {
+      executeStarRepoTask(StarRepoAsyncTask.TYPE_UNSTAR);
+    }
+  }
+
   @Override public void onCardTouchListener(Parcelable date) {
     mItems = (Repository) date;
     mOwner = mItems.owner.login;
@@ -120,17 +136,17 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
 
   public void setupData() {
     mAvatar.setImageURI(mItems.owner.avatar_url);
-    mTxtLogin.setText(mItems.owner.login);
-    mTxtRepoName.setText(mItems.name);
+    mTextLogin.setText(mItems.owner.login);
+    mTextRepoName.setText(mItems.name);
 
-    //mTxtWatchCount.setText(FormatUtils.decimalFormat(mItems.watchers)); // where is the watch api?
-    mTxtStartCount.setText(FormatUtils.decimalFormat(mItems.stargazers_count));
-    mTxtForkCount.setText(FormatUtils.decimalFormat(mItems.forks_count));
+    //mTextWatchCount.setText(FormatUtils.decimalFormat(mItems.watchers)); // where is the watch api?
+    mTextStartCount.setText(FormatUtils.decimalFormat(mItems.stargazers_count));
+    mTextForkCount.setText(FormatUtils.decimalFormat(mItems.forks_count));
 
-    mTxtDescription.setText(mItems.description);
+    mTextDescription.setText(mItems.description);
     DateFormatUtil dateFormat = new DateFormatUtil(getString(R.string.create_at));
     String createAt = dateFormat.formatTime(mItems.created_at);
-    mTxtCreateAt.setText(createAt);
+    mTextCreateAt.setText(createAt);
   }
 
   @Override public void respondSuccess(Trees data) {

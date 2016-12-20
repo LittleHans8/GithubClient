@@ -2,6 +2,7 @@ package cn.littlehans.githubclient.utilities;
 
 import android.util.Log;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 
 import static android.content.ContentValues.TAG;
 
@@ -19,5 +20,15 @@ public class FormatUtils {
 
   public static String decimalFormat(int value) {
     return mDecimalFormat.format(value);
+  }
+
+  public static int parse(String value) {
+    int result = 0;
+    try {
+      result = mDecimalFormat.parse(value).intValue();
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+    return result;
   }
 }

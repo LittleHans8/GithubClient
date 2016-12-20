@@ -48,7 +48,7 @@
   <string name="opened_this_issue">opened this issue</string>
   <string name="create_at">create at</string>
   <string name="watch">Watch</string>
-  <string name="Start">Start</string>
+  <string name="Star">Star</string>
   <string name="Fork">Fork</string>
   <string name="events">Events</string>
   <string name="starts">Starts</string>
@@ -79,5 +79,6 @@
   <string name="welcome_platform_content">With hundreds of integrations, GitHub is flexible enough to be at the center of your development process.</string>
   <string name="version">Version:%s</string>
   <string name="private_repo">Private</string>
+  <string name="unstart">Unstart</string>
 
 </resources>

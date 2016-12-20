@@ -16,7 +16,6 @@ import qiu.niorgai.StatusBarCompat;
 
 public class SearchActivity extends BaseActivity implements SearchView.OnQueryTextListener {
 
-
   private static final String TAG = "SearchActivity";
   @Bind(R.id.fragment_container) FrameLayout mFragmentContainer;
   @Bind(R.id.search_view) SearchView mSearchView;
@@ -30,7 +29,7 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
         .add(R.id.fragment_container, SearchFragment.create())
         .commit();
 
-    StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this,R.color.colorAccent));
+    StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorAccent));
     mSearchView.setOnQueryTextListener(this);
     mSearchView.onActionViewExpanded();
   }
@@ -43,16 +42,14 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
     this.mSearchListenerB = onSearchListenerB;
   }
 
-  @Override
-  public boolean onQueryTextSubmit(String query) {
+  @Override public boolean onQueryTextSubmit(String query) {
     mSearchListenerA.onSearch(query);
     mSearchListenerB.onSearch(query);// SearchUserFragment
     mSearchView.clearFocus();
     return true;
   }
 
-  @Override
-  public boolean onQueryTextChange(String newText) {
+  @Override public boolean onQueryTextChange(String newText) {
     return false;
   }
 
@@ -63,7 +60,4 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
   public interface onSearchListenerB {
     void onSearch(String query);
   }
-
-
-
 }
