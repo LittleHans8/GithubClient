@@ -78,5 +78,6 @@
   <string name="welcome_platform_title">One platform, from start to finish</string>
   <string name="welcome_platform_content">With hundreds of integrations, GitHub is flexible enough to be at the center of your development process.</string>
   <string name="version">Version:%s</string>
+  <string name="private_repo">Private</string>
 
 </resources>

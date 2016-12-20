@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="littlehans.cn.githubclient.ui.activity.LoginActivity"
+    tools:context="cn.littlehans.githubclient.ui.activity.LoginActivity"
     >
   <android.support.v7.widget.Toolbar
       android:id="@+id/toolbar"
