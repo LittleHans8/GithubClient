@@ -45,6 +45,9 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
   public static final String MD = "md";
   public static final String MARKDOWN = "markdown";
   public static final String IS_MARK_DOWN_FILE = "isMarkDownFile";
+  public static final String KEY_OWNER = "owner";
+  public static final String KEY_REPO = "repo";
+  public static final String KEY_SHA = "sha";
 
   @Bind(R.id.recycler_view_path) RecyclerView mRecyclerViewPath;
   @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
@@ -197,6 +200,12 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
       }
     });
     thread.start();
+  }
+
+  @Override public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString(KEY_OWNER, mOwner);
+    outState.putString(KEY_REPO, mRepo);
   }
 
   @Override public void onDetach() {

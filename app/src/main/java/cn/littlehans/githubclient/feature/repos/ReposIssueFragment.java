@@ -52,18 +52,10 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
   private LinearLayoutManager mLinearLayoutManager;
   private String mCurrentState = "open";
 
-  public static Fragment create() {
-    return new ReposIssueFragment();
-  }
-
   @Override public void onAttach(Context context) {
     super.onAttach(context);
     ReposActivity reposActivity = (ReposActivity) context;
     reposActivity.addOnDatePassListener(this);
-  }
-
-  @Override protected int getFragmentLayout() {
-    return R.layout.fragment_repos_issue;
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -73,6 +65,14 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
     initUI();
     addListener();
     mSwipeRefreshLayout.setOnRefreshListener(this);
+  }
+
+  public static Fragment create() {
+    return new ReposIssueFragment();
+  }
+
+  @Override protected int getFragmentLayout() {
+    return R.layout.fragment_repos_issue;
   }
 
   private void initUI() {
@@ -207,7 +207,7 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
   @Override public void startRequest() {
     super.startRequest();
 
-    getActivity().runOnUiThread(new Runnable() {
+    mSwipeRefreshLayout.post(new Runnable() {
       @Override public void run() {
         mSwipeRefreshLayout.setRefreshing(true);
       }
@@ -216,7 +216,7 @@ public class ReposIssueFragment extends NetworkFragment<List<Issue>>
 
   @Override public void endRequest() {
     super.endRequest();
-    getActivity().runOnUiThread(new Runnable() {
+    mSwipeRefreshLayout.post(new Runnable() {
       @Override public void run() {
         mSwipeRefreshLayout.setRefreshing(false);
       }

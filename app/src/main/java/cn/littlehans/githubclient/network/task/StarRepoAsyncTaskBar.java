@@ -54,22 +54,24 @@ public class StarRepoAsyncTaskBar extends WeakAsyncTask<String, Void, Integer, T
 
   @Override protected void onPostExecute(TextView[] textViews, Integer code) {
     super.onPostExecute(textViews, code);
-    TextView textStart = textViews[0];
-    TextView textStartCount = textViews[1];
-    int count = FormatUtils.parse(textStartCount.getText().toString());
-    if (code == 204) {
-      switch (mType) {
-        case TYPE_CHECK_STAR:
-          textStart.setText(UNSTAR);
-          break;
-        case TYPE_STAR:
-          textStart.setText(UNSTAR);
-          textStartCount.setText(FormatUtils.decimalFormat(count + 1));
-          break;
-        case TYPE_UNSTAR:
-          textStart.setText(STAR);
-          textStartCount.setText(FormatUtils.decimalFormat(count - 1));
-          break;
+    if (textViews != null) {
+      TextView textStart = textViews[0];
+      TextView textStartCount = textViews[1];
+      int count = FormatUtils.parse(textStartCount.getText().toString());
+      if (code == 204) {
+        switch (mType) {
+          case TYPE_CHECK_STAR:
+            textStart.setText(UNSTAR);
+            break;
+          case TYPE_STAR:
+            textStart.setText(UNSTAR);
+            textStartCount.setText(FormatUtils.decimalFormat(count + 1));
+            break;
+          case TYPE_UNSTAR:
+            textStart.setText(STAR);
+            textStartCount.setText(FormatUtils.decimalFormat(count - 1));
+            break;
+        }
       }
     }
   }

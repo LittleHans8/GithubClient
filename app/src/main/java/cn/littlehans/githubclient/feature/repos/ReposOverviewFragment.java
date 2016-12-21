@@ -24,6 +24,7 @@ import cn.littlehans.githubclient.feature.user.UserActivity;
 import cn.littlehans.githubclient.model.entity.Branch;
 import cn.littlehans.githubclient.model.entity.Repository;
 import cn.littlehans.githubclient.model.entity.Trees;
+import cn.littlehans.githubclient.network.task.BranchTask;
 import cn.littlehans.githubclient.network.task.ReadMarkDownTask;
 import cn.littlehans.githubclient.network.task.StarRepoAsyncTaskBar;
 import cn.littlehans.githubclient.ui.fragment.NetworkFragment;
@@ -31,11 +32,14 @@ import cn.littlehans.githubclient.utilities.DateFormatUtil;
 import cn.littlehans.githubclient.utilities.FormatUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mukesh.MarkdownView;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static android.content.ContentValues.TAG;
+import static cn.littlehans.githubclient.feature.repos.ReposCodeFragment.KEY_OWNER;
+import static cn.littlehans.githubclient.feature.repos.ReposCodeFragment.KEY_REPO;
+import static cn.littlehans.githubclient.feature.repos.ReposCodeFragment.KEY_SHA;
 
 /**
  * Created by LittleHans on 2016/10/30.
@@ -71,6 +75,15 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
 
   public static Fragment create() {
     return new ReposOverviewFragment();
+  }
+
+  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    if (savedInstanceState != null) {
+      mOwner = savedInstanceState.getString(KEY_OWNER);
+      mRepo = savedInstanceState.getString(KEY_REPO);
+      mSha = savedInstanceState.getString(KEY_SHA);
+    }
   }
 
   @Override public void onAttach(Context context) {
@@ -122,24 +135,20 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
     mBehavior = BottomSheetBehavior.from(mBottomSheet);
     setupData();
     mAsyncTasks.add(executeStarRepoTask(StarRepoAsyncTaskBar.TYPE_CHECK_STAR));
-    Thread threadX = new Thread(new Runnable() {
-      @Override public void run() {
-        try {
-          List<Branch> branches = mRepositoryService.getBranchList(mOwner, mRepo).execute().body();
-          for (Branch branch : branches) {
-            if (branch.name.equals(mDefaultBranch)) {
-              mSha = branch.commit.sha;
-              networkQueue().enqueue(
-                  mGitDateService.getTree(mOwner, mRepo, mSha)); // get the default tree
-              break;
-            }
-          }
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
+    List<Branch> branches = null;
+    try {
+      branches = new BranchTask().execute(mOwner, mRepo).get();
+    } catch (InterruptedException | ExecutionException e) {
+      e.printStackTrace();
+    }
+    for (Branch branch : branches) {
+      if (branch.name.equals(mDefaultBranch)) {
+        mSha = branch.commit.sha;
+        networkQueue().enqueue(
+            mGitDateService.getTree(mOwner, mRepo, mSha)); // get the default tree
+        break;
       }
-    });
-    threadX.start();
+    }
   }
 
   /**
@@ -147,6 +156,13 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
    * but the activity in which this fragment lives is still visible
    * (the foreground activity is partially transparent or doesn't cover the entire screen).
    */
+
+  @Override public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString(KEY_OWNER, mOwner);
+    outState.putString(KEY_REPO, mRepo);
+    outState.putString(KEY_SHA, mSha);
+  }
 
   @Override public void onPause() {
     super.onPause();
