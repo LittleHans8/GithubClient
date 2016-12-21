@@ -27,6 +27,14 @@ public class ReposActivity extends BaseActivity {
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_repos);
+
+    // However, if we're being restored from a previous state,
+    // then we don't need to do anything and should return or else
+    // we could end up with overlapping fragments.
+    if (savedInstanceState != null) {
+      return;
+    }
+
     getSupportFragmentManager().beginTransaction()
         .add(R.id.fragment_container, ReposFragment.create())
         .commit();

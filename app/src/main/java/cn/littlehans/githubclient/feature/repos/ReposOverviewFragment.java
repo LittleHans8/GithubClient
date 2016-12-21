@@ -2,13 +2,13 @@ package cn.littlehans.githubclient.feature.repos;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -21,17 +21,18 @@ import cn.littlehans.githubclient.api.GitHubService;
 import cn.littlehans.githubclient.api.service.GitDateService;
 import cn.littlehans.githubclient.api.service.RepositoryService;
 import cn.littlehans.githubclient.feature.user.UserActivity;
-import cn.littlehans.githubclient.model.entity.Blob;
 import cn.littlehans.githubclient.model.entity.Branch;
 import cn.littlehans.githubclient.model.entity.Repository;
 import cn.littlehans.githubclient.model.entity.Trees;
-import cn.littlehans.githubclient.network.StarRepoAsyncTask;
+import cn.littlehans.githubclient.network.task.ReadMarkDownTask;
+import cn.littlehans.githubclient.network.task.StarRepoAsyncTaskBar;
 import cn.littlehans.githubclient.ui.fragment.NetworkFragment;
 import cn.littlehans.githubclient.utilities.DateFormatUtil;
 import cn.littlehans.githubclient.utilities.FormatUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mukesh.MarkdownView;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
@@ -66,6 +67,7 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
   private String mDefaultBranch;
   private String mSha;
   private RepositoryService mRepositoryService;
+  private List<AsyncTask> mAsyncTasks;
 
   public static Fragment create() {
     return new ReposOverviewFragment();
@@ -77,6 +79,40 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
     reposActivity.addOnDatePassListener(this);
   }
 
+  /**
+   * Usually, you should implement at least the following lifecycle methods:
+   * onCreate()/onCreateView()/onPause()
+   * 在实际开发中，onCreateView() 通常会被 getFragmentLayout() 方法所代替，来返回一个视图
+   *
+   * The system calls this when creating the fragment.
+   * Within your implementation,
+   * you should initialize essential components of the fragment
+   * that you want to retain when the fragment is paused or stopped, then resumed.
+   */
+  @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    mGitDateService = GitHubService.createGitDateService();
+    mRepositoryService = GitHubService.createRepositoryService();
+    mAsyncTasks = new ArrayList<>();
+  }
+
+  // The fragment is visible in the running activity.
+  @Override public void onResume() {
+    super.onResume();
+  }
+
+  /**
+   * The fragment is not visible. Either the host activity has been stopped or the fragment
+   * has been removed from the activity but added to the back stack.
+   * A stopped fragment is still alive (all state and member information is retained by the
+   * system).
+   * However, it is no longer visible to the user and will be killed if the activity is killed.
+   */
+
+  @Override public void onStop() {
+    super.onStop();
+  }
+
   @Override protected int getFragmentLayout() {
     return R.layout.fragment_repo_overview;
   }
@@ -84,10 +120,8 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     mBehavior = BottomSheetBehavior.from(mBottomSheet);
-    mGitDateService = GitHubService.createGitDateService();
-    mRepositoryService = GitHubService.createRepositoryService();
     setupData();
-    executeStarRepoTask(StarRepoAsyncTask.TYPE_CHECK_STAR);
+    mAsyncTasks.add(executeStarRepoTask(StarRepoAsyncTaskBar.TYPE_CHECK_STAR));
     Thread threadX = new Thread(new Runnable() {
       @Override public void run() {
         try {
@@ -108,16 +142,26 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
     threadX.start();
   }
 
-  private void executeStarRepoTask(int type) {
-    new StarRepoAsyncTask(new TextView[] { mTextStart, mTextStartCount }, type).execute(mOwner,
-        mRepo);
+  /**
+   * Another activity is in the foreground and has focus,
+   * but the activity in which this fragment lives is still visible
+   * (the foreground activity is partially transparent or doesn't cover the entire screen).
+   */
+
+  @Override public void onPause() {
+    super.onPause();
   }
 
-  @OnClick(R.id.text_star) void startRepo() {
+  private AsyncTask<String, Void, Integer> executeStarRepoTask(int type) {
+    return new StarRepoAsyncTaskBar(new TextView[] { mTextStart, mTextStartCount }, type).execute(
+        mOwner, mRepo);
+  }
+
+  @OnClick(R.id.text_star) void starRepo() {
     if (mTextStart.getText().toString().equals("Star")) {
-      executeStarRepoTask(StarRepoAsyncTask.TYPE_STAR);
+      mAsyncTasks.add(executeStarRepoTask(StarRepoAsyncTaskBar.TYPE_STAR));
     } else {
-      executeStarRepoTask(StarRepoAsyncTask.TYPE_UNSTAR);
+      mAsyncTasks.add(executeStarRepoTask(StarRepoAsyncTaskBar.TYPE_UNSTAR));
     }
   }
 
@@ -159,22 +203,16 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
   }
 
   private void setMarkDownText(final Trees.Tree tree) {
-    Thread thread = new Thread(new Runnable() {
-      @Override public void run() {
-        try {
-          Blob blob = mGitDateService.getBlob(mOwner, mRepo, tree.sha).execute().body();
-          final String txtMarkdown = new String(Base64.decode(blob.content, Base64.DEFAULT));
-          getActivity().runOnUiThread(new Runnable() {
-            @Override public void run() {
-              mMarkdownView.setMarkDownText(txtMarkdown);
-            }
-          });
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
+    new ReadMarkDownTask(mMarkdownView).execute(mOwner, mRepo, tree.sha);
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    for (AsyncTask asyncTask : mAsyncTasks) {
+      if (asyncTask != null) {
+        asyncTask.cancel(true);
       }
-    });
-    thread.start();
+    }
   }
 
   @Override public void respondWithError(Throwable t) {

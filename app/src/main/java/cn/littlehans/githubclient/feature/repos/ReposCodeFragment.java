@@ -230,7 +230,7 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
 
   @Override public void startRequest() {
     super.startRequest();
-    getActivity().runOnUiThread(new Runnable() {
+    mSwipeRefreshLayout.post(new Runnable() {
       @Override public void run() {
         mSwipeRefreshLayout.setRefreshing(true);
       }
@@ -239,9 +239,9 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
 
   @Override public void endRequest() {
     super.endRequest();
-    getActivity().runOnUiThread(new Runnable() {
+    mSwipeRefreshLayout.post(new Runnable() {
       @Override public void run() {
-        mSwipeRefreshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setRefreshing(true);
       }
     });
   }
