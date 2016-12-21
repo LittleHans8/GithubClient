@@ -1,7 +1,6 @@
 package cn.littlehans.githubclient.feature.repos;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -9,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,11 +18,10 @@ import cn.littlehans.githubclient.R;
 import cn.littlehans.githubclient.api.GitHubService;
 import cn.littlehans.githubclient.api.service.GitDateService;
 import cn.littlehans.githubclient.api.service.RepositoryService;
-import cn.littlehans.githubclient.model.entity.Blob;
 import cn.littlehans.githubclient.model.entity.Branch;
 import cn.littlehans.githubclient.model.entity.Repository;
 import cn.littlehans.githubclient.model.entity.Trees;
-import cn.littlehans.githubclient.ui.activity.FileDetailActivity;
+import cn.littlehans.githubclient.network.task.ReadMarkDownTask;
 import cn.littlehans.githubclient.ui.fragment.NetworkFragment;
 import cn.littlehans.githubclient.utilities.DividerItemDecoration;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -137,23 +134,8 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
         }
 
         if (tree.type.equals(BLOB)) {
-          new Thread(new Runnable() {
-            @Override public void run() {
-              try {
-                Blob blob = mGitDateService.getBlob(mOwner, mRepo, tree.sha).execute().body();
-                String content = new String(Base64.decode(blob.content, Base64.DEFAULT));
-                Intent intent = new Intent(getActivity(), FileDetailActivity.class);
-                intent.putExtra(CONTENT, content);
-                if (tree.path.endsWith(MD) || tree.path.endsWith(MARKDOWN)) {
-                  intent.putExtra(IS_MARK_DOWN_FILE, true);
-                }
-
-                startActivity(intent);
-              } catch (IOException e) {
-                e.printStackTrace();
-              }
-            }
-          }).start();
+          new ReadMarkDownTask(null, ReadMarkDownTask.TYPE_START_ACTIVITY_WITH_MARKDOWN,
+              getActivity(), tree.path).execute(mOwner, mRepo, tree.sha);
         }
       }
     };
@@ -190,9 +172,7 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
 
     mOwner = items.owner.login;
     mRepo = items.name;
-    Log.d("TAG", "onCardTouchListener: " + mOwner + mRepo);
     mDefaultBranch = items.default_branch;
-    Log.d("TAG", "run: " + mDefaultBranch);
     Thread thread = new Thread(new Runnable() {
       @Override public void run() {
         try {
@@ -241,7 +221,7 @@ public class ReposCodeFragment extends NetworkFragment<Trees>
     super.endRequest();
     mSwipeRefreshLayout.post(new Runnable() {
       @Override public void run() {
-        mSwipeRefreshLayout.setRefreshing(true);
+        mSwipeRefreshLayout.setRefreshing(false);
       }
     });
   }

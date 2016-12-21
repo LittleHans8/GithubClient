@@ -203,7 +203,8 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
   }
 
   private void setMarkDownText(final Trees.Tree tree) {
-    new ReadMarkDownTask(mMarkdownView).execute(mOwner, mRepo, tree.sha);
+    new ReadMarkDownTask(mMarkdownView, ReadMarkDownTask.TYPE_SET_TEXT_IN_MARK_DOWN_VIEW, null,
+        null).execute(mOwner, mRepo, tree.sha);
   }
 
   @Override public void onDestroy() {

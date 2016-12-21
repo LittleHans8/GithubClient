@@ -4,7 +4,6 @@ import android.widget.TextView;
 import cn.littlehans.githubclient.api.GitHubService;
 import cn.littlehans.githubclient.api.service.ActivityService;
 import cn.littlehans.githubclient.utilities.FormatUtils;
-import cn.littlehans.githubclient.utilities.WeakAsyncTask;
 import java.io.IOException;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -21,7 +20,6 @@ public class StarRepoAsyncTaskBar extends WeakAsyncTask<String, Void, Integer, T
   public static final String UNSTAR = "Unstar";
   public static final String STAR = "Star";
   private int mType;
-  private ActivityService mActivityService;
 
   public StarRepoAsyncTaskBar(TextView[] textViews, int type) {
     super(textViews);
@@ -32,16 +30,16 @@ public class StarRepoAsyncTaskBar extends WeakAsyncTask<String, Void, Integer, T
     Call<ResponseBody> call = null;
     String owner = params[0];
     String repo = params[1];
-    mActivityService = GitHubService.createActivityService();
+    ActivityService activityService = GitHubService.createActivityService();
     switch (mType) {
       case TYPE_CHECK_STAR:
-        call = mActivityService.checkRepo(owner, repo);
+        call = activityService.checkRepo(owner, repo);
         break;
       case TYPE_STAR:
-        call = mActivityService.starRepo(owner, repo);
+        call = activityService.starRepo(owner, repo);
         break;
       case TYPE_UNSTAR:
-        call = mActivityService.unstarRepo(owner, repo);
+        call = activityService.unstarRepo(owner, repo);
         break;
     }
 
