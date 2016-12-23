@@ -12,7 +12,7 @@ import retrofit2.Call;
  * Created by LittleHans on 2016/12/21.
  */
 
-public class StarRepoAsyncTaskBar extends WeakAsyncTask<String, Void, Integer, TextView[]> {
+public class StarRepoAsyncTask extends WeakAsyncTask<String, Void, Integer, TextView[]> {
 
   public static final int TYPE_CHECK_STAR = 0;
   public static final int TYPE_STAR = 1;
@@ -21,7 +21,7 @@ public class StarRepoAsyncTaskBar extends WeakAsyncTask<String, Void, Integer, T
   public static final String STAR = "Star";
   private int mType;
 
-  public StarRepoAsyncTaskBar(TextView[] textViews, int type) {
+  public StarRepoAsyncTask(TextView[] textViews, int type) {
     super(textViews);
     this.mType = type;
   }

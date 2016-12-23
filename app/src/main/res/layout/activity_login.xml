@@ -32,58 +32,62 @@
       android:text="@string/sign_in_to_github"
       android:textSize="24sp"
       />
-
-  <LinearLayout
-      android:id="@+id/email_login_form"
+  <ScrollView
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:padding="16dp"
+      android:layout_height="match_parent"
       >
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
+        android:id="@+id/email_login_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
         >
-      <EditText
-          android:id="@+id/edit_text_account"
+      <android.support.design.widget.TextInputLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:hint="@string/prompt_email"
-          android:maxLines="1"
-          />
-    </android.support.design.widget.TextInputLayout>
+          >
+        <EditText
+            android:id="@+id/edit_text_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_email"
+            android:maxLines="1"
+            />
+      </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-      <EditText
-          android:id="@+id/edit_password"
+      <android.support.design.widget.TextInputLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:hint="@string/prompt_password"
-          android:imeActionId="@+id/btn_sign_in"
-          android:imeActionLabel="@string/action_sign_in_short"
-          android:imeOptions="actionUnspecified"
-          android:inputType="textPassword"
-          android:maxLines="1"
+          >
+        <EditText
+            android:id="@+id/edit_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_password"
+            android:imeActionId="@+id/btn_sign_in"
+            android:imeActionLabel="@string/action_sign_in_short"
+            android:imeOptions="actionUnspecified"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            />
+      </android.support.design.widget.TextInputLayout>
+
+      <TextView
+          android:id="@+id/btn_sign_in"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:background="@drawable/selector_btn_sign_in"
+          android:clickable="true"
+          android:gravity="center"
+          android:padding="@dimen/padding_8"
+          android:text="@string/action_sign_in"
+          android:textColor="@android:color/white"
+          android:textStyle="bold"
+          style="?android:textAppearanceMedium"
           />
-    </android.support.design.widget.TextInputLayout>
 
-    <TextView
-        android:id="@+id/btn_sign_in"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/selector_btn_sign_in"
-        android:clickable="true"
-        android:gravity="center"
-        android:padding="@dimen/padding_8"
-        android:text="@string/action_sign_in"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        style="?android:textAppearanceMedium"
-        />
-
-  </LinearLayout>
+    </LinearLayout>
+  </ScrollView>
 </LinearLayout>

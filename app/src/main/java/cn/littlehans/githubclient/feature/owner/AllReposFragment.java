@@ -44,6 +44,7 @@ public class AllReposFragment extends PagedFragment<Repository> {
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mRepositoryService = GitHubService.createRepositoryService();
+
     if (getArguments() != null) {
       User user = getArguments().getParcelable(Nav.USER);
       mUser = user;
@@ -51,6 +52,10 @@ public class AllReposFragment extends PagedFragment<Repository> {
     } else {
       mUser = AccountManager.getAccount();
     }
+  }
+
+  @Override public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

@@ -26,7 +26,7 @@ import cn.littlehans.githubclient.model.entity.Repository;
 import cn.littlehans.githubclient.model.entity.Trees;
 import cn.littlehans.githubclient.network.task.BranchTask;
 import cn.littlehans.githubclient.network.task.ReadMarkDownTask;
-import cn.littlehans.githubclient.network.task.StarRepoAsyncTaskBar;
+import cn.littlehans.githubclient.network.task.StarRepoAsyncTask;
 import cn.littlehans.githubclient.ui.fragment.NetworkFragment;
 import cn.littlehans.githubclient.utilities.DateFormatUtil;
 import cn.littlehans.githubclient.utilities.FormatUtils;
@@ -134,7 +134,7 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
     super.onViewCreated(view, savedInstanceState);
     mBehavior = BottomSheetBehavior.from(mBottomSheet);
     setupData();
-    mAsyncTasks.add(executeStarRepoTask(StarRepoAsyncTaskBar.TYPE_CHECK_STAR));
+    mAsyncTasks.add(executeStarRepoTask(StarRepoAsyncTask.TYPE_CHECK_STAR));
     List<Branch> branches = null;
     try {
       branches = new BranchTask().execute(mOwner, mRepo).get();
@@ -169,15 +169,15 @@ public class ReposOverviewFragment extends NetworkFragment<Trees> implements OnD
   }
 
   private AsyncTask<String, Void, Integer> executeStarRepoTask(int type) {
-    return new StarRepoAsyncTaskBar(new TextView[] { mTextStart, mTextStartCount }, type).execute(
+    return new StarRepoAsyncTask(new TextView[] { mTextStart, mTextStartCount }, type).execute(
         mOwner, mRepo);
   }
 
   @OnClick(R.id.text_star) void starRepo() {
     if (mTextStart.getText().toString().equals("Star")) {
-      mAsyncTasks.add(executeStarRepoTask(StarRepoAsyncTaskBar.TYPE_STAR));
+      mAsyncTasks.add(executeStarRepoTask(StarRepoAsyncTask.TYPE_STAR));
     } else {
-      mAsyncTasks.add(executeStarRepoTask(StarRepoAsyncTaskBar.TYPE_UNSTAR));
+      mAsyncTasks.add(executeStarRepoTask(StarRepoAsyncTask.TYPE_UNSTAR));
     }
   }
 

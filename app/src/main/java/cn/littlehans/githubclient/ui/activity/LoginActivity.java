@@ -22,12 +22,12 @@ import cn.littlehans.githubclient.model.ErrorModel;
 import cn.littlehans.githubclient.model.entity.User;
 import cn.littlehans.githubclient.network.retrofit2.LoginInterceptor;
 import cn.littlehans.githubclient.network.retrofit2.RetrofitBuilder;
+import cn.littlehans.githubclient.network.task.UserAvatarTask;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.smartydroid.android.starter.kit.app.StarterKitApp;
 import com.smartydroid.android.starter.kit.utilities.HudUtils;
 import com.stephentuso.welcome.WelcomeHelper;
-import java.io.IOException;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -42,6 +42,8 @@ import timber.log.Timber;
  */
 public class LoginActivity extends NetworkActivity<User> {
 
+  public static final String KEY_SAVED_ACCOUNT = "KEY_SAVED_ACCOUNT";
+  public static final String KEY_SAVED_PASSWORD = "KEY_SAVED_PASSWORD";
   @Bind(R.id.edit_text_account) EditText mEditTextAccount;
   @Bind(R.id.edit_password) EditText mEditPassword;
   @Bind(R.id.btn_sign_in) TextView mBtnSign;
@@ -59,6 +61,10 @@ public class LoginActivity extends NetworkActivity<User> {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
     setSupportActionBar(mToolbar);
+    if (savedInstanceState != null) {
+      mEditTextAccount.setText(savedInstanceState.getString(KEY_SAVED_ACCOUNT));
+      mEditPassword.setText(savedInstanceState.getString(KEY_SAVED_PASSWORD));
+    }
 
     if (StarterKitApp.isFirstEnterApp()) {
       welcomeScreen = new WelcomeHelper(this, GitHubWelcomeActivity.class);
@@ -84,7 +90,11 @@ public class LoginActivity extends NetworkActivity<User> {
 
   @Override protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    welcomeScreen.onSaveInstanceState(outState);
+    if (welcomeScreen != null) {
+      welcomeScreen.onSaveInstanceState(outState);
+    }
+    outState.putString(KEY_SAVED_ACCOUNT, getAccount());
+    outState.putString(KEY_SAVED_PASSWORD, getPassword());
   }
 
   @OnClick(R.id.btn_sign_in) void sigIn() {
@@ -124,24 +134,7 @@ public class LoginActivity extends NetworkActivity<User> {
 
   @OnFocusChange(R.id.edit_text_account) void editTextAccountFocusChange() {
     if (!TextUtils.isEmpty(getAccount())) {
-      new Thread(new Runnable() {
-        @Override public void run() {
-          try {
-            final User user = mUsersService.getUser(getAccount()).execute().body();
-            if (!(user == null)) {
-              mAvatar.post(new Runnable() {
-                @Override public void run() {
-                  if (!TextUtils.isEmpty(user.avatar_url)) {
-                    mAvatar.setImageURI(user.avatar_url);
-                  }
-                }
-              });
-            }
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        }
-      }).start();
+      new UserAvatarTask(mAvatar, mUsersService).execute(getAccount());
     }
   }
 

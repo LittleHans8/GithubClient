@@ -43,6 +43,7 @@ public class MainActivity extends BaseActivity
     TextView mTextName = ButterKnife.findById(headerView, R.id.text_name);
     TextView mTextEmail = ButterKnife.findById(headerView, R.id.text_email);
     User user = AccountManager.getAccount();
+
     if (user != null) {
       mSmallAvatar.setImageURI(user.avatar_url);
       mAvatar.setImageURI(user.avatar_url);
@@ -61,8 +62,11 @@ public class MainActivity extends BaseActivity
     mNavigationView.setNavigationItemSelectedListener(this);
 
     StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorAccent));
-    getSupportFragmentManager().beginTransaction().add(R.id.content_main, MainFragment.create())
-        .commit();
+    if (savedInstanceState == null) {
+      getSupportFragmentManager().beginTransaction()
+          .add(R.id.content_main, MainFragment.create())
+          .commit();
+    }
   }
 
   @Override public void onBackPressed() {

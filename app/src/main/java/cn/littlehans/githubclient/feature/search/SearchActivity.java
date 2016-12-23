@@ -17,6 +17,7 @@ import qiu.niorgai.StatusBarCompat;
 public class SearchActivity extends BaseActivity implements SearchView.OnQueryTextListener {
 
   private static final String TAG = "SearchActivity";
+  public static final String KEY_SAVED_QUERY_STRING = "KEY_SAVED_QUERY_STRING";
   @Bind(R.id.fragment_container) FrameLayout mFragmentContainer;
   @Bind(R.id.search_view) SearchView mSearchView;
   private onSearchListenerA mSearchListenerA;
@@ -25,13 +26,23 @@ public class SearchActivity extends BaseActivity implements SearchView.OnQueryTe
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.acticity_search);
-    getSupportFragmentManager().beginTransaction()
-        .add(R.id.fragment_container, SearchFragment.create())
-        .commit();
+    if (savedInstanceState == null) {
+      getSupportFragmentManager().beginTransaction()
+          .add(R.id.fragment_container, SearchFragment.create())
+          .commit();
+    } else {
+      mSearchView.setQuery(savedInstanceState.getString(KEY_SAVED_QUERY_STRING), false);
+    }
+
 
     StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorAccent));
     mSearchView.setOnQueryTextListener(this);
     mSearchView.onActionViewExpanded();
+  }
+
+  @Override protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString(KEY_SAVED_QUERY_STRING, mSearchView.getQuery().toString().trim());
   }
 
   public void setOnSearchListenerA(onSearchListenerA onSearchListenerA) {
