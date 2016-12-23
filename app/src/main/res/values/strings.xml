@@ -61,6 +61,8 @@
   <string name="nav_sign_out">Sign Out</string>
   <string name="follower">Follower</string>
 
+
+  <!--welcome page-->
   <!--page1-->
   <string name="welcome_title">Welcome home, developers</string>
   <string name="welcome_content">GitHub fosters a fast, flexible, and collaborative development process that lets you work on your own or with others.</string>

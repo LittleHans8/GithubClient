@@ -32,7 +32,7 @@ public class ReceivedEventAdapter extends BaseMultiItemQuickAdapter<ReceivedEven
   public ReceivedEventAdapter(Context context, List<ReceivedEvent> data) {
     super(data);
     mContext = context;
-    addItemType(ReceivedEvent.TEXT, R.layout.itemm_simple_received_event);
+    addItemType(ReceivedEvent.TEXT, R.layout.item_simple_received_event);
     addItemType(ReceivedEvent.TEXT_AVATAR, R.layout.item_received_event);
     mDateFormatUtil = new DateFormatUtil();
   }

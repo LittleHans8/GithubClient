@@ -9,7 +9,7 @@ import cn.littlehans.githubclient.ui.fragment.BaseFragment;
  */
 public class SearchIssuesFragment extends BaseFragment {
   @Override protected int getFragmentLayout() {
-    return R.layout.fragment_search_issuses;
+    return R.layout.fragment_search_issues;
   }
 
   public static Fragment create() {

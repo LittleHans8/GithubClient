@@ -24,8 +24,8 @@
         android:id="@+id/text_small_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:paddingStart="8dp"
+        android:paddingLeft="@dimen/padding_8"
+        android:paddingStart="@dimen/padding_8"
         tools:text="LittleHans"
         />
   </android.support.v7.widget.Toolbar>

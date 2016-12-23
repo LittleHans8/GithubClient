@@ -6,23 +6,6 @@
         android:id="@+id/nav_sing_out"
         android:icon="@drawable/ic_menu_sign_out"
         android:title="@string/nav_sign_out"/>
-    <!--<item-->
-    <!--android:id="@+id/nav_manage"-->
-    <!--android:icon="@drawable/ic_menu_manage"-->
-    <!--android:title="Setting"/>-->
   </group>
-
-  <!--<item android:title="About">-->
-  <!--<menu>-->
-  <!--<item-->
-  <!--android:id="@+id/nav_share"-->
-  <!--android:icon="@drawable/ic_menu_share"-->
-  <!--android:title="Share"/>-->
-  <!--<item-->
-  <!--android:id="@+id/nav_send"-->
-  <!--android:icon="@drawable/ic_menu_send"-->
-  <!--android:title="Send"/>-->
-  <!--</menu>-->
-  <!--</item>-->
 
 </menu>
