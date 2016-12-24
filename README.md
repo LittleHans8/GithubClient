@@ -7,7 +7,7 @@
 
 ## 截图
 
-## ![Welcome To Page](./screenshots/WeclomeToPage.gif)![SignIn](./screenshots/SignIn.gif)![RepositoryDetail](./screenshots/RepositoryDetail.gif)![UserDetail](./screenshots/UserDetail.gif)
+## ![Welcome To Page](https://raw.githubusercontent.com/LittleHans8/GitHubClient/master/screenshots/WeclomeToPage.gif)![SignIn](https://raw.githubusercontent.com/LittleHans8/GitHubClient/master/screenshots/SignIn.gif)![RepositoryDetail](https://raw.githubusercontent.com/LittleHans8/GitHubClient/master/screenshots/RepositoryDetail.gif)![UserDetail](https://raw.githubusercontent.com/LittleHans8/GitHubClient/master/screenshots/UserDetail.gif)
 
 ## TODO
 
@@ -24,9 +24,3 @@
 - [ ] Events 以及 Pull request 的支持
 
 - [ ] 搜索排序的支持
-
-      ​
-
-      ​
-
-      ​
