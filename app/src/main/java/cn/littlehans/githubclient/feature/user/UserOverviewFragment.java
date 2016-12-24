@@ -7,11 +7,13 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
 import butterknife.Bind;
+import butterknife.OnClick;
 import cn.littlehans.githubclient.Nav;
 import cn.littlehans.githubclient.R;
 import cn.littlehans.githubclient.api.GitHubService;
 import cn.littlehans.githubclient.api.service.UsersService;
 import cn.littlehans.githubclient.model.entity.User;
+import cn.littlehans.githubclient.network.task.FollowerTask;
 import cn.littlehans.githubclient.ui.fragment.NetworkFragment;
 import cn.littlehans.githubclient.utilities.DateFormatUtil;
 import cn.littlehans.githubclient.utilities.TextViewUtils;
@@ -34,7 +36,12 @@ public class UserOverviewFragment extends NetworkFragment<User> {
   @Bind(R.id.text_blog) TextView mTextBlog;
   @Bind(R.id.text_create_at) TextView mTextCreateAt;
   private UsersService mUsersService;
+  private User mUser;
 
+  @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    mUsersService = GitHubService.createUsersService();
+  }
 
   @Override protected int getFragmentLayout() {
     return R.layout.fragment_user_overview;
@@ -42,9 +49,9 @@ public class UserOverviewFragment extends NetworkFragment<User> {
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    mUsersService = GitHubService.createUsersService();
-    User user = getArguments().getParcelable(Nav.USER);
-    networkQueue().enqueue(mUsersService.getUser(user.login));
+    mUser = getArguments().getParcelable(Nav.USER);
+    networkQueue().enqueue(mUsersService.getUser(mUser.login));
+    new FollowerTask(mTextFollow, mUsersService, FollowerTask.CHECK_FOLLOW).execute(mUser.login);
   }
 
   public static Fragment create(Parcelable data) {
@@ -53,6 +60,14 @@ public class UserOverviewFragment extends NetworkFragment<User> {
     bundle.putParcelable(Nav.USER, data);
     fragment.setArguments(bundle);
     return fragment;
+  }
+
+  @OnClick(R.id.text_follow) public void onClick() {
+    if (mTextFollow.getText().toString().equals(FollowerTask.STRING_FOLLOW)) {
+      new FollowerTask(mTextFollow, mUsersService, FollowerTask.FOLLOW).execute(mUser.login);
+    } else {
+      new FollowerTask(mTextFollow, mUsersService, FollowerTask.UNFOLLOW).execute(mUser.login);
+    }
   }
 
   @Override public void respondSuccess(User user) {

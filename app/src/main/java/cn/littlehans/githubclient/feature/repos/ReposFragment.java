@@ -56,6 +56,7 @@ public class ReposFragment extends BaseFragment implements TabLayout.OnTabSelect
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     mViewPager.setAdapter(mAdapter);
+    mViewPager.setOffscreenPageLimit(2);
     mTabLayout.setupWithViewPager(mViewPager);
     mTabLayout.addOnTabSelectedListener(this);
     setupTab();
