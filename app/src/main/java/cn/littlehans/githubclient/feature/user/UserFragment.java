@@ -52,7 +52,7 @@ public class UserFragment extends BaseFragment {
     mAdapter = new UserFragment.Adapter(getChildFragmentManager());
     mAdapter.addFragment(UserOverviewFragment.create(user), getString(R.string.overview));
     mAdapter.addFragment(AllReposFragment.create(user), getString(R.string.repositories));
-    mAdapter.addFragment(StartsFragment.create(user), getString(R.string.starts));
+    mAdapter.addFragment(StartsFragment.create(user), getString(R.string.stars));
     mAdapter.addFragment(FollowersFragment.create(user), getString(R.string.followers));
     mAdapter.addFragment(FollowingFragment.create(user), getString(R.string.following));
     mViewPager.setAdapter(mAdapter);

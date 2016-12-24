@@ -34,7 +34,7 @@ public class MainFragment extends BaseFragment {
     //TODO EventFragment
 //    mAdapter.addFragment(ReceivedEventsFragment.create(), getString(R.string.events));
     mAdapter.addFragment(AllReposFragment.create(), getString(R.string.repositories));
-    mAdapter.addFragment(StartsFragment.create(), getString(R.string.starts));
+    mAdapter.addFragment(StartsFragment.create(), getString(R.string.stars));
     mAdapter.addFragment(FollowersFragment.create(), getString(R.string.followers));
     mAdapter.addFragment(FollowingFragment.create(), getString(R.string.following));
   }

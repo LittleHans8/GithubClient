@@ -51,7 +51,7 @@
   <string name="Star">Star</string>
   <string name="Fork">Fork</string>
   <string name="events">Events</string>
-  <string name="starts">Starts</string>
+  <string name="stars">Stars</string>
   <string name="followers">Followers</string>
   <string name="following">Following</string>
   <string name="sign_in_to_github">Sign in to GitHub</string>
